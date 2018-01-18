@@ -12,6 +12,7 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
 group = 'com.adinstar'
@@ -20,6 +21,13 @@ sourceCompatibility = 1.8
 
 repositories {
 	mavenCentral()
+}
+
+idea {
+    module {
+        outputDir file('build/classes/main')
+        testOutputDir file('build/classes/test')
+    }
 }
 
 sourceSets {
