@@ -22,6 +22,14 @@ repositories {
 	mavenCentral()
 }
 
+sourceSets {
+	main {
+		output.resourcesDir = "build/classes/main"
+	}
+	test {
+		output.resourcesDir = "build/classes/test"
+	}
+}
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-freemarker')
