@@ -1,7 +1,7 @@
 # pangyo  
 ## 기본환경 
 빌드 : gradle  
-배포 : ansible (미연동)  
+배포 : ansible (미연동)  
 소스관리 : git  
 디비 : mysql  
 
