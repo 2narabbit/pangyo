@@ -58,7 +58,7 @@ create table COMMENT
 (
 	id bigint auto_increment
 		primary key,
-	type enum('CAMPAIGN', 'FANCLUB') not null,
+	content_type enum('POST', 'CANDIDATE', 'CAMPAIGN') not null,
 	content_id bigint not null,
 	user_id bigint not null,
 	body varchar(4096) not null,
