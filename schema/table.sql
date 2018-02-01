@@ -58,7 +58,7 @@ create table COMMENT
 (
 	id bigint auto_increment
 		primary key,
-	type enum('CAMPAIGN', 'FANCLUB') not null,
+	content_type enum('POST', 'CANDIDATE', 'CAMPAIGN') not null,
 	content_id bigint not null,
 	user_id bigint not null,
 	body varchar(4096) not null,
@@ -77,7 +77,7 @@ create table EXECUTION_RULE
 	type enum('CAMPAIGN', 'CANDIDATE', 'AD') not null,
 	start_dttm datetime not null,
 	end_dttm datetime not null,
-	status enum('BEFORE', 'RUNNING', 'STOP', 'END') not null comment 'ENUM(''BEFORE'', ''RUNNING'', ''STOP'', ''END'')
+	status enum('READY', 'RUNNING', 'DONE', 'END') not null comment 'ENUM(''BEFORE'', ''RUNNING'', ''STOP'', ''END'')
 	—> ENUM(‘READY’, ''RUNNING'', ‘DONE’, ''END'')',
 	reg_dttm datetime default CURRENT_TIMESTAMP not null,
 	up_dttm datetime default CURRENT_TIMESTAMP not null,
