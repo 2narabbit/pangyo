@@ -2,9 +2,9 @@ create table ACTION_HISTORY
 (
 	id bigint auto_increment
 		primary key,
-	type enum('POST', 'CANDIDATE', 'CAMPAIGN') not null,
-	action enum('LIKE', 'POLL', 'SUPPORT') not null,
-	type_id bigint not null,
+	content_type enum('POST', 'CANDIDATE', 'CAMPAIGN') not null,
+	action_type enum('LIKE', 'POLL', 'SUPPORT') not null,
+	content_id bigint not null,
 	user_id bigint not null,
 	reg_dttm datetime default CURRENT_TIMESTAMP not null,
 	lov_count int default '0' not null
@@ -17,11 +17,10 @@ create table CAMPAIGN
 	id bigint auto_increment
 		primary key,
 	campaign_candidate_id bigint not null,
-	execute_rule_id bigint not null,
 	view_count bigint default '0' not null,
 	comment_count bigint default '0' not null,
 	support_count bigint default '0' not null,
-	is_biz_execute tinyint(1) default '0' not null,
+	is_register_ad tinyint(1) default '0' not null,
 	has_report tinyint(1) default '0' not null,
 	ranking int default '0' null,
 	goal_exposure_count bigint default '0' not null,
@@ -74,6 +73,7 @@ create table COMMENT
 	id bigint auto_increment
 		primary key,
 	type enum('CAMPAIGN', 'FANCLUB') not null,
+	content_id bigint not null,
 	user_id bigint not null,
 	body varchar(4096) not null,
 	status enum('SERVICE', 'DELETED') default 'SERVICE' not null,
@@ -88,10 +88,11 @@ create table EXECUTION_RULE
 	id bigint auto_increment
 		primary key,
 	turn_num bigint not null,
-	type enum('CAMPAIGN', 'CANDIDATE') not null,
+	type enum('CAMPAIGN', 'CANDIDATE', 'AD') not null,
 	start_dttm datetime not null,
 	end_dttm datetime not null,
-	status enum('BEFORE', 'RUNNING', 'STOP', 'END') not null,
+	status enum('BEFORE', 'RUNNING', 'STOP', 'END') not null comment 'ENUM(''BEFORE'', ''RUNNING'', ''STOP'', ''END'')
+	—> ENUM(‘READY’, ''RUNNING'', ‘DONE’, ''END'')',
 	reg_dttm datetime default CURRENT_TIMESTAMP not null,
 	up_dttm datetime default CURRENT_TIMESTAMP not null,
 	constraint EXECUTION_RULE_turn_num_uindex
@@ -104,19 +105,20 @@ create table LOV
 (
 	user_id bigint not null
 		primary key,
-	post bigint default '0' null,
-	comment bigint default '0' null,
-	recommend bigint default '0' null,
-	support bigint default '0' null
+	`key` varchar(256) default '0' not null,
+	value bigint default '0' not null,
+	reg_dttm datetime default CURRENT_TIMESTAMP not null,
+	up_dttm datetime default CURRENT_TIMESTAMP not null
 )
 comment '럽 사용/누적 총합' engine=InnoDB
 ;
 
 create table POLICY
 (
-	id varchar(32) not null
+	id int not null
 		primary key,
-	value varchar(256) null,
+	`key` varchar(256) not null,
+	value varchar(256) not null,
 	reg_dttm datetime default CURRENT_TIMESTAMP not null
 )
 comment '정책' engine=InnoDB
@@ -126,6 +128,7 @@ create table POST
 (
 	id bigint auto_increment
 		primary key,
+	star_id bigint not null,
 	user_id bigint not null,
 	body varchar(4096) null,
 	img varchar(4096) null,
