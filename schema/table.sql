@@ -1,17 +1,3 @@
-create table ACTION_HISTORY
-(
-	id bigint auto_increment
-		primary key,
-	content_type enum('POST', 'CANDIDATE', 'CAMPAIGN') not null,
-	action_type enum('LIKE', 'POLL', 'SUPPORT') not null,
-	content_id bigint not null,
-	user_id bigint not null,
-	reg_dttm datetime default CURRENT_TIMESTAMP not null,
-	lov_count int default '0' not null
-)
-comment '유저액션(좋아요, 투표, 참여) 내역' engine=InnoDB
-;
-
 create table CAMPAIGN
 (
 	id bigint auto_increment
@@ -113,13 +99,28 @@ create table LOV
 comment '럽 사용/누적 총합' engine=InnoDB
 ;
 
+create table LOV_HISTORY
+(
+	id bigint auto_increment
+		primary key,
+	content_type enum('POST', 'CANDIDATE', 'CAMPAIGN') not null,
+	action_type enum('LIKE', 'POLL', 'SUPPORT') not null,
+	content_id bigint not null,
+	user_id bigint not null,
+	lov_count int default '0' not null,
+	reg_dttm datetime default CURRENT_TIMESTAMP not null
+)
+comment '럽 히스토리' engine=InnoDB
+;
+
 create table POLICY
 (
 	id int not null
 		primary key,
 	`key` varchar(256) not null,
 	value varchar(256) not null,
-	reg_dttm datetime default CURRENT_TIMESTAMP not null
+	reg_dttm datetime default CURRENT_TIMESTAMP not null,
+	end_dttm datetime null
 )
 comment '정책' engine=InnoDB
 ;
