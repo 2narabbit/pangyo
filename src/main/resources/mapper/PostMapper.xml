@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.adinstar.pangyo.mapper.PostMapper">
+    <resultMap id="PostMap" type="Post">
+        <result property="id" column="id"/>
+        <result property="startId" column="start_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="body" column="body"/>
+        <result property="img" column="img"/>
+        <result property="viewCount" column="view_count"/>
+        <result property="likeCount" column="like_count"/>
+        <result property="commentCount" column="comment_count"/>
+        <result property="status" column="status"/>
+        <association property="dateTime" javaType="PangyoLocalDataTime">
+            <result property="reg" column="reg_dttm"/>
+            <result property="up" column="up_dttm"/>
+        </association>
+    </resultMap>
+
+    <sql id="postColumn">
+        id, star_id, user_id, body, img, view_count, like_count, comment_count, status, reg_dttm, up_dttm
+    </sql>
+
+    <select id="selectList" parameterType="Map" resultMap="PostMap">
+        SELECT
+        <include refid="postColumn"/>
+        FROM POST
+        WHERE status = 'SERVICE'
+        ORDER BY reg_dttm DESC
+        LIMIT #{startOffset}, #{endOffset}
+    </select>
+
+    <select id="selectById" parameterType="Integer" resultMap="PostMap">
+        SELECT
+        <include refid="postColumn"/>
+        FROM POST
+        WHERE status = 'SERVICE' AND id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="Post" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO POST (star_id, user_id, body, img, view_count, like_count, comment_count, status, reg_dttm, up_dttm)
+        VALUE (#{starId}, #{userId}, #{body}, #{img}, #{viewCount}, #{likeCount}, #{commentCount}, 'SERVICE', NOW(), NOW());
+    </insert>
+
+    <update id="update" parameterType="Post">
+        UPDATE POST
+        SET body = #{body}, img = #{img}, up_dttm = NOW()
+        WHERE id = #{id}
+    </update>
+</mapper>
