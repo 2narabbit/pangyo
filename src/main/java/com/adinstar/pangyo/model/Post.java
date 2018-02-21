@@ -7,7 +7,7 @@ import lombok.Data;
 public class Post {
     private long id;
     private long starId;
-    private long userId;
+    private User user;
     private String body;
     private String img;
     private long viewCount;

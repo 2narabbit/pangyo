@@ -7,7 +7,26 @@
     <h2><a href="/post/edit">등록하러 가기</a></h2>
 
     <#list list as post>
-        <div style="border: 1px solid; padding: 10px;">
+        <div style="border: 1px solid; padding: 10px; width:400px">
+            <div>
+                <img src="${post.user.profileImg!"http://t1.daumcdn.net/profile/TfdXX_AUCLw0"}"  style="width: 50px; height: 50px">
+                <strong>${post.user.name!"없는유저"}</strong>
+                <span>${post.dateTime.reg!}</span>
+            </div>
+
+            <p>${post.body!}</p>
+            <#if post.img?has_content>
+                <img src="${post.img!}" style="width: 200px; height: 200px">
+            </#if>
+
+            <div>
+                <span>조회 ${post.viewCount!}</span>
+                <span>좋아요 ${post.likeCount!}</span>
+                <span>댓글 ${post.commentCount!}</span>
+                <a>[더 보기]</a>
+            </div>
+
+            <#--
             <label for="id">id:</label>
             <input type="text" name="id" value="<#if post??>${post.id}</#if>" />
             <label for="starId">starId:</label>
@@ -30,6 +49,7 @@
             <input type="text" name="regDttm" value="<#if post?? && post.dateTime??>${post.dateTime.reg}</#if>" />
             <label for="upDttm">upDttm:</label>
             <input type="text" name="upDttm" value="<#if post?? && post.dateTime ??>${post.dateTime.up}</#if>" />
+            -->
         </div>
      </#list>
 </body>

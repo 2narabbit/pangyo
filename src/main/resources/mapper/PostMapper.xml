@@ -6,7 +6,9 @@
     <resultMap id="PostMap" type="Post">
         <result property="id" column="id"/>
         <result property="starId" column="star_id"/>
-        <result property="userId" column="user_id"/>
+        <result property="user.id" column="user_id"/>
+        <result property="user.name" column="name"/>
+        <result property="user.profileImg" column="profile_img"/>
         <result property="body" column="body"/>
         <result property="img" column="img"/>
         <result property="viewCount" column="view_count"/>
@@ -20,28 +22,40 @@
     </resultMap>
 
     <sql id="postColumn">
-        id, star_id, user_id, body, img, view_count, like_count, comment_count, status, reg_dttm, up_dttm
+        p.id, p.star_id, p.user_id, p.body, p.img, p.view_count, p.like_count, p.comment_count, p.status, p.reg_dttm, p.up_dttm, u.name, u.profile_img
+    </sql>
+
+    <sql id="postTable">
+        POST p
+        LEFT JOIN USER u ON p.user_id = u.id
     </sql>
 
     <select id="selectList" parameterType="Map" resultMap="PostMap">
         SELECT
-        <include refid="postColumn"/>
-        FROM POST
-        WHERE status = 'SERVICE'
-        ORDER BY reg_dttm DESC
-        LIMIT #{startOffset}, #{endOffset}
+          <include refid="postColumn"/>
+        FROM
+          <include refid="postTable"/>
+        WHERE
+          p.status = 'SERVICE'
+        ORDER BY
+          p.reg_dttm DESC
+        LIMIT
+          #{startOffset}, #{endOffset}
     </select>
 
     <select id="selectById" parameterType="Integer" resultMap="PostMap">
         SELECT
-        <include refid="postColumn"/>
-        FROM POST
-        WHERE status = 'SERVICE' AND id = #{id}
+          <include refid="postColumn"/>
+        FROM
+          <include refid="postTable"/>
+        WHERE
+          p.status = 'SERVICE'
+          AND p.id = #{id}
     </select>
 
     <insert id="insert" parameterType="Post" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO POST (star_id, user_id, body, img, view_count, like_count, comment_count, status, reg_dttm, up_dttm)
-        VALUE (#{starId}, #{userId}, #{body}, #{img}, #{viewCount}, #{likeCount}, #{commentCount}, 'SERVICE', NOW(), NOW());
+        VALUE (#{starId}, #{user.id}, #{body}, #{img}, #{viewCount}, #{likeCount}, #{commentCount}, 'SERVICE', NOW(), NOW());
     </insert>
 
     <update id="update" parameterType="Post">

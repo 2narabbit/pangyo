@@ -27,11 +27,11 @@
 </#if>
     <div>
         <label for="starId">starId:</label>
-        <input type="text" name="starId" value="<#if post??>${post.starId}</#if>"/>
+        <input type="text" name="starId" value="<#if post??>${post.starId!}</#if>"/>
     </div>
     <div>
         <label for="userId">userId:</label>
-        <input type="text" name="userId" value="<#if post??>${post.userId}</#if>"/>
+        <input type="text" name="user.id" value="<#if post??>${post.user.id!}</#if>"/>
     </div>
     <div>
         <label for="body">body:</label>
