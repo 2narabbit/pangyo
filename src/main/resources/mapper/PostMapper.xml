@@ -63,4 +63,10 @@
         SET body = #{body}, img = #{img}, up_dttm = NOW()
         WHERE id = #{id}
     </update>
+
+    <update id="delete" parameterType="Integer">
+        UPDATE POST
+        SET status = 'DELETED', up_dttm = NOW()
+        WHERE id = #{id}
+    </update>
 </mapper>
