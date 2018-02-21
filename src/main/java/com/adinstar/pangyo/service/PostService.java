@@ -31,13 +31,13 @@ public class PostService {
         return post.getId();
     }
 
-    public void modify(Post post) {
+    public int modify(Post post) {
         // TODO : user 권한 체크
-        postMapper.update(post);
+        return postMapper.update(post);
     }
 
-    public void delete(Integer postId) {
+    public int delete(Integer postId) {
         // TODO : user 권한 체크
-        postMapper.delete(postId);
+        return postMapper.delete(postId);
     }
 }
