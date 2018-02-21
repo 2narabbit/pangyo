@@ -23,7 +23,7 @@
                 <span>조회 ${post.viewCount!}</span>
                 <span>좋아요 ${post.likeCount!}</span>
                 <span>댓글 ${post.commentCount!}</span>
-                <a>[더 보기]</a>
+                <a href="/post/${post.id!}">[더 보기]</a>
             </div>
 
             <#--
