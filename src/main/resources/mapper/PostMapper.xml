@@ -43,6 +43,20 @@
           #{startOffset}, #{endOffset}
     </select>
 
+    <select id="selectListByStarId" parameterType="Map" resultMap="PostMap">
+        SELECT
+          <include refid="postColumn"/>
+        FROM
+          <include refid="postTable"/>
+        WHERE
+          p.status = 'SERVICE'
+          AND p.star_id = #{starId}
+        ORDER BY
+          p.reg_dttm DESC
+        LIMIT
+          #{startOffset}, #{endOffset}
+    </select>
+
     <select id="selectById" parameterType="Integer" resultMap="PostMap">
         SELECT
           <include refid="postColumn"/>
