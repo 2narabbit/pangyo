@@ -37,10 +37,11 @@
           <include refid="postTable"/>
         WHERE
           p.status = 'SERVICE'
+          AND p.id &lt; #{lastId}
         ORDER BY
           p.reg_dttm DESC
         LIMIT
-          #{startOffset}, #{endOffset}
+          #{size}
     </select>
 
     <select id="selectListByStarId" parameterType="Map" resultMap="PostMap">
@@ -51,10 +52,11 @@
         WHERE
           p.status = 'SERVICE'
           AND p.star_id = #{starId}
+          AND p.id &lt; #{lastId}
         ORDER BY
           p.reg_dttm DESC
         LIMIT
-          #{startOffset}, #{endOffset}
+          #{size}
     </select>
 
     <select id="selectById" parameterType="Integer" resultMap="PostMap">

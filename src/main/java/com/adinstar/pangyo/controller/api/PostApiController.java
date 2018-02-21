@@ -1,7 +1,6 @@
 package com.adinstar.pangyo.controller.api;
 
 
-import com.adinstar.pangyo.helper.PageHelper;
 import com.adinstar.pangyo.model.Post;
 import com.adinstar.pangyo.service.PostService;
 import com.google.common.collect.ImmutableMap;
@@ -25,34 +24,32 @@ public class PostApiController {
 
     @ApiOperation("getPostListByStarId")
     @ApiImplicitParams({
-            @ApiImplicitParam(name="starId", value="star id", paramType="query", dataType="Integer"),
-            @ApiImplicitParam(name="page", value="page number", paramType="query", dataType="Integer"),
-            @ApiImplicitParam(name="size", value="page size", paramType="query", dataType="Integer")
+            @ApiImplicitParam(name="starId", value="star id", paramType="query", dataType="Long"),
+            @ApiImplicitParam(name="lastId", value="last post id", paramType="query", dataType="Long")
     })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = List.class)
     })
     @RequestMapping(method = RequestMethod.GET)
-    public List<Post> getListByStarId(@RequestParam(value = "starId", required = false) Integer starId,
-                                          @RequestParam(value = "page", defaultValue = "1") Integer page,
-                                          @RequestParam(value = "size", defaultValue = "20") Integer size) {
+    public List<Post> getListByStarId(@RequestParam(value = "starId", required = false) Long starId,
+                                      @RequestParam(value = "lastId", required = false) Long lastId) {
         if (starId == null) {
-            return postService.findAll(new PageHelper(page, size));
+            return postService.findAll(lastId);
         } else {
-            return postService.findAllByStarId(starId, new PageHelper(page, size));
+            return postService.findAllByStarId(starId, lastId);
         }
     }
 
     @ApiOperation("getPost")
     @ApiImplicitParams({
-            @ApiImplicitParam(name="postId", value="post id", paramType="path", required=true, dataType="Integer")
+            @ApiImplicitParam(name="postId", value="post id", paramType="path", required=true, dataType="long")
     })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = Post.class),
             @ApiResponse(code = 404, message = "Not Found")
     })
     @RequestMapping(value = "/{postId}", method = RequestMethod.GET)
-    public Post get(@PathVariable("postId") Integer postId) {
+    public Post get(@PathVariable("postId") long postId) {
         return postService.findById(postId);
     }
 

@@ -1,6 +1,5 @@
 package com.adinstar.pangyo.service;
 
-import com.adinstar.pangyo.helper.PageHelper;
 import com.adinstar.pangyo.mapper.PostMapper;
 import com.adinstar.pangyo.model.Post;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +13,21 @@ public class PostService {
     @Autowired
     private PostMapper postMapper;
 
-    public List<Post> findAll(PageHelper pageHelper) {
-        return postMapper.selectList(pageHelper.getStartOffset(), pageHelper.getEndOffset());
+    private static final int LIST_SIZE = 20;
+
+    private long getLastId(Long lastId) {
+        return lastId == null ? Long.MAX_VALUE : lastId;
     }
 
-    public List<Post> findAllByStarId(int starId, PageHelper pageHelper) {
-        return postMapper.selectListByStarId(starId, pageHelper.getStartOffset(), pageHelper.getEndOffset());
+    public List<Post> findAll(Long lastId) {
+        return postMapper.selectList(getLastId(lastId), LIST_SIZE);
     }
 
-    public Post findById(int id) {
+    public List<Post> findAllByStarId(long starId, Long lastId) {
+        return postMapper.selectListByStarId(starId, getLastId(lastId), LIST_SIZE);
+    }
+
+    public Post findById(long id) {
         return postMapper.selectById(id);
     }
 
