@@ -59,7 +59,7 @@
           #{size}
     </select>
 
-    <select id="selectById" parameterType="Integer" resultMap="PostMap">
+    <select id="selectById" parameterType="long" resultMap="PostMap">
         SELECT
           <include refid="postColumn"/>
         FROM
@@ -80,7 +80,7 @@
         WHERE id = #{id}
     </update>
 
-    <update id="delete" parameterType="Integer">
+    <update id="delete" parameterType="long">
         UPDATE POST
         SET status = 'DELETED', up_dttm = NOW()
         WHERE id = #{id}
