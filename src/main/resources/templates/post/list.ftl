@@ -63,10 +63,9 @@
 
                 var template = _.template($("#post-detail-template").html());
                 data.forEach(function(e, i){
-                    if (e.user == null) {
-                        user.name = '무명';
-                        user.profileImg = 'http://t1.daumcdn.net/profile/TfdXX_AUCLw0';
-                    }
+                    if (e.user.name == null)          e.user.name = '무명';
+                    if (e.user.profileImg == null)    e.user.profileImg = 'http://t1.daumcdn.net/profile/TfdXX_AUCLw0';
+
                     $('#listSection').append(template(e));
                 });
             });
