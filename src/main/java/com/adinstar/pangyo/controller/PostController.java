@@ -36,13 +36,11 @@ public class PostController {
         return "post/template";
     }
 
-    // xxx: 이 녀석들이 여기 있는게 좋을까? api로 호출하는게...
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String save(@ModelAttribute("Post") Post post) {
         return "redirect:/post/edit?id=" + postService.save(post);
     }
 
-    // xxx: 이 녀석들이 여기 있는게 좋을까? api로 호출하는게...
     @RequestMapping(value = "/change", method = RequestMethod.PUT)
     public String modify(@ModelAttribute("Post") Post post) {
         postService.modify(post);
