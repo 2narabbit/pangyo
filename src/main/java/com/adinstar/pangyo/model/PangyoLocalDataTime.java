@@ -11,6 +11,7 @@ public class PangyoLocalDataTime {
     private LocalDateTime reg;
     private LocalDateTime up;
 
+    // FIXME: 이거 안되는데,,,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateFormat.DEFAULT_DATE_FORMAT)
     public LocalDateTime getReg() {
         return reg;
