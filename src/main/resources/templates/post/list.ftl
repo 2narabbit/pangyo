@@ -36,41 +36,50 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            appendPostList();
+            postList.appendItem();
         });
 
-        function getPostList() {
-            var data = {};
-            return $.ajax({
-                url : '/api/post',
-                data : data,
-                type : 'GET',
-                success: function(result) {
-                    return result;
-                },
-                error: function(res) {
-                    console.log(res);
-                    return null;
-                }
-            });
-        }
+        var postList = {
+            lastId: null,
 
-        function appendPostList() {
-            getPostList().then(function(data){
-                if(data == null) {
-                    return;
-                }
+            appendItem: function() {
+                postList.getData().then(function(data){
+                    if(data.length == 0) {
+                        return;
+                    }
 
-                var template = _.template($("#post-detail-template").html());
-                data.forEach(function(e, i){
-                    if (e.user.name == null)          e.user.name = '무명';
-                    if (e.user.profileImg == null)    e.user.profileImg = 'http://t1.daumcdn.net/profile/TfdXX_AUCLw0';
+                    var template = _.template($("#post-detail-template").html());
+                    data.forEach(function(e, i){
+                        if (e.user.name == null)          e.user.name = '무명';
+                        if (e.user.profileImg == null)    e.user.profileImg = 'http://t1.daumcdn.net/profile/TfdXX_AUCLw0';
 
-                    $('#listSection').append(template(e));
+                        $('#listSection').append(template(e));
+                    });
+
+                    postList.lastId = data[data.length-1].id;
                 });
-            });
-        }
+            },
 
+            getData: function() {
+                var data = {};
+                if (postList.lastId != null) {
+                    data.lastId = postList.lastId;
+                }
+
+                return $.ajax({
+                    url : '/api/post',
+                    data : data,
+                    type : 'GET',
+                    success: function(result) {
+                        return result;
+                    },
+                    error: function(res) {
+                        console.log(res);
+                        return {};
+                    }
+                });
+            }
+        };
 
         // TODO : 더보기 구현
     </script>
