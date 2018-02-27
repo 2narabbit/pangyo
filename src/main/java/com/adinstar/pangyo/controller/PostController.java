@@ -27,23 +27,11 @@ public class PostController {
         return "post/detail";
     }
 
-    @RequestMapping(value = "/edit", method = RequestMethod.GET)
-    public String getTemplate(@RequestParam(value = "id", required = false) Integer id, Model model) {
-        // TODO: 기획 나오면 add/edit method 분리 구현
+    @RequestMapping(value = "/write", method = RequestMethod.GET)
+    public String getWriteForm(@RequestParam(value = "id", required = false) Integer id, Model model) {
         if (id != null) {
             model.addAttribute("post", postService.findById(id));
         }
-        return "post/template";
-    }
-
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String save(@ModelAttribute("Post") Post post) {
-        return "redirect:/post/edit?id=" + postService.save(post);
-    }
-
-    @RequestMapping(value = "/change", method = RequestMethod.PUT)
-    public String modify(@ModelAttribute("Post") Post post) {
-        postService.modify(post);
-        return "redirect:/post/edit?id=" + post.getId();
+        return "post/form";
     }
 }

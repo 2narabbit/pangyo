@@ -4,7 +4,7 @@
 </head>
 <body>
 <#if post??>
-<form action="/post/change" method="PUT">
+<form action="/post/change" method="POST">
  <div>
      <label for="id">id:</label>
      <input type="text" name="id" value="<#if post??>${post.id}</#if>" />
