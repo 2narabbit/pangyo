@@ -31,18 +31,19 @@ public class PostService {
         return postMapper.selectById(id);
     }
 
-    public long save(Post post) {
+    public long add(Post post) {
         postMapper.insert(post);
         return post.getId();
     }
 
-    public int modify(Post post) {
+    public long modify(Post post) {
         // TODO : user 권한 체크
-        return postMapper.update(post);
+        postMapper.update(post);
+        return post.getId();
     }
 
-    public int delete(Integer postId) {
+    public void remove(Integer postId) {
         // TODO : user 권한 체크
-        return postMapper.delete(postId);
+        postMapper.delete(postId);
     }
 }
