@@ -17,6 +17,7 @@ public class PostController {
 
     @RequestMapping(value = {"", "/", "top", "home"}, method = RequestMethod.GET)
     public String getRecentList(Model model) {
+        model.addAttribute("postList", postService.findAll(null));
         return "post/list";
     }
 
