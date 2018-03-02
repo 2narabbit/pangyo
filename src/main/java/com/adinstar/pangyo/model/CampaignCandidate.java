@@ -7,8 +7,8 @@ import lombok.Data;
 public class CampaignCandidate {
     private long id;
     private long executeRuleId;
-    private long starId;
-    private long userId;
+    private Star star;
+    private User user;
     private String title;
     private String body;
     private String randingUrl;
