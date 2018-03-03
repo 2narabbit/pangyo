@@ -57,8 +57,8 @@ public class PostService {
         return post.getId();
     }
 
-    public void remove(Integer postId) {
+    public void remove(long id) {
         // TODO : user 권한 체크
-        postMapper.delete(postId);
+        postMapper.delete(id);
     }
 }
