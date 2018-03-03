@@ -8,8 +8,9 @@
 <body>
     <img src="${star.mainImg!}" style="width: 400px; height: 200px">
     <div>
-        <p>${star.name!}</p> <!-- TODO : 기획서엔 직업 노출되는데, DB에 직업없다 -->
-        <span>${star.fanCount!}fans +초대(TODO)</span>
+        <h2>${star.name!}</h2> <!-- TODO : 기획서엔 직업 노출되는데, DB에 직업없다 -->
+        <span style="margin-right:10px">${star.fanCount!}fans</span>
+        <span style="margin-right:50px">+초대(TODO)</span>
         <a href="/fanClub/${star.id!}/write">글쓰기</a>
     </div>
 
