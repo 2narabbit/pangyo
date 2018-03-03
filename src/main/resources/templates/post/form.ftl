@@ -1,3 +1,6 @@
+<#import "/macro/common.ftl" as common />
+
+<!DOCTYPE html>
 <html>
 <head>
     <title>Post/Edit</title>
