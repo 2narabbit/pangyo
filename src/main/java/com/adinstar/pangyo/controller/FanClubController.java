@@ -34,10 +34,13 @@ public class FanClubController {
     }
 
     @RequestMapping(value = "/write", method = RequestMethod.GET)
-    public String getWriteForm(@RequestParam(value = "id", required = false) Integer id, Model model) {
-        if (id != null) {
-            model.addAttribute("post", postService.findById(id));
+    public String getWriteForm(@PathVariable("starId") long starId,
+                               @RequestParam(value = "postId", required = false) Long postId,
+                               Model model) {
+        if (postId != null) {
+            model.addAttribute("post", postService.findById(postId));
         }
-        return "post/form";
+        model.addAttribute("star", starService.findById(starId));
+        return "fanClub/post/form";
     }
 }

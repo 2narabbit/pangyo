@@ -70,8 +70,8 @@
     </select>
 
     <insert id="insert" parameterType="Post" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO POST (star_id, user_id, body, img, view_count, like_count, comment_count, status, reg_dttm, up_dttm)
-        VALUE (#{starId}, #{user.id}, #{body}, #{img}, #{viewCount}, #{likeCount}, #{commentCount}, 'SERVICE', NOW(), NOW());
+        INSERT INTO POST (star_id, user_id, body, img, status, reg_dttm, up_dttm)
+        VALUE (#{starId}, #{user.id}, #{body}, #{img}, 'SERVICE', NOW(), NOW());
     </insert>
 
     <update id="update" parameterType="Post">
