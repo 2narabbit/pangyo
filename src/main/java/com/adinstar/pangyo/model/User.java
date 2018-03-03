@@ -13,4 +13,20 @@ public class User {
     private String recommandCode;
     private UserStatus status;
     private PangyoLocalDataTime dateTime;
+
+    public String getName() {
+        if (name == null) {
+            return "무명";
+        } else {
+            return name;
+        }
+    }
+
+    public String getProfileImg() {
+        if (profileImg == null) {
+            return "http://t1.daumcdn.net/profile/TfdXX_AUCLw0";
+        } else {
+            return profileImg;
+        }
+    }
 }

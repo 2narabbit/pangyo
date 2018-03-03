@@ -12,8 +12,8 @@
         <#list response.list as post>
             <div style="border: 1px solid; padding: 10px; width:400px">
                 <div>
-                    <img src="${post.user.profileImg!"http://t1.daumcdn.net/profile/TfdXX_AUCLw0"}"  style="width: 50px; height: 50px">
-                    <strong>${post.user.name!"없는유저"}</strong>
+                    <img src="${post.user.profileImg!}"  style="width: 50px; height: 50px">
+                    <strong>${post.user.name!}</strong>
                     <span>${post.dateTime.reg!}</span>
                 </div>
 
@@ -82,9 +82,6 @@
 
                     var template = _.template($("#post-detail-template").html());
                     data.list.forEach(function(e, i){
-                        if (e.user.name == null)          e.user.name = '무명';
-                        if (e.user.profileImg == null)    e.user.profileImg = 'http://t1.daumcdn.net/profile/TfdXX_AUCLw0';
-
                         $('#listSection').append(template(e));
                     });
 
