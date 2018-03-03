@@ -57,6 +57,10 @@ public class PostService {
         return post.getId();
     }
 
+    public void increaseViewCount(long postId) {
+        postMapper.increaseViewCount(postId);
+    }
+
     public void remove(long id) {
         // TODO : user 권한 체크
         postMapper.delete(id);

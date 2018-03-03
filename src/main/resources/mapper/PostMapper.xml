@@ -80,6 +80,12 @@
         WHERE id = #{id}
     </update>
 
+    <update id="increaseViewCount" parameterType="long">
+        UPDATE POST
+        SET view_count = view_count + 1
+        WHERE id = #{id}
+    </update>
+
     <update id="delete" parameterType="long">
         UPDATE POST
         SET status = 'DELETED', up_dttm = NOW()

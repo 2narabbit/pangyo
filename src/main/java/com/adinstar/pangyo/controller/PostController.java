@@ -23,6 +23,7 @@ public class PostController {
 
     @RequestMapping(value = "/{postId}", method = RequestMethod.GET)
     public String get(Model model, @PathVariable("postId") Integer postId) {
+        postService.increaseViewCount(postId);
         model.addAttribute("post", postService.findById(postId));
         return "post/detail";
     }
