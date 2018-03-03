@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.adinstar.pangyo.mapper.StarMapper">
+    <resultMap id="StarMap" type="Star">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="naverOs" column="naver_os"/>
+        <result property="profileImg" column="profile_img"/>
+        <result property="mainImg" column="main_img"/>
+        <result property="display" column="display"/>
+        <result property="fanCount" column="fan_count"/>
+        <result property="message" column="message"/>
+        <association property="dateTime" javaType="PangyoLocalDataTime">
+            <result property="reg" column="reg_dttm"/>
+            <result property="up" column="up_dttm"/>
+        </association>
+    </resultMap>
+
+    <sql id="starColumn">
+        s.id, s.name, s.naver_os, s.profile_img, s.main_img, s.display, s.fan_count, s.message, s.reg_dttm, s.up_dttm
+    </sql>
+
+    <sql id="starTable">
+        STAR s
+    </sql>
+
+    <select id="selectById" parameterType="long" resultMap="StarMap">
+        SELECT
+          <include refid="starColumn"/>
+        FROM
+          <include refid="starTable"/>
+        WHERE
+          s.id = #{id}
+    </select>
+</mapper>

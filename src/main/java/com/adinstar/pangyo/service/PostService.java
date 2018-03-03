@@ -39,7 +39,7 @@ public class PostService {
     }
 
     public FeedResponse<Post> findAllByStarId(long starId, Long lastId) {
-        return getResponse(postMapper.selectListByStarId(starId, getLastId(lastId), LIST_SIZE));
+        return getResponse(postMapper.selectListByStarId(starId, getLastId(lastId), LIST_SIZE+1));
     }
 
     public Post findById(long id) {

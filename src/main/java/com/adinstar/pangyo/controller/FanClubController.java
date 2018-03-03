@@ -1,31 +1,36 @@
 package com.adinstar.pangyo.controller;
 
 
-import com.adinstar.pangyo.model.Post;
 import com.adinstar.pangyo.service.PostService;
+import com.adinstar.pangyo.service.StarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/post")
-public class PostController {
+@RequestMapping("/fanClub/{starId}")
+public class FanClubController {
 
     @Autowired
     private PostService postService;
 
+    @Autowired
+    private StarService starService;
+
     @RequestMapping(value = {"", "/", "top", "home"}, method = RequestMethod.GET)
-    public String getRecentList(Model model) {
-        model.addAttribute("response", postService.findAll(null));
-        return "post/list";
+    public String getRecentList(@PathVariable("starId") long starId, Model model) {
+        model.addAttribute("response", postService.findAllByStarId(starId, null));
+        model.addAttribute("star", starService.findById(starId));
+        return "fanClub/list";
     }
 
-    @RequestMapping(value = "/{postId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/post/{postId}", method = RequestMethod.GET)
     public String get(Model model, @PathVariable("postId") Integer postId) {
         postService.increaseViewCount(postId);
+
         model.addAttribute("post", postService.findById(postId));
-        return "post/detail";
+        return "fanClub/post/detail";
     }
 
     @RequestMapping(value = "/write", method = RequestMethod.GET)

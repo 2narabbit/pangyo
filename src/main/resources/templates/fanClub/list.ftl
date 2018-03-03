@@ -3,10 +3,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Posts</title>
+    <title>FanClub</title>
 </head>
 <body>
-    <h2><a href="/post/edit">등록하러 가기</a></h2>
+    <img src="${star.mainImg!}" style="width: 400px; height: 200px">
+    <div>
+        <p>${star.name!}</p> <!-- TODO : 기획서엔 직업 노출되는데, DB에 직업없다 -->
+        <span>${star.fanCount!}fans +초대(TODO)</span>
+        <a href="/fanClub/${star.id!}/write">글쓰기</a>
+    </div>
 
     <div id="listSection">
         <#list response.list as post>
@@ -26,7 +31,7 @@
                     <span>조회 ${post.viewCount!}</span>
                     <span>좋아요 ${post.likeCount!}</span>
                     <span>댓글 ${post.commentCount!}</span>
-                    <a href="/post/${post.id!}">[더 보기]</a>
+                    <a href="/fanClub/${star.id!}/post/${post.id!}">[더 보기]</a>
                 </div>
             </div>
         </#list>
@@ -51,7 +56,7 @@
                 <span>조회 <%= viewCount %></span>
                 <span>좋아요 <%= likeCount %></span>
                 <span>댓글 <%= commentCount %></span>
-                <a href="/post/<%= id %>">[더 보기]</a>
+                <a href="/fanClub/${star.id!}/post/<%= id %>">[더 보기]</a>
             </div>
         </div>
     </script>
