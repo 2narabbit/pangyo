@@ -1,6 +1,7 @@
 package com.adinstar.pangyo.controller.api;
 
 
+import com.adinstar.pangyo.model.FeedResponse;
 import com.adinstar.pangyo.model.Post;
 import com.adinstar.pangyo.service.PostService;
 import com.google.common.collect.ImmutableMap;
@@ -31,8 +32,8 @@ public class PostApiController {
             @ApiResponse(code = 200, message = "OK", response = List.class)
     })
     @RequestMapping(method = RequestMethod.GET)
-    public List<Post> getListByStarId(@RequestParam(value = "starId", required = false) Long starId,
-                                      @RequestParam(value = "lastId", required = false) Long lastId) {
+    public FeedResponse<Post> getListByStarId(@RequestParam(value = "starId", required = false) Long starId,
+                                        @RequestParam(value = "lastId", required = false) Long lastId) {
         if (starId == null) {
             return postService.findAll(lastId);
         } else {
