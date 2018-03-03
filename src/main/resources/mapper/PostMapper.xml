@@ -39,7 +39,7 @@
           p.status = 'SERVICE'
           AND p.id &lt; #{lastId}
         ORDER BY
-          p.reg_dttm DESC
+          p.id DESC
         LIMIT
           #{size}
     </select>
@@ -54,7 +54,7 @@
           AND p.star_id = #{starId}
           AND p.id &lt; #{lastId}
         ORDER BY
-          p.reg_dttm DESC
+          p.id DESC
         LIMIT
           #{size}
     </select>
