@@ -1,5 +1,6 @@
 <#import "/macro/common.ftl" as common />
 
+<!DOCTYPE html>
 <html>
 <head>
     <title>Posts</title>
@@ -8,7 +9,7 @@
     <h2><a href="/post/edit">등록하러 가기</a></h2>
 
     <div id="listSection">
-        <#list postList as post>
+        <#list response.list as post>
             <div style="border: 1px solid; padding: 10px; width:400px">
                 <div>
                     <img src="${post.user.profileImg!"http://t1.daumcdn.net/profile/TfdXX_AUCLw0"}"  style="width: 50px; height: 50px">
@@ -30,6 +31,8 @@
             </div>
         </#list>
     </div>
+
+    <div id="endOfListSection"></div>
 
     <script type="text/template" id="post-detail-template">
         <div id="postDetailSection" style="border: 1px solid; padding: 10px; width:400px">
@@ -54,29 +57,40 @@
     </script>
 
     <@common.importJS />
+    <script src="/js/jquery.visible.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function() {
+            $(window).scroll(function(e) {
+                if ($("#endOfListSection").visible(true) && postList.hasMore && !postList.isLoading) {
+                    postList.appendItem();
+                }
+            });
         });
 
         var postList = {
-            lastId: null,
+            lastId: ${response.lastId!},
+            hasMore: ${response.hasMore!?string},
+            isLoading: false,
 
             appendItem: function() {
+                postList.isLoading = true;
                 postList.getData().then(function(data){
-                    if(data.length == 0) {
+                    if(data.list == null || data.list.length == 0) {
                         return;
                     }
 
                     var template = _.template($("#post-detail-template").html());
-                    data.forEach(function(e, i){
+                    data.list.forEach(function(e, i){
                         if (e.user.name == null)          e.user.name = '무명';
                         if (e.user.profileImg == null)    e.user.profileImg = 'http://t1.daumcdn.net/profile/TfdXX_AUCLw0';
 
                         $('#listSection').append(template(e));
                     });
 
-                    postList.lastId = data[data.length-1].id;
+                    postList.lastId = data.list[data.list.length-1].id;
+                    postList.hasMore = data.hasMore;
+                    postList.isLoading = false;
                 });
             },
 
@@ -100,8 +114,6 @@
                 });
             }
         };
-
-        // TODO : 더보기 구현
     </script>
 </body>
 </html>
