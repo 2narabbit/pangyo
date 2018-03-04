@@ -15,16 +15,16 @@
     </table>
 
     <div>
-        <textarea id="body" style="width:400px" rows="10" placeholder="${star.name!}님과 관련한 소식을 알려주세요."></textarea>
+        <textarea id="body" style="width:400px" rows="10" placeholder="${star.name!}님과 관련한 소식을 알려주세요."><#if post??>${post.body!}</#if></textarea>
     </div>
 
     <div>
-        TODO : 이미지 업로드
+        TODO : 이미지 업로드 (지금 수정하면 기존 이미지 날아감,,)
     </div>
 
     <@common.importJS />
 
-<script type="text/javascript">
+    <script type="text/javascript">
         $(document).ready(function() {
             $('#backButton').click(goToBack);
             $('#submitButton').click(submit);
@@ -37,9 +37,17 @@
         }
 
         function submit() {
-            var type = 'POST';
+            <#if post??>
+                var type = 'PUT';
+            <#else>
+                var type = 'POST';
+            </#if>
             var data = {
-                starId: ${star.id!},
+                <#if post??>
+                    id: ${post.id!},
+                <#else>
+                    starId: ${star.id!},
+                </#if>
                 user: {id:2},  // TODO : 실 USER 주입
                 body: $('#body').val()
             };
@@ -59,8 +67,6 @@
                 }
             });
         }
-
-        <!-- TODO : 수정 -->
     </script>
 </body>
 </html>

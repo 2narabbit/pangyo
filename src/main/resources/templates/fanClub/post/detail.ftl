@@ -15,7 +15,7 @@
         </div>
 
         <div>
-            <button id="modifyButton">수정</buttoni>
+            <button id="modifyButton">수정</button>
             <button id="removeButton">삭제</button>
             <button>신고하기(TODO)</button>
         </div>
@@ -38,8 +38,13 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
+            $('#modifyButton').click(goToModify);
             $('#removeButton').click(remove);
         });
+
+        function goToModify() {
+            location.replace('/fanClub/${starId!}/write?postId='+${post.id!});
+        }
 
         function remove() {
             if (!confirm('글을 정말 삭제하시겠습니까?')) {
@@ -60,8 +65,6 @@
                 }
             });
         }
-
-        <!-- TODO : 수정 -->
     </script>
 </body>
 </html>
