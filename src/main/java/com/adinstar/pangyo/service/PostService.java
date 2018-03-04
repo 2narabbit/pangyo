@@ -6,6 +6,7 @@ import com.adinstar.pangyo.model.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,14 +23,15 @@ public class PostService {
 
     private FeedResponse<Post> getResponse(List<Post> postList) {
         FeedResponse<Post> feedResponse = new FeedResponse();
-        if (postList.size() > LIST_SIZE) {
-            postList = postList.subList(0, postList.size()-1);
-            feedResponse.setHasMore(true);
-        } else {
-            feedResponse.setHasMore(false);
+        if (postList.size() > 0) {
+            if (postList.size() > LIST_SIZE) {
+                postList = postList.subList(0, postList.size() - 1);
+                feedResponse.setHasMore(true);
+            }
+            feedResponse.setLastId(postList.get(postList.size()-1).getId());
         }
+
         feedResponse.setList(postList);
-        feedResponse.setLastId(postList.get(postList.size()-1).getId());
 
         return feedResponse;
     }
