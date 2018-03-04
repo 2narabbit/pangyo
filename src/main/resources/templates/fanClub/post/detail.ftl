@@ -20,7 +20,7 @@
             <button>신고하기(TODO)</button>
         </div>
 
-        <p>${post.body!}</p>
+        <p>${post.body!}</p> <!-- TODO : newline 노출 잘안되네; -->
         <#if post.img?has_content>
             <img src="${post.img!}" style="width: 200px; height: 200px">
         </#if>
@@ -55,8 +55,7 @@
                 url : '/api/post/' + ${post.id!},
                 type : 'DELETE',
                 contentType : "application/json",
-                success: function(result) {
-                    // TODO : api 성공여부 확인
+                success: function() {
                     location.replace('/fanClub/${starId!}');
                 },
                 error: function(res) {
