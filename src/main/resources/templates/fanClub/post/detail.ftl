@@ -1,3 +1,5 @@
+<#import "/macro/common.ftl" as common />
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,6 +12,12 @@
             <img src="${post.user.profileImg!}"  style="width: 50px; height: 50px">
             <strong>${post.user.name!}</strong>
             <span>${post.dateTime.reg!}</span>
+        </div>
+
+        <div>
+            <button id="modifyButton">수정</buttoni>
+            <button id="removeButton">삭제</button>
+            <button>신고하기(TODO)</button>
         </div>
 
         <p>${post.body!}</p>
@@ -25,5 +33,35 @@
     </div>
 
     <strong> TODO : 댓글모듈</strong>
+
+    <@common.importJS />
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#removeButton').click(remove);
+        });
+
+        function remove() {
+            if (!confirm('글을 정말 삭제하시겠습니까?')) {
+                return false;
+            }
+
+            $.ajax({
+                url : '/api/post/' + ${post.id!},
+                type : 'DELETE',
+                contentType : "application/json",
+                success: function(result) {
+                    // TODO : api 성공여부 확인
+                    location.replace('/fanClub/${starId!}');
+                },
+                error: function(res) {
+                    console.log(res);
+                    alert('글삭제에 실패했습니다.');
+                }
+            });
+        }
+
+        <!-- TODO : 수정 -->
+    </script>
 </body>
 </html>

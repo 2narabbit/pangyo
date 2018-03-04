@@ -89,4 +89,19 @@ public class PostApiController {
         // FIXME: API 응답 객체 있으면 좋을 것 같은데.. 어떻게 만들어야 예쁠지?
         return ImmutableMap.builder().put("id", post.getId()).build();
     }
+
+    @ApiOperation("removePost")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="postId", value="post id", paramType="path", required=true, dataType="long")
+    })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = Map.class)
+    })
+    @RequestMapping(value = "/{postId}", method = RequestMethod.DELETE)
+    public Map<Object, Object> remove(@PathVariable("postId") long postId) {
+        postService.remove(postId);
+
+        // FIXME: API 응답 객체 있으면 좋을 것 같은데.. 어떻게 만들어야 예쁠지?
+        return ImmutableMap.builder().put("id", postId).build();
+    }
 }

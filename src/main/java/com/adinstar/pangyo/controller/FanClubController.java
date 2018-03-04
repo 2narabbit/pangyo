@@ -19,24 +19,28 @@ public class FanClubController {
     private StarService starService;
 
     @RequestMapping(value = {"", "/", "top", "home"}, method = RequestMethod.GET)
-    public String getRecentList(@PathVariable("starId") long starId, Model model) {
+    public String getTopFeed(@PathVariable("starId") long starId, Model model) {
         model.addAttribute("response", postService.findAllByStarId(starId, null));
         model.addAttribute("star", starService.findById(starId));
         return "fanClub/list";
     }
 
     @RequestMapping(value = "/post/{postId}", method = RequestMethod.GET)
-    public String get(Model model, @PathVariable("postId") Integer postId) {
+    public String getPostDetail(@PathVariable("starId") long starId,
+                                @PathVariable("postId") long postId,
+                                Model model) {
         postService.increaseViewCount(postId);
 
         model.addAttribute("post", postService.findById(postId));
+        model.addAttribute("starId", starId);
         return "fanClub/post/detail";
     }
 
+    // TODO : uri 가 적절하지 못한것 같다,, (/post/write로 하는게 맞을것 같기도 하고,,)
     @RequestMapping(value = "/write", method = RequestMethod.GET)
-    public String getWriteForm(@PathVariable("starId") long starId,
-                               @RequestParam(value = "postId", required = false) Long postId,
-                               Model model) {
+    public String getPostWriteForm(@PathVariable("starId") long starId,
+                                   @RequestParam(value = "postId", required = false) Long postId,
+                                   Model model) {
         if (postId != null) {
             model.addAttribute("post", postService.findById(postId));
         }
