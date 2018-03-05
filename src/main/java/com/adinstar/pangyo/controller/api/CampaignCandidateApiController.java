@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/campaign-candidate")
@@ -24,9 +25,9 @@ public class CampaignCandidateApiController {
             @ApiImplicitParam(name = "page", value = "page number", paramType = "query", required = true, dataType = "int")
     })
     @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = Map.class)})
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.GET)
     public List<CampaignCandidate> getRecentTurnList(@RequestParam long starId, @RequestParam int page) {
-        return campaignCandidateService.getRecentTurnList(starId, page, null);
+        return campaignCandidateService.getRecentTurnList(starId, Optional.of(page), Optional.empty());
     }
 
     @ApiOperation("addCampaignCandidate")

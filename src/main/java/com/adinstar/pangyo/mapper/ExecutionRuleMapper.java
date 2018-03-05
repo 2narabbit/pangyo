@@ -6,5 +6,5 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface ExecutionRuleMapper {
-    long selectRuleId(@Param("type") ExecutionRuleType type, @Param("status") ExecutionRuleStatus status);
+//    long selectRuleId(@Param("type") ExecutionRuleType type, @Param("status") ExecutionRuleStatus status);
 }

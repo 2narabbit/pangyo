@@ -1,5 +1,6 @@
 package com.adinstar.pangyo.service;
 
+import com.adinstar.pangyo.constant.PangyoEnum;
 import com.adinstar.pangyo.constant.PangyoEnum.ExecutionRuleStatus;
 import com.adinstar.pangyo.constant.PangyoEnum.ExecutionRuleType;
 import com.adinstar.pangyo.controller.exception.BadRequestException;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CampaignCandidateService {
@@ -21,22 +23,16 @@ public class CampaignCandidateService {
     @Autowired
     private ExecutionRuleMapper executionRuleMapper;
 
+    // ASK : select 결과가 null 일 경우를 별도 처리하는게 좋을까? 존재해서는 안 될 상황으로 판단해서 지금처럼 두고 500 ERROR를 뱉을까??;
     public long getExecuteRuleId() {
-        return executionRuleMapper.selectRuleId(ExecutionRuleType.CANDIDATE, ExecutionRuleStatus.RUNNING);
+//        executionRuleMapper.selectRuleId(ExecutionRuleType.CANDIDATE, ExecutionRuleStatus.RUNNING);
+        return 1L; // ASK 이후에 처리하도록 하자!!
     }
 
-    public int getOrElse(Integer checkNumber, int defaultNumer){
-        int returnNumber =  (checkNumber == null) ? defaultNumer : checkNumber;
-        if (returnNumber < 0) {
-            throw BadRequestException.INVALID_PARAM;
-        }
-
-        return returnNumber;
-    }
-
-    public List<CampaignCandidate> getRecentTurnList(long startId, Integer page, Integer size) {
-        int offset = (getOrElse(page, 1) - 1) * getOrElse(size, LIST_SIZE);
-        return campaignCandidateMapper.selectListByStarId(startId, getExecuteRuleId(), offset, getOrElse(size, LIST_SIZE));
+    public List<CampaignCandidate> getRecentTurnList(long startId, Optional<Integer> opPage, Optional<Integer> opSize) {
+        int size = opSize.orElse(LIST_SIZE);
+        int offset = (opPage.orElse(1) - 1) * size;
+        return campaignCandidateMapper.selectListByStarId(startId, getExecuteRuleId(), offset, size);
     }
 
     public CampaignCandidate getById(long id) {
@@ -52,6 +48,9 @@ public class CampaignCandidateService {
     }
 
     public void remove(long id) {
-        campaignCandidateMapper.delete(id);
+        CampaignCandidate campaignCandidate = new CampaignCandidate();
+        campaignCandidate.setId(id);
+        campaignCandidate.setStatus(PangyoEnum.CampaignCandidateStatus.DELETED);
+        modify(campaignCandidate);
     }
 }

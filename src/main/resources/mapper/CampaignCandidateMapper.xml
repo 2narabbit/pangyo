@@ -6,6 +6,13 @@
     <resultMap id="CampaignCandidateMap" type="CampaignCandidate">
         <result property="id" column="id"/>
         <result property="executeRuleId" column="execute_rule_id"/>
+        <result property="title" column="title"/>
+        <result property="body" column="body"/>
+        <result property="randingUrl" column="randing_url"/>
+        <result property="bannerImg" column="banner_img"/>
+        <result property="pollCount" column="poll_count"/>
+        <result property="display" column="display"/>
+        <result property="status" column="status"/>
         <association property="star" javaType="Star">
             <result property="id" column="s_id"/>
             <result property="name" column="s_name"/>
@@ -33,13 +40,6 @@
                 <result property="up" column="u_up_dttm"/>
             </association>
         </association>
-        <result property="title" column="title"/>
-        <result property="body" column="body"/>
-        <result property="randingUrl" column="randing_url"/>
-        <result property="bannerImg" column="banner_img"/>
-        <result property="pollCount" column="poll_count"/>
-        <result property="display" column="display"/>
-        <result property="status" column="status"/>
         <association property="dateTime" javaType="PangyoLocalDataTime">
             <result property="reg" column="reg_dttm"/>
             <result property="up" column="up_dttm"/>
@@ -48,7 +48,7 @@
 
     <sql id="campaignCandidateColumn">
         cc.id, cc.execute_rule_id, cc.title, cc.body, cc.randing_url, cc.banner_img, cc.poll_count, cc.display, cc.status, cc.reg_dttm, cc.up_dttm,
-        s.id AS s_id, s.name AS s_name, s.naver_os AS s_naver_os, s.profile_img AS s_profile_img, s.main_img AS s_main_img, s.display AS s_display, s.fan_count AS s_fan_count, s.messgae AS s_message, s.reg_dttm AS s_reg_dttm, s.up_dttm AS s_up_dttm,
+        s.id AS s_id, s.name AS s_name, s.naver_os AS s_naver_os, s.profile_img AS s_profile_img, s.main_img AS s_main_img, s.display AS s_display, s.fan_count AS s_fan_count, s.message AS s_message, s.reg_dttm AS s_reg_dttm, s.up_dttm AS s_up_dttm,
         u.id AS u_id, u.service AS u_service, u.service_user_id AS u_service_user_id, u.name AS u_name, u.profile_img AS u_profile_img, u.recommand_code AS u_recommand_code, u.status AS u_status, u.reg_dttm AS u_reg_dttm, u.up_dttm AS u_up_dttm
     </sql>
 
@@ -58,7 +58,7 @@
         JOIN USER u ON (cc.user_id = u.id)
     </sql>
 
-    <select id="selectListByStartId" resultType="CampaignCandidateMap">
+    <select id="selectListByStarId" resultMap="CampaignCandidateMap">
         SELECT
           <include refid="campaignCandidateColumn"/>
         FROM
@@ -72,7 +72,7 @@
         LIMIT #{offset}, #{size}
     </select>
 
-    <select id="selectById" resultType="CampaignCandidateMap">
+    <select id="selectById" resultMap="CampaignCandidateMap">
         SELECT
           <include refid="campaignCandidateColumn"/>
         FROM
