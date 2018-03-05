@@ -1,6 +1,7 @@
 package com.adinstar.pangyo.controller.api;
 
 
+import com.adinstar.pangyo.model.FeedResponse;
 import com.adinstar.pangyo.model.Post;
 import com.adinstar.pangyo.service.PostService;
 import com.google.common.collect.ImmutableMap;
@@ -31,8 +32,8 @@ public class PostApiController {
             @ApiResponse(code = 200, message = "OK", response = List.class)
     })
     @RequestMapping(method = RequestMethod.GET)
-    public List<Post> getListByStarId(@RequestParam(value = "starId", required = false) Long starId,
-                                      @RequestParam(value = "lastId", required = false) Long lastId) {
+    public FeedResponse<Post> getListByStarId(@RequestParam(value = "starId", required = false) Long starId,
+                                        @RequestParam(value = "lastId", required = false) Long lastId) {
         if (starId == null) {
             return postService.findAll(lastId);
         } else {
@@ -87,5 +88,17 @@ public class PostApiController {
 
         // FIXME: API 응답 객체 있으면 좋을 것 같은데.. 어떻게 만들어야 예쁠지?
         return ImmutableMap.builder().put("id", post.getId()).build();
+    }
+
+    @ApiOperation("removePost")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="postId", value="post id", paramType="path", required=true, dataType="long")
+    })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = Map.class)
+    })
+    @RequestMapping(value = "/{postId}", method = RequestMethod.DELETE)
+    public void remove(@PathVariable("postId") long postId) {
+        postService.remove(postId);
     }
 }

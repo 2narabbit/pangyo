@@ -39,7 +39,7 @@
           p.status = 'SERVICE'
           AND p.id &lt; #{lastId}
         ORDER BY
-          p.reg_dttm DESC
+          p.id DESC
         LIMIT
           #{size}
     </select>
@@ -54,7 +54,7 @@
           AND p.star_id = #{starId}
           AND p.id &lt; #{lastId}
         ORDER BY
-          p.reg_dttm DESC
+          p.id DESC
         LIMIT
           #{size}
     </select>
@@ -70,13 +70,19 @@
     </select>
 
     <insert id="insert" parameterType="Post" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO POST (star_id, user_id, body, img, view_count, like_count, comment_count, status, reg_dttm, up_dttm)
-        VALUE (#{starId}, #{user.id}, #{body}, #{img}, #{viewCount}, #{likeCount}, #{commentCount}, 'SERVICE', NOW(), NOW());
+        INSERT INTO POST (star_id, user_id, body, img, status, reg_dttm, up_dttm)
+        VALUE (#{starId}, #{user.id}, #{body}, #{img}, 'SERVICE', NOW(), NOW());
     </insert>
 
     <update id="update" parameterType="Post">
         UPDATE POST
         SET body = #{body}, img = #{img}, up_dttm = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <update id="increaseViewCount" parameterType="long">
+        UPDATE POST
+        SET view_count = view_count + 1
         WHERE id = #{id}
     </update>
 

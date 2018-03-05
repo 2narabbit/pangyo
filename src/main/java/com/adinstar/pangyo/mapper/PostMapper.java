@@ -13,5 +13,6 @@ public interface PostMapper {
     Post selectById(long id);
     int insert(Post post);
     int update(Post post);
-    int delete(Integer postId);
+    int increaseViewCount(long id);
+    int delete(long postId);
 }
