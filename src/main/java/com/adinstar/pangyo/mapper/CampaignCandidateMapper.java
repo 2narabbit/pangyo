@@ -8,13 +8,13 @@ import java.util.List;
 
 @Mapper
 public interface CampaignCandidateMapper {
-    List<CampaignCandidate> selectListByStarId(@Param("starId") long starId, @Param("executeRuleId") long executeRuleId, @Param("offset") int offset, @Param("size") int size);
+    List<CampaignCandidate> selectListByStarIdAndExecuteRuleId(@Param("starId") long starId, @Param("executeRuleId") long executeRuleId, @Param("offset") int offset, @Param("size") int size);
 
-    CampaignCandidate selectById(long id);
+    CampaignCandidate selectByStarIdAndId(@Param("starId") long starId, @Param("id") long id);
 
     void insert(CampaignCandidate campaignCandidate);
 
     void update(CampaignCandidate campaignCandidate);
 
-    void delete(long id);
+    void updatePollCount(@Param("starId") long starId, @Param("id") long id, @Param("delta") int delta);
 }

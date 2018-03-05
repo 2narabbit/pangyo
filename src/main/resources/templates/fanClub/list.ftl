@@ -14,6 +14,29 @@
         <a href="/fanClub/${star.id!}/write">글쓰기</a>
     </div>
 
+    <div style="border: 2px solid; padding: 10px; width:400px">
+        <#if campaignCandidateList?has_content>
+            <div id="campaignCandidate">
+                <#list campaignCandidateList as campaignCandidate>
+                    <div>
+                        <strong>${campaignCandidate.title}</strong>
+                        <div>
+                            <img src="${campaignCandidate.user.profileImg!}"  style="width: 50px; height: 50px">
+                            <strong>${campaignCandidate.user.name!}</strong>
+                            <span>${campaignCandidate.dateTime.reg!}</span>
+                        </div>
+                        <span>투표수 : ${campaignCandidate.pollCount!}</span>
+                    </div>
+                </#list>
+                <a href="/fanClub/${star.id!}/campaign-candidate">[후보 더 보기]</a>
+            </div>
+        <#else>
+            <div style="padding: 10px">
+                <a href="/fanClub/${star.id!}/campaign-candidate/write">[후보 등록하러 가기]</a>
+            </div>
+        </#if>
+    </div>
+
     <div id="listSection">
         <#list response.list as post>
             <div style="border: 1px solid; padding: 10px; width:400px">

@@ -5,8 +5,9 @@
     <title>campaignCandidate</title>
 </head>
 <body>
-    <h2><a href="/campaign-candidate/write">등록하러 가기</a></h2>
+    <h2><a href="/fanClub/${starId}/campaign-candidate">등록하러 가기</a></h2>
 
+    <#if campaignCandidateList?has_content>
     <div id="listSection">
         <#list campaignCandidateList as campaignCandidate>
             <div style="border: 1px solid; padding: 10px; width:400px">
@@ -24,11 +25,13 @@
 
                 <div>
                     <span>투표 ${campaignCandidate.pollCount!}</span>
-                    <a href="/campaign-candidate/${campaignCandidate.id!}">[더 보기]</a>
                 </div>
+
+                <a href="/fanClub/${starId}/campaign-candidate/${campaignCandidate.id!}">[더 보기]</a>
             </div>
         </#list>
     </div>
+    </#if>
 
     <script type="text/template" id="campaign-candidate-detail-template">
         <div id="campaignCandidateDetailSection" style="border: 1px solid; padding: 10px; width:400px">

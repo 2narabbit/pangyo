@@ -58,7 +58,7 @@
         JOIN USER u ON (cc.user_id = u.id)
     </sql>
 
-    <select id="selectListByStarId" resultMap="CampaignCandidateMap">
+    <select id="selectListByStarIdAndExecuteRuleId" resultMap="CampaignCandidateMap">
         SELECT
           <include refid="campaignCandidateColumn"/>
         FROM
@@ -67,17 +67,18 @@
           AND cc.execute_rule_id = #{executeRuleId}
           AND cc.status ='SERVICE'
           AND cc.display = true
-          AND u.status = 'MEMGER'
+          AND u.status = 'MEMBER'
         ORDER BY cc.poll_count DESC
         LIMIT #{offset}, #{size}
     </select>
 
-    <select id="selectById" resultMap="CampaignCandidateMap">
+    <select id="selectByStarIdAndId" resultMap="CampaignCandidateMap">
         SELECT
           <include refid="campaignCandidateColumn"/>
         FROM
           <include refid="campaignCandidateTable"/>
         WHERE cc.id = #{id}
+          AND cc.star_id = #{starId}
           AND cc.status ='SERVICE'
           AND cc.display = true
           AND u.status = 'MEMBER'
@@ -87,4 +88,33 @@
         INSERT INTO CAMPAIGN_CANDIDATE (execute_rule_id, star_id, user_id, title, body, randing_url, banner_img, poll_count, display, status, reg_dttm, up_dttm)
         VALUES (#{executeRuleId}, #{star.id}, #{user.id}, #{title}, #{body}, #{randingUrl}, #{bannerImg}, 0, true, 'SERVICE', NOW(), NOW());
     </insert>
+
+    <update id="update" parameterType="CampaignCandidate">
+        UPDATE CAMPAIGN_CANDIDATE
+           SET
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="body != null">
+                body = #{body},
+            </if>
+            <if test="randingUrl != null">
+                randing_url = #{randingUrl},
+            </if>
+            <if test="bannerImg != null">
+                banner_img = #{bannerImg},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            up_dttm = NOW()
+        WHERE id = #{id} AND star_id = #{star.id}
+    </update>
+
+    <update id="updatePollCount">
+        UPDATE CAMPAIGN_CANDIDATE
+           SET poll_count = poll_count + #{delta},
+               up_dttm = NOW()
+        WHERE id = #{id} AND star_id = #{starId}
+    </update>
 </mapper>
