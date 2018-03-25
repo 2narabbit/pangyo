@@ -1,5 +1,6 @@
 package com.adinstar.pangyo.service;
 
+import com.adinstar.pangyo.constant.PangyoEnum;
 import com.adinstar.pangyo.mapper.PostMapper;
 import com.adinstar.pangyo.model.FeedResponse;
 import com.adinstar.pangyo.model.Post;
@@ -65,6 +66,6 @@ public class PostService {
 
     public void remove(long id) {
         // TODO : user 권한 체크
-        postMapper.delete(id);
+        postMapper.updateStatus(id, PangyoEnum.PostStatus.DELETED.name());
     }
 }

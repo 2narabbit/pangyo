@@ -86,9 +86,9 @@
         WHERE id = #{id}
     </update>
 
-    <update id="delete" parameterType="long">
+    <update id="updateStatus" parameterType="Map">
         UPDATE POST
-        SET status = 'DELETED', up_dttm = NOW()
+        SET status = #{status}, up_dttm = NOW()
         WHERE id = #{id}
     </update>
 </mapper>
