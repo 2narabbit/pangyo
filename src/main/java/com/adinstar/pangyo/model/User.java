@@ -2,6 +2,7 @@ package com.adinstar.pangyo.model;
 
 import com.adinstar.pangyo.constant.PangyoEnum.*;
 import lombok.Data;
+import org.springframework.util.StringUtils;
 
 @Data
 public class User {
@@ -14,16 +15,9 @@ public class User {
     private UserStatus status;
     private PangyoLocalDataTime dateTime;
 
-    public String getName() {
-        if (name == null) {
-            return "무명";
-        } else {
-            return name;
-        }
-    }
-
     public String getProfileImg() {
-        if (profileImg == null) {
+        if (StringUtils.isEmpty(profileImg)) {
+            // TODO: noImage url 변경
             return "http://t1.daumcdn.net/profile/TfdXX_AUCLw0";
         } else {
             return profileImg;

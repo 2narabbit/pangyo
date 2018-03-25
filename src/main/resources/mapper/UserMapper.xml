@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.adinstar.pangyo.mapper.UserMapper">
+    <resultMap id="UserMap" type="User">
+        <result property="id" column="id"/>
+        <result property="service" column="service"/>
+        <result property="serviceUserId" column="service_user_id"/>
+        <result property="name" column="name"/>
+        <result property="profileImg" column="profile_img"/>
+        <result property="recommandCode" column="recommand_code"/>
+        <association property="dateTime" javaType="PangyoLocalDataTime">
+            <result property="reg" column="reg_dttm"/>
+            <result property="up" column="up_dttm"/>
+        </association>
+        <!-- TODO: status POST랑 겹쳐서 fetch 못하는 이슈 있음 -->
+    </resultMap>
+
+    <sql id="userColumn">
+       u.id, u.service, u.service_user_id, u.name, u.profile_img, u.recommand_code, u.status, u.reg_dttm, u.up_dttm
+    </sql>
+</mapper>

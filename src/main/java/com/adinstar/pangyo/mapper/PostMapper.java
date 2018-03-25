@@ -14,5 +14,5 @@ public interface PostMapper {
     int insert(Post post);
     int update(Post post);
     int increaseViewCount(long id);
-    int delete(long postId);
+    int updateStatus(@Param("id") long id, @Param("status") String status);
 }

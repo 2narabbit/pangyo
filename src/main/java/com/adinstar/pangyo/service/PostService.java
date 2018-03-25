@@ -1,5 +1,6 @@
 package com.adinstar.pangyo.service;
 
+import com.adinstar.pangyo.constant.PangyoEnum;
 import com.adinstar.pangyo.mapper.PostMapper;
 import com.adinstar.pangyo.model.FeedResponse;
 import com.adinstar.pangyo.model.Post;
@@ -36,15 +37,15 @@ public class PostService {
         return feedResponse;
     }
 
-    public FeedResponse<Post> findAll(Long lastId) {
+    public FeedResponse<Post> getAll(Long lastId) {
         return getResponse(postMapper.selectList(getLastId(lastId), LIST_SIZE+1));
     }
 
-    public FeedResponse<Post> findAllByStarId(long starId, Long lastId) {
+    public FeedResponse<Post> getAllByStarId(long starId, Long lastId) {
         return getResponse(postMapper.selectListByStarId(starId, getLastId(lastId), LIST_SIZE+1));
     }
 
-    public Post findById(long id) {
+    public Post getById(long id) {
         return postMapper.selectById(id);
     }
 
@@ -65,6 +66,6 @@ public class PostService {
 
     public void remove(long id) {
         // TODO : user 권한 체크
-        postMapper.delete(id);
+        postMapper.updateStatus(id, PangyoEnum.PostStatus.DELETED.name());
     }
 }
