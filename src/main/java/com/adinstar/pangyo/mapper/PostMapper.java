@@ -13,6 +13,6 @@ public interface PostMapper {
     Post selectById(long id);
     int insert(Post post);
     int update(Post post);
-    int increaseViewCount(long id);
+    int updateViewCount(@Param("starId") long starId, @Param("id") long id, @Param("delta") int delta);
     int updateStatus(@Param("id") long id, @Param("status") String status);
 }

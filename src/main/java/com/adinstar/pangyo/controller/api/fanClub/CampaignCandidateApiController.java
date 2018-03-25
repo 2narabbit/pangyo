@@ -1,4 +1,4 @@
-package com.adinstar.pangyo.controller.api.funClub;
+package com.adinstar.pangyo.controller.api.fanClub;
 
 import com.adinstar.pangyo.common.annotation.MustLogin;
 import com.adinstar.pangyo.model.CampaignCandidate;

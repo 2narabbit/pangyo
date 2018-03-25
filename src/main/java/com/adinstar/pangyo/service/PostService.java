@@ -7,7 +7,6 @@ import com.adinstar.pangyo.model.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -60,8 +59,8 @@ public class PostService {
         return post.getId();
     }
 
-    public void increaseViewCount(long postId) {
-        postMapper.increaseViewCount(postId);
+    public void increaseViewCount(long starId, long id, int delta) {
+        postMapper.updateViewCount(starId, id, delta);
     }
 
     public void remove(long id) {

@@ -4,65 +4,50 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.adinstar.pangyo.mapper.CampaignCandidateMapper">
     <resultMap id="CampaignCandidateMap" type="CampaignCandidate">
-        <result property="id" column="id"/>
-        <result property="executeRuleId" column="execute_rule_id"/>
-        <result property="title" column="title"/>
-        <result property="body" column="body"/>
-        <result property="randingUrl" column="randing_url"/>
-        <result property="bannerImg" column="banner_img"/>
-        <result property="viewCount" column="view_count"/>
-        <result property="pollCount" column="poll_count"/>
-        <result property="display" column="display"/>
-        <result property="status" column="status"/>
-        <association property="star" javaType="Star">
-            <result property="id" column="s_id"/>
-            <result property="name" column="s_name"/>
-            <result property="naverOs" column="s_naver_os"/>
-            <result property="profileImg" column="s_profile_img"/>
-            <result property="mainImg" column="s_main_img"/>
-            <result property="display" column="s_display"/>
-            <result property="fanCount" column="s_fan_count"/>
-            <result property="message" column="s_message"/>
-            <association property="dateTime" javaType="PangyoLocalDataTime">
-                <result property="reg" column="s_reg_dttm"/>
-                <result property="up" column="s_up_dttm"/>
-            </association>
-        </association>
-        <association property="user" javaType="User">
-            <result property="id" column="u_id"/>
-            <result property="service" column="u_service"/>
-            <result property="serviceUserId" column="u_service_user_id"/>
-            <result property="name" column="u_name"/>
-            <result property="profileImg" column="u_profile_img"/>
-            <result property="recommandCode" column="u_recommand_code"/>
-            <result property="status" column="u_status"/>
-            <association property="dateTime" javaType="PangyoLocalDataTime">
-                <result property="reg" column="u_reg_dttm"/>
-                <result property="up" column="u_up_dttm"/>
-            </association>
-        </association>
+        <result property="id" column="cc_id"/>
+        <result property="executeRuleId" column="cc_execute_rule_id"/>
+        <result property="title" column="cc_title"/>
+        <result property="body" column="cc_body"/>
+        <result property="randingUrl" column="cc_randing_url"/>
+        <result property="bannerImg" column="cc_banner_img"/>
+        <result property="viewCount" column="cc_view_count"/>
+        <result property="pollCount" column="cc_poll_count"/>
+        <result property="display" column="cc_display"/>
+        <result property="status" column="cc_status"/>
+        <association property="star" javaType="Star" resultMap="com.adinstar.pangyo.mapper.StarMapper.StarMap"/>
+        <association property="user" javaType="User" resultMap="com.adinstar.pangyo.mapper.UserMapper.UserMap"/>
         <association property="dateTime" javaType="PangyoLocalDataTime">
-            <result property="reg" column="reg_dttm"/>
-            <result property="up" column="up_dttm"/>
+            <result property="reg" column="cc_reg_dttm"/>
+            <result property="up" column="cc_up_dttm"/>
         </association>
     </resultMap>
 
     <sql id="campaignCandidateColumn">
-        cc.id, cc.execute_rule_id, cc.title, cc.body, cc.randing_url, cc.banner_img, cc.view_count, cc.poll_count, cc.display, cc.status, cc.reg_dttm, cc.up_dttm,
-        s.id AS s_id, s.name AS s_name, s.naver_os AS s_naver_os, s.profile_img AS s_profile_img, s.main_img AS s_main_img, s.display AS s_display, s.fan_count AS s_fan_count, s.message AS s_message, s.reg_dttm AS s_reg_dttm, s.up_dttm AS s_up_dttm,
-        u.id AS u_id, u.service AS u_service, u.service_user_id AS u_service_user_id, u.name AS u_name, u.profile_img AS u_profile_img, u.recommand_code AS u_recommand_code, u.status AS u_status, u.reg_dttm AS u_reg_dttm, u.up_dttm AS u_up_dttm
+        cc.id AS cc_id,
+        cc.execute_rule_id AS cc_execute_rule_id,
+        cc.title AS cc_title,
+        cc.body AS cc_body,
+        cc.randing_url AS cc_randing_url,
+        cc.banner_img AS cc_banner_img,
+        cc.view_count AS cc_view_count,
+        cc.poll_count AS cc_poll_count,
+        cc.display AS cc_display,
+        cc.status AS cc_status,
+        cc.reg_dttm AS cc_reg_dttm,
+        cc.up_dttm AS cc_up_dttm,
+        <include refid="com.adinstar.pangyo.mapper.StarMapper.starColumn"/>,
+        <include refid="com.adinstar.pangyo.mapper.UserMapper.userColumn"/>
     </sql>
 
     <sql id="campaignCandidateTable">
         CAMPAIGN_CANDIDATE cc
-        JOIN STAR s ON (cc.star_id = s.id)
+        JOIN STAR s ON (cc.star_id = s.id AND s.display = true)
         JOIN USER u ON (cc.user_id = u.id)
     </sql>
 
     <sql id="serviceableCondition">
           cc.status ='SERVICE'
           AND cc.display = true
-          AND u.status = 'MEMBER'
     </sql>
 
     <select id="selectListByStarIdAndExecuteRuleId" resultMap="CampaignCandidateMap">

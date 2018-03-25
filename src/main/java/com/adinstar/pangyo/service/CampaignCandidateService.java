@@ -44,11 +44,6 @@ public class CampaignCandidateService {
         return campaignCandidateMapper.selectByStarIdAndId(starId, id);
     }
 
-    public CampaignCandidate getAndUpByStarIdAndId(long starId, long id, int delta) {
-        campaignCandidateMapper.updateViewCount(starId, id, delta);
-        return campaignCandidateMapper.selectByStarIdAndId(starId, id);
-    }
-
     @CheckAuthority(type = CampaignCandidate.class, checkType = CheckingType.OBJECT, isCheckOwner = false)
     public void add(@HintKey(STAR_ID) long starId, @HintKey(CAMPAIGN_CANDIDATE) CampaignCandidate campaignCandidate) {
         try {
@@ -72,6 +67,11 @@ public class CampaignCandidateService {
     @CheckAuthority(type = CampaignCandidate.class, checkType = CheckingType.ID, isCheckOwner = false)
     public void increasePollCount(@HintKey(STAR_ID) long starId, @HintKey(CAMPAIGN_CANDIDATE_ID) long id, int delta) {
         campaignCandidateMapper.updatePollCount(starId, id, delta);
+    }
+
+    @CheckAuthority(type = CampaignCandidate.class, checkType = CheckingType.ID, isCheckOwner = false)
+    public void increaseViewCount(@HintKey(STAR_ID) long starId, @HintKey(CAMPAIGN_CANDIDATE_ID) long id, int delta) {
+        campaignCandidateMapper.updateViewCount(starId, id, delta);
     }
 
     public CampaignCandidate getRunningCandidateByStarIdAndUserId(long starId, long userId) {

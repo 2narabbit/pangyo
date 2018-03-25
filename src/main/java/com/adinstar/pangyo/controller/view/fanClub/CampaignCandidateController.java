@@ -1,4 +1,4 @@
-package com.adinstar.pangyo.controller.fanClub;
+package com.adinstar.pangyo.controller.view.fanClub;
 
 import com.adinstar.pangyo.common.annotation.MustLogin;
 import com.adinstar.pangyo.constant.ViewModelName;
@@ -35,10 +35,16 @@ public class CampaignCandidateController {
     @RequestMapping(value = "/{campaignCandidateId}", method = RequestMethod.GET)
     public String get(@PathVariable("starId") long starId,
                       @PathVariable("campaignCandidateId") long id,
-                      @RequestParam(value = "viewCount", defaultValue = "1") int viewCount,
                       Model model) {
+        try{
+            campaignCandidateService.increaseViewCount(starId, id, 1);
+        } catch (Exception e) {
+            //ignore
+        }
+
         model.addAttribute(STAR_ID, starId);
-        model.addAttribute(CAMPAIGN_CANDIDATE, campaignCandidateService.getAndUpByStarIdAndId(starId, id, viewCount));
+        model.addAttribute(CAMPAIGN_CANDIDATE, campaignCandidateService.getByStarIdAndId(starId, id));
+
         return "fanClub/campaignCandidate/detail";
     }
 

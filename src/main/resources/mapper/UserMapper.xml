@@ -4,20 +4,28 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.adinstar.pangyo.mapper.UserMapper">
     <resultMap id="UserMap" type="User">
-        <result property="id" column="id"/>
-        <result property="service" column="service"/>
-        <result property="serviceUserId" column="service_user_id"/>
-        <result property="name" column="name"/>
-        <result property="profileImg" column="profile_img"/>
-        <result property="recommandCode" column="recommand_code"/>
+        <result property="id" column="u_id"/>
+        <result property="service" column="u_service"/>
+        <result property="serviceUserId" column="u_service_user_id"/>
+        <result property="name" column="u_name"/>
+        <result property="profileImg" column="u_profile_img"/>
+        <result property="recommandCode" column="u_recommand_code"/>
+        <result property="status" column="u_status"/>
         <association property="dateTime" javaType="PangyoLocalDataTime">
-            <result property="reg" column="reg_dttm"/>
-            <result property="up" column="up_dttm"/>
+            <result property="reg" column="u_reg_dttm"/>
+            <result property="up" column="u_up_dttm"/>
         </association>
-        <!-- TODO: status POST랑 겹쳐서 fetch 못하는 이슈 있음 -->
     </resultMap>
 
     <sql id="userColumn">
-       u.id, u.service, u.service_user_id, u.name, u.profile_img, u.recommand_code, u.status, u.reg_dttm, u.up_dttm
+       u.id AS u_id,
+       u.service AS u_service,
+       u.service_user_id AS u_service_user_id,
+       u.name AS u_name,
+       u.profile_img AS u_profile_img,
+       u.recommand_code AS u_recommand_code,
+       u.status AS u_status,
+       u.reg_dttm AS u_reg_dttm,
+       u.up_dttm AS u_up_dttm
     </sql>
 </mapper>

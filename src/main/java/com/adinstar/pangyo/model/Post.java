@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class Post {
     private long id;
-    private long starId;
+    private Star star;
     private User user;
     private String body;
     private String img;
