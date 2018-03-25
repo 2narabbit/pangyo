@@ -27,7 +27,7 @@
 
     <sql id="postTable">
         POST p
-        LEFT JOIN USER u ON p.user_id = u.id
+        JOIN USER u ON p.user_id = u.id
     </sql>
 
     <select id="selectList" parameterType="Map" resultMap="PostMap">
