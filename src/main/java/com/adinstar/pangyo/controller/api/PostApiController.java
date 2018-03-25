@@ -65,11 +65,8 @@ public class PostApiController {
             @ApiResponse(code = 200, message = "OK", response = Map.class)
     })
     @RequestMapping(method = RequestMethod.POST)
-    public Map<Object, Object> add(@RequestBody Post post) {
-        long postId = postService.add(post);
-
-        // FIXME: API 응답 객체 있으면 좋을 것 같은데.. 어떻게 만들어야 예쁠지?
-        return ImmutableMap.builder().put("id", postId).build();
+    public void add(@RequestBody Post post) {
+        postService.add(post);
     }
 
     //
@@ -83,11 +80,8 @@ public class PostApiController {
             @ApiResponse(code = 200, message = "OK", response = Map.class)
     })
     @RequestMapping(method = RequestMethod.PUT)
-    public Map<Object, Object> modify(@RequestBody Post post) {
+    public void modify(@RequestBody Post post) {
         postService.modify(post);
-
-        // FIXME: API 응답 객체 있으면 좋을 것 같은데.. 어떻게 만들어야 예쁠지?
-        return ImmutableMap.builder().put("id", post.getId()).build();
     }
 
     @ApiOperation("removePost")

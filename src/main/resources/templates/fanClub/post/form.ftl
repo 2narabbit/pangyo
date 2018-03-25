@@ -57,8 +57,7 @@
                 type : type,
                 data : JSON.stringify(data),
                 contentType : "application/json",
-                success: function(result) {
-                    // TODO : api 성공여부 확인
+                success: function() {
                     location.replace('/fanClub/${star.id!}');
                 },
                 error: function(res) {
