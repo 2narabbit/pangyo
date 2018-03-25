@@ -31,6 +31,7 @@ create table CAMPAIGN_CANDIDATE
 	body varchar(4096) not null,
 	randing_url varchar(4096) null,
 	banner_img varchar(4096) null,
+	view_count bigint default '0' not null,
 	poll_count bigint default '0' not null,
 	display tinyint(1) default '1' not null,
 	status enum('SERVICE', 'DELETED', 'SELECTED') default 'SERVICE' not null,

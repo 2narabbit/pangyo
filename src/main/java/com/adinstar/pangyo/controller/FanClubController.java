@@ -6,7 +6,10 @@ import com.adinstar.pangyo.service.StarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/fanClub/{starId}")
@@ -18,7 +21,7 @@ public class FanClubController {
     @Autowired
     private StarService starService;
 
-    @RequestMapping(value = {"", "/", "top", "home"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
     public String getTopFeed(@PathVariable("starId") long starId, Model model) {
         model.addAttribute("response", postService.getAllByStarId(starId, null));
         model.addAttribute("star", starService.getById(starId));
