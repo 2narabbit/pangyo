@@ -11,7 +11,7 @@ public class StarService {
     @Autowired
     private StarMapper starMapper;
 
-    public Star findById(long id) {
+    public Star getById(long id) {
         return starMapper.selectById(id);
     }
 }

@@ -37,15 +37,15 @@ public class PostService {
         return feedResponse;
     }
 
-    public FeedResponse<Post> findAll(Long lastId) {
+    public FeedResponse<Post> getAll(Long lastId) {
         return getResponse(postMapper.selectList(getLastId(lastId), LIST_SIZE+1));
     }
 
-    public FeedResponse<Post> findAllByStarId(long starId, Long lastId) {
+    public FeedResponse<Post> getAllByStarId(long starId, Long lastId) {
         return getResponse(postMapper.selectListByStarId(starId, getLastId(lastId), LIST_SIZE+1));
     }
 
-    public Post findById(long id) {
+    public Post getById(long id) {
         return postMapper.selectById(id);
     }
 

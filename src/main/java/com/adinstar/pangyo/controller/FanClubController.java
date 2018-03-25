@@ -20,8 +20,8 @@ public class FanClubController {
 
     @RequestMapping(value = {"", "/", "top", "home"}, method = RequestMethod.GET)
     public String getTopFeed(@PathVariable("starId") long starId, Model model) {
-        model.addAttribute("response", postService.findAllByStarId(starId, null));
-        model.addAttribute("star", starService.findById(starId));
+        model.addAttribute("response", postService.getAllByStarId(starId, null));
+        model.addAttribute("star", starService.getById(starId));
         return "fanClub/list";
     }
 
@@ -31,7 +31,7 @@ public class FanClubController {
                                 Model model) {
         postService.increaseViewCount(postId);
 
-        model.addAttribute("post", postService.findById(postId));
+        model.addAttribute("post", postService.getById(postId));
         model.addAttribute("starId", starId);
         return "fanClub/post/detail";
     }
@@ -42,9 +42,9 @@ public class FanClubController {
                                    @RequestParam(value = "postId", required = false) Long postId,
                                    Model model) {
         if (postId != null) {
-            model.addAttribute("post", postService.findById(postId));
+            model.addAttribute("post", postService.getById(postId));
         }
-        model.addAttribute("star", starService.findById(starId));
+        model.addAttribute("star", starService.getById(starId));
         return "fanClub/post/form";
     }
 }

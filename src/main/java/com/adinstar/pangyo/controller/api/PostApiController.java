@@ -35,9 +35,9 @@ public class PostApiController {
     public FeedResponse<Post> getListByStarId(@RequestParam(value = "starId", required = false) Long starId,
                                         @RequestParam(value = "lastId", required = false) Long lastId) {
         if (starId == null) {
-            return postService.findAll(lastId);
+            return postService.getAll(lastId);
         } else {
-            return postService.findAllByStarId(starId, lastId);
+            return postService.getAllByStarId(starId, lastId);
         }
     }
 
@@ -51,7 +51,7 @@ public class PostApiController {
     })
     @RequestMapping(value = "/{postId}", method = RequestMethod.GET)
     public Post get(@PathVariable("postId") long postId) {
-        return postService.findById(postId);
+        return postService.getById(postId);
     }
 
     //
