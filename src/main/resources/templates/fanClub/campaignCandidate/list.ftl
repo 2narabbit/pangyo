@@ -5,7 +5,7 @@
     <title>campaignCandidate</title>
 </head>
 <body>
-    <h2><a href="/fanClub/${starId}/campaign-candidate">등록하러 가기</a></h2>
+    <h2><a href="/fanClub/${starId}/campaign-candidate/write">등록하러 가기</a></h2>
 
     <#if campaignCandidateList?has_content>
     <div id="listSection">

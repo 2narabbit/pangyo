@@ -13,6 +13,7 @@ public class CampaignCandidate {
     private String body;
     private String randingUrl;
     private String bannerImg;
+    private long viewCount;
     private long pollCount;
     private boolean display;
     private CampaignCandidateStatus status;

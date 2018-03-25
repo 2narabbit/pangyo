@@ -1,4 +1,4 @@
-package com.adinstar.pangyo.controller.interceptor.annotation;
+package com.adinstar.pangyo.common.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

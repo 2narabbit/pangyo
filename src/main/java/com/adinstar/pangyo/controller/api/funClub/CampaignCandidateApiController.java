@@ -1,8 +1,6 @@
 package com.adinstar.pangyo.controller.api.funClub;
 
-import com.adinstar.pangyo.constant.PangyoEnum;
-import com.adinstar.pangyo.controller.interceptor.annotation.CheckAuthority;
-import com.adinstar.pangyo.controller.interceptor.annotation.MustLogin;
+import com.adinstar.pangyo.common.annotation.MustLogin;
 import com.adinstar.pangyo.model.CampaignCandidate;
 import com.adinstar.pangyo.service.CampaignCandidateService;
 import io.swagger.annotations.*;
@@ -17,23 +15,21 @@ import java.util.Optional;
 @RequestMapping("/api/fanClub/{starId}/campaign-candidate")
 public class CampaignCandidateApiController {
 
-    private static int INCREASE_POLL_COUNT = 1;
-
     @Autowired
     private CampaignCandidateService campaignCandidateService;
 
-    @ApiOperation("getCampaignCandidate")
+    @ApiOperation("현재 진행 회차의 캠페인 후보군 list 가져오기")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "starId", value = "campaignCandidate 의 starId", paramType = "path", required = true, dataType = "long"),
             @ApiImplicitParam(name = "page", value = "page number", paramType = "query", required = true, dataType = "int")
     })
     @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = Map.class)})
     @RequestMapping(method = RequestMethod.GET)
-    public List<CampaignCandidate> getRecentTurnList(@PathVariable long starId, @RequestParam int page) {
+    public List<CampaignCandidate> getRunningList(@PathVariable long starId, @RequestParam int page) {
         return campaignCandidateService.getRunningList(starId, Optional.of(page), Optional.empty());
     }
 
-    @ApiOperation("addCampaignCandidate")
+    @ApiOperation("캠페인 후보군 등록하기")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "starId", value = "campaignCandidate 의 starId", paramType = "path", required = true, dataType = "long"),
             @ApiImplicitParam(name = "campaignCandidate", value = "campaignCandidate object", paramType = "body", required = true, dataType = "CampaignCandidate")
@@ -41,56 +37,45 @@ public class CampaignCandidateApiController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = Map.class)})
     @RequestMapping(method = RequestMethod.POST)
     @MustLogin
-    @CheckAuthority(type = CampaignCandidate.class, hasObject = PangyoEnum.CheckingType.OBJECT, isCheckOwner = false)
-    public long add(@PathVariable long starId, @RequestBody CampaignCandidate campaignCandidate) {
-        campaignCandidateService.add(campaignCandidate);
-        return campaignCandidate.getId();
+    public void add(@PathVariable long starId, @RequestBody CampaignCandidate campaignCandidate) {
+        campaignCandidateService.add(starId, campaignCandidate);
     }
 
-    @ApiOperation("modifyCampaignCandidate")
+    @ApiOperation("캠페인 후보군 수정하기")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "starId", value = "campaignCandidate 의 starId", paramType = "path", required = true, dataType = "long"),
             @ApiImplicitParam(name = "campaignCandidate", value = "campaignCandidate object", paramType = "body", required = true, dataType = "campaignCandidate")
     })
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = Map.class)
-    })
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = Map.class)})
     @RequestMapping(method = RequestMethod.PUT)
     @MustLogin
-    @CheckAuthority(type = CampaignCandidate.class, hasObject = PangyoEnum.CheckingType.OBJECT)
-    public long modify(@PathVariable long starId, @RequestBody CampaignCandidate campaignCandidate) {
-        campaignCandidateService.modify(campaignCandidate);
-        return campaignCandidate.getId();
+    public void modify(@PathVariable long starId, @RequestBody CampaignCandidate campaignCandidate) {
+        campaignCandidateService.modify(starId, campaignCandidate);
     }
 
-    @ApiOperation("removeCampaignCandidate")
+    @ApiOperation("캠페인 후보군 삭제하기")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "starId", value = "campaignCandidate 의 starId", paramType = "path", required = true, dataType = "long"),
-            @ApiImplicitParam(name = "id", value = "campaignCandidate 의 id", paramType = "path", required = true, dataType = "long")
+            @ApiImplicitParam(name = "campaignCandidate", value = "campaignCandidate object", paramType = "body", required = true, dataType = "campaignCandidate")
     })
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = Map.class)
-    })
-    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = Map.class)})
+    @RequestMapping(method = RequestMethod.DELETE)
     @MustLogin
-    @CheckAuthority(type = CampaignCandidate.class, hasObject = PangyoEnum.CheckingType.ID)
-    public void remove(@PathVariable long starId, @PathVariable long id) {
-        campaignCandidateService.remove(starId, id);
+    public void remove(@PathVariable long starId, @RequestBody CampaignCandidate campaignCandidate) {
+        campaignCandidateService.remove(starId, campaignCandidate);
     }
 
 
-    @ApiOperation("pollCampaignCandidate")
+    ////////////////////////////////////////////////////// 2depth //////////////////////////////////////////////////////
+    @ApiOperation("캠페인 후보군에 투표하기")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "starId", value = "campaignCandidate 의 starId", paramType = "path", required = true, dataType = "long"),
-            @ApiImplicitParam(name = "id", value = "campaignCandidate 의 id", paramType = "path", required = true, dataType = "long")
+            @ApiImplicitParam(name = "campaignCandidateId", value = "campaignCandidate 의 id", paramType = "query", required = true, dataType = "long")
     })
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = Map.class)
-    })
-    @RequestMapping(value = "{id}/poll", method = RequestMethod.PUT)
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = Map.class)})
+    @RequestMapping(value = "/{campaignCandidateId}/poll", method = RequestMethod.PUT)
     @MustLogin
-    @CheckAuthority(type = CampaignCandidate.class, hasObject = PangyoEnum.CheckingType.ID)
-    public void poll(@PathVariable long starId, @PathVariable long id) {
-        campaignCandidateService.increasePollCount(starId, id, INCREASE_POLL_COUNT);
+    public void poll(@PathVariable long starId, @RequestParam("campaignCandidateId") long id, @RequestParam(value = "pollCount", defaultValue = "1") int pollCount) {
+        campaignCandidateService.increasePollCount(starId, id, pollCount);
     }
 }

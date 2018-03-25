@@ -1,6 +1,5 @@
 package com.adinstar.pangyo;
 
-import com.adinstar.pangyo.controller.interceptor.CheckOwnershipInterceptor;
 import com.adinstar.pangyo.controller.interceptor.LoginInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -16,9 +15,6 @@ public class PangyoWebMvcConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private LoginInterceptor loginInterceptor;
 
-    @Autowired
-    private CheckOwnershipInterceptor checkOwnershipInterceptor;
-
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
@@ -29,8 +25,5 @@ public class PangyoWebMvcConfig extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/**");
-
-        registry.addInterceptor(checkOwnershipInterceptor)
-                .addPathPatterns("/api/**");
     }
 }

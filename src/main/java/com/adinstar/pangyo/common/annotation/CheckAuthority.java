@@ -1,4 +1,4 @@
-package com.adinstar.pangyo.controller.interceptor.annotation;
+package com.adinstar.pangyo.common.annotation;
 
 import com.adinstar.pangyo.constant.PangyoEnum;
 
@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 public @interface CheckAuthority {
     Class type();
 
-    PangyoEnum.CheckingType hasObject();
+    PangyoEnum.CheckingType checkType();
 
     boolean isCheckOwner() default true;
 }
