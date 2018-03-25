@@ -40,20 +40,6 @@
         JOIN USER u ON (p.user_id = u.id)
     </sql>
 
-    <select id="selectList" parameterType="Map" resultMap="PostMap">
-        SELECT
-          <include refid="postColumn"/>
-        FROM
-          <include refid="postTable"/>
-        WHERE
-          p.status = 'SERVICE'
-          AND p.id &lt; #{lastId}
-        ORDER BY
-          p.id DESC
-        LIMIT
-          #{size}
-    </select>
-
     <select id="selectListByStarId" parameterType="Map" resultMap="PostMap">
         SELECT
           <include refid="postColumn"/>
@@ -69,7 +55,7 @@
           #{size}
     </select>
 
-    <select id="selectById" parameterType="long" resultMap="PostMap">
+    <select id="selectByStarIdAndId" parameterType="Map" resultMap="PostMap">
         SELECT
           <include refid="postColumn"/>
         FROM
@@ -77,29 +63,36 @@
         WHERE
           p.status = 'SERVICE'
           AND p.id = #{id}
+          AND p.star_id = #{starId}
     </select>
 
     <insert id="insert" parameterType="Post" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO POST (star_id, user_id, body, img, status, reg_dttm, up_dttm)
-        VALUE (#{starId}, #{user.id}, #{body}, #{img}, 'SERVICE', NOW(), NOW());
+        VALUE (#{star.id}, #{user.id}, #{body}, #{img}, 'SERVICE', NOW(), NOW());
     </insert>
 
     <update id="update" parameterType="Post">
         UPDATE POST
-        SET body = #{body}, img = #{img}, up_dttm = NOW()
-        WHERE id = #{id}
+        SET
+            <if test="body != null">
+                body = #{body},
+            </if>
+            <if test="img != null">
+                img = #{img},
+            </if>
+            up_dttm = NOW()
+        WHERE id = #{id} AND star_id = #{star.id}
     </update>
 
     <update id="updateViewCount" parameterType="Map">
         UPDATE POST
         SET view_count = view_count + #{delta}, up_dttm = NOW()
-        WHERE id = #{id}
-        AND star_id = #{starId}
+        WHERE id = #{id} AND star_id = #{starId}
     </update>
 
     <update id="updateStatus" parameterType="Map">
         UPDATE POST
         SET status = #{status}, up_dttm = NOW()
-        WHERE id = #{id}
+        WHERE id = #{id} AND star_id = #{starId}
     </update>
 </mapper>

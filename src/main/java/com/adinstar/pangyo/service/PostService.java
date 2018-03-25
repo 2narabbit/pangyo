@@ -1,5 +1,7 @@
 package com.adinstar.pangyo.service;
 
+import com.adinstar.pangyo.common.annotation.CheckAuthority;
+import com.adinstar.pangyo.common.annotation.HintKey;
 import com.adinstar.pangyo.constant.PangyoEnum;
 import com.adinstar.pangyo.mapper.PostMapper;
 import com.adinstar.pangyo.model.FeedResponse;
@@ -8,6 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
+import static com.adinstar.pangyo.common.annotation.HintKey.POST;
+import static com.adinstar.pangyo.common.annotation.HintKey.POST_ID;
+import static com.adinstar.pangyo.common.annotation.HintKey.STAR_ID;
 
 @Service
 public class PostService {
@@ -16,10 +23,6 @@ public class PostService {
     private PostMapper postMapper;
 
     private static final int LIST_SIZE = 10;
-
-    private long getLastId(Long lastId) {
-        return lastId == null ? Long.MAX_VALUE : lastId;
-    }
 
     private FeedResponse<Post> getResponse(List<Post> postList) {
         FeedResponse<Post> feedResponse = new FeedResponse();
@@ -36,35 +39,31 @@ public class PostService {
         return feedResponse;
     }
 
-    public FeedResponse<Post> getAll(Long lastId) {
-        return getResponse(postMapper.selectList(getLastId(lastId), LIST_SIZE+1));
+    public FeedResponse<Post> getListByStarId(long starId, Optional lastId) {
+        return getResponse(postMapper.selectListByStarId(starId, (long)lastId.orElse(Long.MAX_VALUE), LIST_SIZE+1));
     }
 
-    public FeedResponse<Post> getAllByStarId(long starId, Long lastId) {
-        return getResponse(postMapper.selectListByStarId(starId, getLastId(lastId), LIST_SIZE+1));
+    public Post getByStarIdAndId(long starId, long id) {
+        return postMapper.selectByStarIdAndId(starId, id);
     }
 
-    public Post getById(long id) {
-        return postMapper.selectById(id);
-    }
-
-    public long add(Post post) {
+    @CheckAuthority(type = Post.class, checkType = PangyoEnum.CheckingType.OBJECT, isCheckOwner = false)
+    public void add(@HintKey(STAR_ID) long starId, @HintKey(POST) Post post) {
         postMapper.insert(post);
-        return post.getId();
     }
 
-    public long modify(Post post) {
-        // TODO : user 권한 체크
+    @CheckAuthority(type = Post.class, checkType = PangyoEnum.CheckingType.OBJECT)
+    public void modify(@HintKey(STAR_ID) long starId, @HintKey(POST) Post post) {
         postMapper.update(post);
-        return post.getId();
     }
 
-    public void increaseViewCount(long starId, long id, int delta) {
+    @CheckAuthority(type = Post.class, checkType = PangyoEnum.CheckingType.ID, isCheckOwner = false)
+    public void increaseViewCount(@HintKey(STAR_ID) long starId, @HintKey(POST_ID) long id, int delta) {
         postMapper.updateViewCount(starId, id, delta);
     }
 
-    public void remove(long id) {
-        // TODO : user 권한 체크
-        postMapper.updateStatus(id, PangyoEnum.PostStatus.DELETED.name());
+    @CheckAuthority(type = Post.class, checkType = PangyoEnum.CheckingType.ID)
+    public void remove(@HintKey(STAR_ID) long starId, @HintKey(POST_ID) long id) {
+        postMapper.updateStatus(starId, id, PangyoEnum.PostStatus.DELETED);
     }
 }

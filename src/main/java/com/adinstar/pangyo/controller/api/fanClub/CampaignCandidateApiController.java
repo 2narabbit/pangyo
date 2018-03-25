@@ -59,10 +59,11 @@ public class CampaignCandidateApiController {
             @ApiImplicitParam(name = "campaignCandidate", value = "campaignCandidate object", paramType = "body", required = true, dataType = "campaignCandidate")
     })
     @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = Map.class)})
-    @RequestMapping(method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{campaignCandidateId}", method = RequestMethod.DELETE)
     @MustLogin
-    public void remove(@PathVariable long starId, @RequestBody CampaignCandidate campaignCandidate) {
-        campaignCandidateService.remove(starId, campaignCandidate);
+    public void remove(@PathVariable("starId") long starId,
+                       @PathVariable("campaignCandidateId") long id) {
+        campaignCandidateService.remove(starId, id);
     }
 
 

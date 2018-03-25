@@ -59,9 +59,9 @@ public class CampaignCandidateService {
         campaignCandidateMapper.update(campaignCandidate);
     }
 
-    @CheckAuthority(type = CampaignCandidate.class, checkType = CheckingType.OBJECT)
-    public void remove(@HintKey(STAR_ID) long starId, @HintKey(CAMPAIGN_CANDIDATE) CampaignCandidate campaignCandidate) {
-        campaignCandidateMapper.updateStatus(starId, campaignCandidate.getId(), CampaignCandidateStatus.DELETED);
+    @CheckAuthority(type = CampaignCandidate.class, checkType = CheckingType.ID)
+    public void remove(@HintKey(STAR_ID) long starId, @HintKey(CAMPAIGN_CANDIDATE_ID) long id) {
+        campaignCandidateMapper.updateStatus(starId, id, CampaignCandidateStatus.DELETED);
     }
 
     @CheckAuthority(type = CampaignCandidate.class, checkType = CheckingType.ID, isCheckOwner = false)

@@ -13,4 +13,7 @@ public @interface HintKey {
     String STAR_ID = "statId";
     String CAMPAIGN_CANDIDATE = "campaignCandidate";
     String CAMPAIGN_CANDIDATE_ID = "campaignCandidateId";
+
+    String POST = "post";
+    String POST_ID = "postId";
 }

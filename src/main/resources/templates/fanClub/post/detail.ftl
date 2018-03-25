@@ -43,7 +43,7 @@
         });
 
         function goToModify() {
-            location.replace('/fanClub/${starId!}/write?postId='+${post.id!});
+            location.replace('/fanClub/${starId!}/post/write?postId='+${post.id!});
         }
 
         function remove() {
@@ -52,7 +52,7 @@
             }
 
             $.ajax({
-                url : '/api/post/' + ${post.id!},
+                url : '/api/fanclub/${starId!}/post/' + ${post.id!},
                 type : 'DELETE',
                 contentType : "application/json",
                 success: function() {

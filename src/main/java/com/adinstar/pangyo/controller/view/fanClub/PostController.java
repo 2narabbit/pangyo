@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import static com.adinstar.pangyo.constant.ViewModelName.POST;
-import static com.adinstar.pangyo.constant.ViewModelName.STAR_ID;
+import static com.adinstar.pangyo.constant.ViewModelName.STAR;
 
 @Controller
 @RequestMapping("/fanClub/{starId}/post")
@@ -34,7 +34,7 @@ public class PostController {
             // ignore
         }
 
-        model.addAttribute(POST, postService.getById(postId));
+        model.addAttribute(POST, postService.getByStarIdAndId(starId, postId));
 
         return "fanClub/post/detail";
     }
@@ -44,9 +44,9 @@ public class PostController {
                                    @RequestParam(value = "postId", required = false) Long postId,
                                    Model model) {
         if (postId != null) {
-            model.addAttribute("post", postService.getById(postId));
+            model.addAttribute(POST, postService.getByStarIdAndId(starId, postId));
         }
-        model.addAttribute("star", starService.getById(starId));
+        model.addAttribute(STAR, starService.getById(starId));
         return "fanClub/post/form";
     }
 }

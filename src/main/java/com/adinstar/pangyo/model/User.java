@@ -14,7 +14,6 @@ public class User {
     private String recommandCode;
     private UserStatus status;
     private PangyoLocalDataTime dateTime;
-    private Post post;
 
     public String getProfileImg() {
         if (StringUtils.isEmpty(profileImg)) {

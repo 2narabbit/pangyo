@@ -11,7 +11,7 @@
         <h2>${star.name!}</h2> <!-- TODO : 기획서엔 직업 노출되는데, DB에 직업없다 -->
         <span style="margin-right:10px">${star.fanCount!}fans</span>
         <span style="margin-right:50px">+초대(TODO)</span>
-        <a href="/fanClub/${star.id!}/write">글쓰기</a>
+        <a href="/fanClub/${star.id!}/post/write">글쓰기</a>
     </div>
 
     <div style="border: 2px solid; padding: 10px; width:400px">

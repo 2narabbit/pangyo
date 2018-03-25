@@ -34,7 +34,7 @@ public class FanClubController {
         model.addAttribute(STAR, starService.getById(starId));
         model.addAttribute(CAMPAIGN_CANDIDATE_LIST, campaignCandidateService.getRunningList(starId, Optional.of(1), Optional.of(2)));
         // TODO: 수정
-        model.addAttribute("response", postService.getAllByStarId(starId, null));
+        model.addAttribute("response", postService.getListByStarId(starId, Optional.empty()));
         return "fanClub/list";
     }
 }
