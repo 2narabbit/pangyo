@@ -6,15 +6,13 @@
     <resultMap id="PostMap" type="Post">
         <result property="id" column="id"/>
         <result property="starId" column="star_id"/>
-        <result property="user.id" column="user_id"/>
-        <result property="user.name" column="name"/>
-        <result property="user.profileImg" column="profile_img"/>
         <result property="body" column="body"/>
         <result property="img" column="img"/>
         <result property="viewCount" column="view_count"/>
         <result property="likeCount" column="like_count"/>
         <result property="commentCount" column="comment_count"/>
         <result property="status" column="status"/>
+        <association property="user" javaType="User" resultMap="com.adinstar.pangyo.mapper.UserMapper.UserMap"/>
         <association property="dateTime" javaType="PangyoLocalDataTime">
             <result property="reg" column="reg_dttm"/>
             <result property="up" column="up_dttm"/>
@@ -22,7 +20,8 @@
     </resultMap>
 
     <sql id="postColumn">
-        p.id, p.star_id, p.user_id, p.body, p.img, p.view_count, p.like_count, p.comment_count, p.status, p.reg_dttm, p.up_dttm, u.name, u.profile_img
+        p.id, p.star_id, p.user_id, p.body, p.img, p.view_count, p.like_count, p.comment_count, p.status, p.reg_dttm, p.up_dttm,
+        <include refid="com.adinstar.pangyo.mapper.UserMapper.userColumn"/>
     </sql>
 
     <sql id="postTable">
