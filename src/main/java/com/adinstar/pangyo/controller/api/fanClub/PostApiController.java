@@ -2,7 +2,7 @@ package com.adinstar.pangyo.controller.api.fanClub;
 
 
 import com.adinstar.pangyo.common.annotation.MustLogin;
-import com.adinstar.pangyo.model.FeedResponse;
+import com.adinstar.pangyo.model.ListResponse;
 import com.adinstar.pangyo.model.Post;
 import com.adinstar.pangyo.service.PostService;
 import io.swagger.annotations.*;
@@ -29,7 +29,7 @@ public class PostApiController {
             @ApiResponse(code = 200, message = "OK", response = List.class)
     })
     @RequestMapping(method = RequestMethod.GET)
-    public FeedResponse<Post> getListByStarId(@PathVariable("starId") long starId,
+    public ListResponse<Post> getListByStarId(@PathVariable("starId") long starId,
                                               @RequestParam(value = "lastId", required = false) Long lastId) {
         return postService.getListByStarId(starId, Optional.ofNullable(lastId));
     }
