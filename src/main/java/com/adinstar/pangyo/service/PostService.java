@@ -4,7 +4,7 @@ import com.adinstar.pangyo.common.annotation.CheckAuthority;
 import com.adinstar.pangyo.common.annotation.HintKey;
 import com.adinstar.pangyo.constant.PangyoEnum;
 import com.adinstar.pangyo.mapper.PostMapper;
-import com.adinstar.pangyo.model.ListResponse;
+import com.adinstar.pangyo.model.FeedResponse;
 import com.adinstar.pangyo.model.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,9 +24,9 @@ public class PostService {
 
     private static final int LIST_SIZE = 10;
 
-    public ListResponse<Post> getListByStarId(long starId, Optional lastId) {
+    public FeedResponse<Post> getListByStarId(long starId, Optional lastId) {
         List<Post> postList = postMapper.selectListByStarId(starId, (long)lastId.orElse(Long.MAX_VALUE), LIST_SIZE+1);
-        return new ListResponse<>(postList, LIST_SIZE);
+        return new FeedResponse<>(postList, LIST_SIZE);
     }
 
     public Post getByStarIdAndId(long starId, long id) {

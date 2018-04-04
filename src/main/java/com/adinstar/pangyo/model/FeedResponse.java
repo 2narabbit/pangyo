@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class ListResponse<T extends PangyoData> {
+public class FeedResponse<T extends PangyoData> {
     private boolean hasMore;
     private long lastId;
     private List<T> list;
 
-    public ListResponse(List<T> list, int expactListSize) {
+    public FeedResponse(List<T> list, int expactListSize) {
         if (list == null || list.size() == 0) {
             this.list = new ArrayList<>();
         } else {

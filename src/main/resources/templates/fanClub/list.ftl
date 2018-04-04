@@ -38,7 +38,7 @@
     </div>
 
     <div id="listSection">
-        <#list response.list as post>
+        <#list postFeed.list as post>
             <div style="border: 1px solid; padding: 10px; width:400px">
                 <div>
                     <img src="${post.user.profileImg!}"  style="width: 50px; height: 50px">
@@ -98,8 +98,8 @@
         });
 
         var postList = {
-            lastId: ${response.lastId!},
-            hasMore: ${response.hasMore!?string},
+            lastId: ${postFeed.lastId!},
+            hasMore: ${postFeed.hasMore!?string},
             isLoading: false,
 
             appendItem: function() {
@@ -127,7 +127,7 @@
                 }
 
                 return $.ajax({
-                    url : '/api/post',
+                    url : '/api/fanClub/${star.id!}/post',
                     data : data,
                     type : 'GET',
                     success: function(result) {
