@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class Campaign {
     private long id;
-    private long campaignCandidateId;
+    private CampaignCandidate campaignCandidate;
     private long viewCount;
     private long commentCount;
     private long supportCount;

@@ -11,14 +11,14 @@
           AND start_dttm <![CDATA[ <= ]]> NOW() AND end_dttm <![CDATA[ >= ]]> NOW()
     </select>
 
-    <select id="selectExecutionRuleByTurnNum" resultType="ExecutionRule">
+    <select id="selectExecutionRuleListByTurnNum" resultType="ExecutionRule">
         SELECT
           id, turn_num, `type`, start_dttm, end_dttm, status, reg_dttm, up_dttm
         FROM EXECUTION_RULE
         WHERE turn_num = #{turnNum}
     </select>
 
-    <select id="selectExecutionRuleByStatus" resultType="ExecutionRule">
+    <select id="selectExecutionRuleListByStatus" resultType="ExecutionRule">
         SELECT
         id, turn_num, `type`, start_dttm, end_dttm, status, reg_dttm, up_dttm
         FROM EXECUTION_RULE
@@ -29,6 +29,12 @@
         INSERT INTO EXECUTION_RULE (turn_num, `type`, `start_dttm`, `end_dttm`, `status`, `reg_dttm`,`up_dttm`)
         VALUES (#{turnNum}, #{type}, #{startDttm}, #{end_dttm}, 'REDAY', NOW(), NOW())
     </insert>
+
+    <update id="updateExecutionRuleStatusById">
+        UPDATE EXECUTION_RULE
+           SET status = #{status}
+         WHERE id = #{id}
+    </update>
 
     <select id="selectExecutionRuleByTurnAndType" resultType="ExecutionRule">
         SELECT

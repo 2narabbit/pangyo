@@ -23,17 +23,17 @@ public class Scheduler {
     @Autowired
     private ScheduledTasks scheduledTasks;
 
-    @Scheduled(cron = "*/10 23 * * 0 ?")
+    @Scheduled(cron = "0 */10 23 * * SUN")
     public void settingOfExecutionRule() {
         exec(() -> scheduledTasks.settingOfExecutionRule());
     }
 
-    @Scheduled(cron = "0,1 0 * * * ?")
+    @Scheduled(cron = "0 0,1 0 * * ?")
     public void processedExecutionRule() {
         exec(() -> scheduledTasks.processedExecutionRule());
     }
 
-    @Scheduled(cron = "0 * * * * ?")
+    @Scheduled(cron = "0 */30 * * * ?")
     public void snapshotForCampaign() {
         exec(() -> scheduledTasks.snapshotForCampaign());
     }
