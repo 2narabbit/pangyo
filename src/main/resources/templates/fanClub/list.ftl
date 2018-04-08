@@ -14,7 +14,7 @@
         <a href="/fanClub/${star.id!}/post/write">글쓰기</a>
     </div>
 
-    <div style="border: 2px solid; padding: 10px; width:400px">
+    <div style="border: 2px solid; border-color: red; padding: 10px; width:400px;">
         <#if campaignCandidateList?has_content>
             <div id="campaignCandidate">
                 <#list campaignCandidateList as campaignCandidate>
