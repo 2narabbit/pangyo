@@ -45,15 +45,14 @@
             var data = {
                 <#if post??>
                     id: ${post.id!},
-                <#else>
-                    starId: ${star.id!},
                 </#if>
+                star: {id: ${star.id!}},
                 user: {id:2},  // TODO : 실 USER 주입
                 body: $('#body').val()
             };
 
             $.ajax({
-                url : '/api/fanclub/${star.id!}/post',
+                url : '/api/fanClub/${star.id!}/post',
                 type : type,
                 data : JSON.stringify(data),
                 contentType : "application/json",

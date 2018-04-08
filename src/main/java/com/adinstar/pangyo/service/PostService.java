@@ -24,23 +24,9 @@ public class PostService {
 
     private static final int LIST_SIZE = 10;
 
-    private FeedResponse<Post> getResponse(List<Post> postList) {
-        FeedResponse<Post> feedResponse = new FeedResponse();
-        if (postList.size() > 0) {
-            if (postList.size() > LIST_SIZE) {
-                postList = postList.subList(0, postList.size() - 1);
-                feedResponse.setHasMore(true);
-            }
-            feedResponse.setLastId(postList.get(postList.size()-1).getId());
-        }
-
-        feedResponse.setList(postList);
-
-        return feedResponse;
-    }
-
     public FeedResponse<Post> getListByStarId(long starId, Optional lastId) {
-        return getResponse(postMapper.selectListByStarId(starId, (long)lastId.orElse(Long.MAX_VALUE), LIST_SIZE+1));
+        List<Post> postList = postMapper.selectListByStarId(starId, (long)lastId.orElse(Long.MAX_VALUE), LIST_SIZE+1);
+        return new FeedResponse<>(postList, LIST_SIZE);
     }
 
     public Post getByStarIdAndId(long starId, long id) {

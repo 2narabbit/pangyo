@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.Optional;
 
-import static com.adinstar.pangyo.constant.ViewModelName.CAMPAIGN_CANDIDATE_LIST;
-import static com.adinstar.pangyo.constant.ViewModelName.STAR;
+import static com.adinstar.pangyo.constant.ViewModelName.*;
 
 @Controller
 @RequestMapping("/fanClub/{starId}")
@@ -33,8 +32,7 @@ public class FanClubController {
     public String getTopFeed(@PathVariable("starId") long starId, Model model) {
         model.addAttribute(STAR, starService.getById(starId));
         model.addAttribute(CAMPAIGN_CANDIDATE_LIST, campaignCandidateService.getRunningList(starId, Optional.of(1), Optional.of(2)));
-        // TODO: 수정
-        model.addAttribute("response", postService.getListByStarId(starId, Optional.empty()));
+        model.addAttribute(POST_FEED, postService.getListByStarId(starId, Optional.empty()));
         return "fanClub/list";
     }
 }

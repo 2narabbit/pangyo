@@ -52,7 +52,7 @@
             }
 
             $.ajax({
-                url : '/api/fanclub/${starId!}/post/' + ${post.id!},
+                url : '/api/fanClub/${starId!}/post/' + ${post.id!},
                 type : 'DELETE',
                 contentType : "application/json",
                 success: function() {
