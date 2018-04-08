@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.adinstar.pangyo.mapper.PolicyMapper">
+    <select id="selectPolicyByKey" resultType="Policy">
+        SELECT
+          id, `key`, `value`, reg_dttm, up_dttm
+        FROM POLICY
+        WHERE `key` = #{key}
+          AND reg_dttm <![CDATA[ <= ]]> NOW() AND end_dttm IS NULL
+    </select>
+</mapper>

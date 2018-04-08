@@ -4,12 +4,13 @@ import com.adinstar.pangyo.common.annotation.CheckAuthority;
 import com.adinstar.pangyo.common.annotation.HintKey;
 import com.adinstar.pangyo.constant.PangyoEnum.CampaignCandidateStatus;
 import com.adinstar.pangyo.constant.PangyoEnum.CheckingType;
-import com.adinstar.pangyo.constant.PangyoEnum.ExecutionRuleStatus;
 import com.adinstar.pangyo.constant.PangyoEnum.ExecutionRuleType;
 import com.adinstar.pangyo.controller.exception.UnauthorizedException;
+import com.adinstar.pangyo.exception.InvalidSituation;
 import com.adinstar.pangyo.mapper.CampaignCandidateMapper;
 import com.adinstar.pangyo.mapper.ExecutionRuleMapper;
 import com.adinstar.pangyo.model.CampaignCandidate;
+import com.adinstar.pangyo.model.ExecutionRule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,17 @@ public class CampaignCandidateService {
     private ExecutionRuleMapper executionRuleMapper;
 
     public long getRunningExecuteRuleId() {
-        return executionRuleMapper.selectRuleId(ExecutionRuleType.CANDIDATE, ExecutionRuleStatus.RUNNING);
+        Long runningTurnNum = executionRuleMapper.selectRunningTurnNum();
+        if (runningTurnNum == null) {
+            throw InvalidSituation.NOT_FOUND_RUNNING_TURN;
+        }
+
+        ExecutionRule executionRule = executionRuleMapper.selectExecutionRuleByTurnAndType(runningTurnNum, ExecutionRuleType.CANDIDATE);
+        if (executionRule == null) {
+            throw InvalidSituation.NOT_FOUND_EXECUTION_RULE;
+        }
+
+        return executionRule.getId();
     }
 
     public List<CampaignCandidate> getRunningList(long startId, Optional<Integer> opPage, Optional<Integer> opSize) {

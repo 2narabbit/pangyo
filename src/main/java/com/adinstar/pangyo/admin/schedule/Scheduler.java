@@ -1,4 +1,4 @@
-package com.adinstar.pangyo.schedule;
+package com.adinstar.pangyo.admin.schedule;
 
 import com.mysql.jdbc.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +23,19 @@ public class Scheduler {
     @Autowired
     private ScheduledTasks scheduledTasks;
 
+    @Scheduled(cron = "*/10 23 * * 0 ?")
+    public void settingOfExecutionRule() {
+        exec(() -> scheduledTasks.settingOfExecutionRule());
+    }
+
+    @Scheduled(cron = "0,1 0 * * * ?")
+    public void processedExecutionRule() {
+        exec(() -> scheduledTasks.processedExecutionRule());
+    }
+
     @Scheduled(cron = "0 * * * * ?")
-    public void scheduleTaskWithCronExpression() {
-        exec(() -> scheduledTasks.scheduleTaskWithCronExpression());
+    public void snapshotForCampaign() {
+        exec(() -> scheduledTasks.snapshotForCampaign());
     }
 
     private boolean isRunnableHost(String runnableHostname) {

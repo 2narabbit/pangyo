@@ -3,8 +3,37 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.adinstar.pangyo.mapper.ExecutionRuleMapper">
-    <select id="selectRuleId" resultType="long">
-        SELECT id FROM EXECUTION_RULE
-        WHERE `type` = #{type} AND status = #{status}
+    <select id="selectRunningTurnNum" resultType="Long">
+        SELECT
+          turn_num
+        FROM EXECUTION_RULE
+        WHERE `type` = 'CANDIDATE'
+          AND start_dttm <![CDATA[ <= ]]> NOW() AND end_dttm <![CDATA[ >= ]]> NOW()
+    </select>
+
+    <select id="selectExecutionRuleByTurnNum" resultType="ExecutionRule">
+        SELECT
+          id, turn_num, `type`, start_dttm, end_dttm, status, reg_dttm, up_dttm
+        FROM EXECUTION_RULE
+        WHERE turn_num = #{turnNum}
+    </select>
+
+    <select id="selectExecutionRuleByStatus" resultType="ExecutionRule">
+        SELECT
+        id, turn_num, `type`, start_dttm, end_dttm, status, reg_dttm, up_dttm
+        FROM EXECUTION_RULE
+        WHERE status = #{status}
+    </select>
+
+    <insert id="insertExecutionRule" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO EXECUTION_RULE (turn_num, `type`, `start_dttm`, `end_dttm`, `status`, `reg_dttm`,`up_dttm`)
+        VALUES (#{turnNum}, #{type}, #{startDttm}, #{end_dttm}, 'REDAY', NOW(), NOW())
+    </insert>
+
+    <select id="selectExecutionRuleByTurnAndType" resultType="ExecutionRule">
+        SELECT
+          id, turn_num, `type`, start_dttm, end_dttm, status, reg_dttm, up_dttm
+        FROM EXECUTION_RULE
+        WHERE turn_num = #{turnNum} AND `type` = #{type}
     </select>
 </mapper>
