@@ -6,25 +6,16 @@
     <title>FanClub</title>
 </head>
 <body>
-    <img src="${star.mainImg!}" style="width: 400px; height: 200px">
-    <div>
-        <h2>${star.name!}</h2> <!-- TODO : 기획서엔 직업 노출되는데, DB에 직업없다 -->
-        <span style="margin-right:10px">${star.fanCount!}fans</span>
-        <span style="margin-right:50px">+초대(TODO)</span>
-        <a href="/fanClub/${star.id!}/post/write">글쓰기</a>
-    </div>
+    <#include "/fanClub/layout/head.ftl">
+
+    <div style="margin-top:20px">NEXT WEEK CAMPAIGN</div>
 
     <div style="border: 2px solid; padding: 10px; width:400px">
         <#if campaignCandidateList?has_content>
             <div id="campaignCandidate">
                 <#list campaignCandidateList as campaignCandidate>
                     <div>
-                        <strong>${campaignCandidate.title}</strong>
-                        <div>
-                            <img src="${campaignCandidate.user.profileImg!}"  style="width: 50px; height: 50px">
-                            <strong>${campaignCandidate.user.name!}</strong>
-                            <span>${campaignCandidate.dateTime.reg!}</span>
-                        </div>
+                        <strong>${campaignCandidate_index+1} ${campaignCandidate.title}</strong>
                         <span>투표수 : ${campaignCandidate.pollCount!}</span>
                     </div>
                 </#list>
@@ -35,6 +26,11 @@
                 <a href="/fanClub/${star.id!}/campaign-candidate/write">[후보 등록하러 가기]</a>
             </div>
         </#if>
+    </div>
+
+    <div style="margin-top:20px">
+        <span>STAR FEED</span>
+        <a href="/fanClub/${star.id!}/post/write">글쓰기</a>
     </div>
 
     <div id="listSection">

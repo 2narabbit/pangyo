@@ -7,6 +7,7 @@ import com.adinstar.pangyo.controller.exception.UnauthorizedException;
 import com.adinstar.pangyo.model.CampaignCandidate;
 import com.adinstar.pangyo.model.LoginInfo;
 import com.adinstar.pangyo.service.CampaignCandidateService;
+import com.adinstar.pangyo.service.StarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,12 +23,15 @@ import static com.adinstar.pangyo.constant.ViewModelName.*;
 public class CampaignCandidateController {
 
     @Autowired
+    private StarService starService;
+
+    @Autowired
     private CampaignCandidateService campaignCandidateService;
 
     @RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
     public String getList(@PathVariable("starId") long starId,
                           Model model) {
-        model.addAttribute(STAR_ID, starId);
+        model.addAttribute(STAR, starService.getById(starId));
         model.addAttribute(CAMPAIGN_CANDIDATE_LIST, campaignCandidateService.getRunningList(starId, Optional.empty(), Optional.empty()));
         return "fanClub/campaignCandidate/list";
     }

@@ -5,29 +5,27 @@
     <title>campaignCandidate</title>
 </head>
 <body>
-    <h2><a href="/fanClub/${starId}/campaign-candidate/write">등록하러 가기</a></h2>
+    <#include "/fanClub/layout/head.ftl">
+    <div style="margin-top:20px">
+        <span>NEXT WEEK CAMPAIGN</span>
+        <a href="/fanClub/${starId}/campaign-candidate/write">등록하기</a>
+    </div>
 
     <#if campaignCandidateList?has_content>
     <div id="listSection">
         <#list campaignCandidateList as campaignCandidate>
             <div style="border: 1px solid; padding: 10px; width:400px">
                 <div>
-                    <img src="${campaignCandidate.user.profileImg!"http://t1.daumcdn.net/profile/TfdXX_AUCLw0"}"  style="width: 50px; height: 50px">
-                    <strong>${campaignCandidate.user.name!"없는유저"}</strong>
-                    <span>${campaignCandidate.dateTime.reg!}</span>
+                    <label>${campaignCandidate_index+1} ${campaignCandidate.title!}</label>
+                    <span>투표 ${campaignCandidate.pollCount!}</span>
                 </div>
-
-                <label>${campaignCandidate.title!}</label>
                 <p>${campaignCandidate.body!}</p>
+                <p>캠퍼엔 노출 기간 : (TODO)</p>
+                <p>랜딩페이지 url : ${campaignCandidate.randingUrl!}</p>
+                <p>광고소재 : (TODO 현재 파일명 저장안하고 있음)</p>
                 <#if campaignCandidate.bannerImg?has_content>
                     <img src="${campaignCandidate.bannerImg!}" style="width: 200px; height: 200px">
                 </#if>
-
-                <div>
-                    <span>투표 ${campaignCandidate.pollCount!}</span>
-                </div>
-
-                <a href="/fanClub/${starId}/campaign-candidate/${campaignCandidate.id!}">[더 보기]</a>
             </div>
         </#list>
     </div>
