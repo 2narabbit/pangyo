@@ -13,31 +13,33 @@
         </tr>
     </table>
 
-    <div style="margin-top:10px">* 캠페인 제목</div>
-    <div>
-        <input type="text" name="title" placeholder="캠페인 제목을 22자 이내로 입력해주세요." maxlength="22">
-    </div>
+    <form>
+        <div style="margin-top:10px">* 캠페인 제목</div>
+        <div>
+            <input type="text" name="title" placeholder="캠페인 제목을 22자 이내로 입력해주세요." maxlength="22" style="width:400px">
+        </div>
 
-    <div style="margin-top:10px">* 캠페인 세부내용</div>
-    <div>
-        <textarea name="body" style="width:400px" rows="10" placeholder="캠페인 상세 내용을 입력해주세요."></textarea>
-    </div>
+        <div style="margin-top:10px">* 캠페인 세부내용</div>
+        <div>
+            <textarea name="body" style="width:400px" rows="10" placeholder="캠페인 상세 내용을 입력해주세요."></textarea>
+        </div>
 
-    <div style="margin-top:10px">* 랜딩페이지 url</div>
-    <div>
-        <input type="text" name="randingUrl" placeholder="배너 클릭 시 이동할 랜딩페이지 url을 입력해주세요.">
-        <br><input type="checkbox"> boostar 캠페인을 랜딩페이지로
-    </div>
+        <div style="margin-top:10px">* 랜딩페이지 url</div>
+        <div>
+            <input type="text" name="randingUrl" placeholder="배너 클릭 시 이동할 랜딩페이지 url을 입력해주세요." style="width:400px">
+            <br><input name="useCampaignRandingUrl" type="checkbox"> boostar 캠페인을 랜딩페이지로
+        </div>
 
-    <div style="margin-top:10px">* 광고 소재 등록</div>
-    <div>
-        <input type="radio" name="bannerImgRegister" value="custom" checked> 직접 업로드
-        <input type="radio" name="bannerImgRegister" value="trust"> boostar에 소재제작 요청
-    </div>
+        <div style="margin-top:10px">* 광고 소재 등록 (TODO)</div>
+        <div>
+            <input type="radio" name="bannerImgRegister" value="custom" checked> 직접 업로드
+            <input type="radio" name="bannerImgRegister" value="admin"> boostar에 소재제작 요청
+        </div>
 
-    <div style="margin-top:10px">
-        TODO : 이미지 업로드
-    </div>
+        <div style="margin-top:10px">
+            TODO : 이미지 업로드
+        </div>
+    </form>
 
     <div style="margin-top:10px">
         <a id="submitButton" href="#">등록 완료</a>
@@ -46,7 +48,46 @@
     <@common.importJS />
 
     <script type="text/javascript">
+        $(document).ready(function() {
+            $('#backButton').click(goToBack);
+            $('#submitButton').click(submit);
+        });
 
+        function goToBack() {
+            if(confirm("이 화면을 나가시면 내용이 저장되지 않습니다.")) {
+                window.history.back();
+            }
+        }
+
+        function submit() {
+            var type = 'POST';
+            var data = getFormData($('form'));
+            data.star = {id: ${starId!}};
+            data.user = {id: 4};  // TODO : 실 USER 주입
+
+            if (data.useCampaignRandingUrl) {
+                data.randingUrl = '/fanClub/${starId!}/campaign-candidate';
+            }
+
+            $.ajax({
+                url : '/api/fanClub/${starId!}/campaign-candidate',
+                type : type,
+                data : JSON.stringify(data),
+                contentType : "application/json",
+                success: function() {
+                    location.replace('/fanClub/${starId!}/campaign-candidate');
+                },
+                error: function(res) {
+                    console.log(res);
+                    res = res.responseJSON;
+                    if (res.message) {
+                        alert(res.message);
+                    } else {
+                        alert('글쓰기에 실패했습니다.');
+                    }
+                }
+            });
+        }
     </script>
 </body>
 </html>

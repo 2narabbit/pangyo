@@ -50,6 +50,7 @@ public class CampaignCandidateService {
             campaignCandidate.setExecuteRuleId(getRunningExecuteRuleId());
             campaignCandidateMapper.insert(campaignCandidate);
         } catch (DuplicateKeyException ex) {
+            // FIXME: 해당 exception이 발생하더라도 campaignCandidate ID가 소진됨
             throw UnauthorizedException.DUPLICATE_CANDIDATE_REGISTER;
         }
     }
