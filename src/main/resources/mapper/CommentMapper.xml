@@ -48,4 +48,25 @@
         LIMIT
           #{size}
     </select>
+
+    <insert id="insert" parameterType="Comment" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO COMMENT (id, content_type, content_id, user_id, body, status, reg_dttm, up_dttm)
+        VALUE (#{id}, #{contentType}, #{contentId}, #{user.id}, #{body}, 'SERVICE', NOW(), NOW());
+    </insert>
+
+    <update id="update" parameterType="Comment">
+        UPDATE COMMENT
+        SET
+            <if test="body != null">
+                body = #{body},
+            </if>
+            up_dttm = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateStatus" parameterType="Map">
+        UPDATE COMMENT
+        SET status = #{status}, up_dttm = NOW()
+        WHERE id = #{id}
+    </update>
 </mapper>

@@ -31,4 +31,43 @@ public class CommentApiController {
                                          @RequestParam(value = "lastId", required = false) Long lastId) {
         return commentService.getList(PangyoEnum.ContentType.valueOf(contentType), contentId, Optional.ofNullable(lastId));
     }
+
+    @ApiOperation("addComment")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="comment", value="comment object", paramType="body", required=true, dataType="Comment")
+    })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK")
+    })
+    @RequestMapping(method = RequestMethod.POST)
+    // TODO: @MustLogin
+    public void add(@RequestBody Comment comment) {
+        commentService.add(comment);
+    }
+
+    @ApiOperation("modifyComment")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="comment", value="comment object", paramType="body", required=true, dataType="Comment")
+    })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK")
+    })
+    @RequestMapping(method = RequestMethod.PUT)
+    // TODO: @MustLogin
+    public void modify(@RequestBody Comment comment) {
+        commentService.modify(comment);
+    }
+
+    @ApiOperation("removeComment")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="commentId", value="comment id", paramType="path", required=true, dataType="long")
+    })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK")
+    })
+    @RequestMapping(value = "/{commentId}", method = RequestMethod.DELETE)
+    // TODO: @MustLogin
+    public void remove(@PathVariable("commentId") long id) {
+        commentService.remove(id);
+    }
 }

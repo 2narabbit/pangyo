@@ -22,4 +22,19 @@ public class CommentService {
         List<Comment> postList = commentMapper.selectList(contentType, contentId, (long)lastId.orElse(Long.MAX_VALUE), LIST_SIZE+1);
         return new FeedResponse<>(postList, LIST_SIZE);
     }
+
+    // TODO: 로그인체크
+    public void add(Comment comment) {
+        commentMapper.insert(comment);
+    }
+
+    // TODO: 로그인체크, 유저권한 체크
+    public void modify(Comment comment) {
+        commentMapper.update(comment);
+    }
+
+    // TODO: 로그인체크, 유저권한 체크
+    public void remove(long id) {
+        commentMapper.updateStatus(id, PangyoEnum.CommentStatus.DELETED);
+    }
 }
