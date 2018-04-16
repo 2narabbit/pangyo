@@ -65,11 +65,13 @@ create table COMMENT
 	body varchar(4096) not null,
 	status enum('SERVICE', 'DELETED') default 'SERVICE' not null,
 	reg_dttm datetime default CURRENT_TIMESTAMP not null,
-	up_dttm datetime default CURRENT_TIMESTAMP null,
-	constraint COMMENT_content_type_content_id_uindex
-		unique (content_type, content_id)
+	up_dttm datetime default CURRENT_TIMESTAMP null
 )
 comment '댓글' engine=InnoDB
+;
+
+create index COMMENT_content_type_content_id_index
+	on COMMENT (content_type, content_id)
 ;
 
 create table EXECUTION_RULE
