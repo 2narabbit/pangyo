@@ -65,7 +65,9 @@ create table COMMENT
 	body varchar(4096) not null,
 	status enum('SERVICE', 'DELETED') default 'SERVICE' not null,
 	reg_dttm datetime default CURRENT_TIMESTAMP not null,
-	up_dttm datetime default CURRENT_TIMESTAMP null
+	up_dttm datetime default CURRENT_TIMESTAMP null,
+	constraint COMMENT_content_type_content_id_uindex
+		unique (content_type, content_id)
 )
 comment '댓글' engine=InnoDB
 ;
