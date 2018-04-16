@@ -1,5 +1,6 @@
 package com.adinstar.pangyo.controller.api;
 
+import com.adinstar.pangyo.constant.PangyoEnum;
 import com.adinstar.pangyo.model.Comment;
 import com.adinstar.pangyo.model.FeedResponse;
 import com.adinstar.pangyo.service.CommentService;
@@ -28,6 +29,6 @@ public class CommentApiController {
     public FeedResponse<Comment> getList(@PathVariable("contentType") String contentType,
                                          @PathVariable("contentId") long contentId,
                                          @RequestParam(value = "lastId", required = false) Long lastId) {
-        return commentService.getList(contentType, contentId, Optional.ofNullable(lastId));
+        return commentService.getList(PangyoEnum.ContentType.valueOf(contentType), contentId, Optional.ofNullable(lastId));
     }
 }
