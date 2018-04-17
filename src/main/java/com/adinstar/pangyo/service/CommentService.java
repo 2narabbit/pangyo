@@ -16,7 +16,7 @@ public class CommentService {
     @Autowired
     private CommentMapper commentMapper;
 
-    private static final int LIST_SIZE = 10;
+    private static final int LIST_SIZE = 5;
 
     public FeedResponse<Comment> getList(PangyoEnum.ContentType contentType, long contentId, Optional lastId) {
         List<Comment> postList = commentMapper.selectList(contentType, contentId, (long)lastId.orElse(Long.MAX_VALUE), LIST_SIZE+1);

@@ -32,9 +32,11 @@
         </div>
     </div>
 
-    <strong> TODO : 댓글모듈</strong>
-
     <@common.importJS />
+
+    <#assign contentType = "POST">
+    <#assign contentId = post.id>
+    <#include "/component/comment.ftl" />
 
     <script type="text/javascript">
         $(document).ready(function() {

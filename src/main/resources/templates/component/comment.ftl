@@ -10,7 +10,8 @@
             <div>
                 <strong>${comment.user.name!}</strong>
                 <span>${comment.dateTime.reg!}</span>
-                <span>TODO: 내 댓글인 경우 수정/삭제</span>
+                <!-- TODO: 내 댓글인 경우 수정/삭제-->
+                <!-- TODO: 댓글없는 경우 -->
             </div>
 
             <p>${comment.body!}</p>

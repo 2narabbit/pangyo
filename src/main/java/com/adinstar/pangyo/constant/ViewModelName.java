@@ -11,4 +11,6 @@ public class ViewModelName {
 
     public static final String POST = "post";
     public static final String POST_FEED = "postFeed";
+
+    public static final String COMMENT_FEED = "commentFeed";
 }
