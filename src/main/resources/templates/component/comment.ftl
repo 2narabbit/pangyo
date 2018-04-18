@@ -1,7 +1,7 @@
 <div style="margin-top:20px">
     <div>
-        <span>댓글쓰기 (TODO)</span>
-        <textarea></textarea>
+        <input id="commentBody" type="text" style="width:350px">
+        <button id="addCommentBtn" type="button">댓글쓰기</button>
     </div>
 
     <div id="commentListSection">
@@ -20,7 +20,7 @@
     </div>
 
     <#if commentFeed.hasMore>
-        <button id="moreButton">더보기</button>
+        <button id="moreButton" style="width:400px" type="button">더보기</button>
     </#if>
 </div>
 
@@ -36,6 +36,28 @@
 </script>
 
 <script type="text/javascript">
+    $('#addCommentBtn').click(function(){
+        var data = {
+            contentType: "${contentType!}",
+            contentId: ${contentId!},
+            user: {id:2}, // TODO: 실 user 주입
+            body: $('#commentBody').val()
+        };
+
+        $.ajax({
+            url : '/api/comment',
+            data : JSON.stringify(data),
+            type : 'POST',
+            contentType : "application/json",
+            success: function(result) {
+                location.reload();
+            },
+            error: function(res) {
+                console.log(res);
+            }
+        });
+    });
+
     $('#moreButton').click(function(){
         commentList.appendItem();
     });
@@ -74,7 +96,7 @@
             }
 
             return $.ajax({
-                url : '/api/comment/${contentType!}/${contentId}',
+                url : '/api/comment/${contentType!}/${contentId!}',
                 data : data,
                 type : 'GET',
                 success: function(result) {
