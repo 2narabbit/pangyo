@@ -1,7 +1,7 @@
 <div style="margin-top:20px">
     <div>
         <input id="commentBody" type="text" style="width:350px">
-        <button id="addCommentBtn" type="button">댓글쓰기</button>
+        <button id="addCommentButton" type="button">댓글쓰기</button>
     </div>
 
     <div id="commentListSection">
@@ -10,8 +10,9 @@
             <div>
                 <strong>${comment.user.name!}</strong>
                 <span>${comment.dateTime.reg!}</span>
-                <!-- TODO: 내 댓글인 경우 수정/삭제-->
-                <!-- TODO: 댓글없는 경우 -->
+                <#if comment.user.id == 2> <!-- TODO: 실 user 주입 -->
+                    <button id="removeCommentButton" onclick="removeComment(${comment.id!})">삭제</button>
+                </#if>
             </div>
 
             <p>${comment.body!}</p>
@@ -20,7 +21,7 @@
     </div>
 
     <#if commentFeed.hasMore>
-        <button id="moreButton" style="width:400px" type="button">더보기</button>
+        <button id="moreCommentButton" style="width:400px" type="button">더보기</button>
     </#if>
 </div>
 
@@ -29,6 +30,9 @@
         <div>
             <strong><%= user.name %></strong>
             <span><%= dateTime.reg %></span>
+            <% if (user.id == 2) { %>  <!-- TODO: 실 user 주입 -->
+                <button id="removeCommentButton" onclick="removeComment(<%= id %>)">삭제</button>
+            <% } %>
         </div>
 
         <p><%= body %></p>
@@ -36,7 +40,7 @@
 </script>
 
 <script type="text/javascript">
-    $('#addCommentBtn').click(function(){
+    $('#addCommentButton').click(function(){
         var data = {
             contentType: "${contentType!}",
             contentId: ${contentId!},
@@ -58,7 +62,26 @@
         });
     });
 
-    $('#moreButton').click(function(){
+    function removeComment(commentId){
+        if (!confirm('댓글을 정말 삭제하시겠습니까?')) {
+            return false;
+        }
+
+        $.ajax({
+            url : '/api/comment/' + commentId,
+            type : 'DELETE',
+            contentType : "application/json",
+            success: function() {
+                location.reload();
+            },
+            error: function(res) {
+                console.log(res);
+                alert('삭제에 실패했습니다.');
+            }
+        });
+    };
+
+    $('#moreCommentButton').click(function(){
         commentList.appendItem();
     });
 
@@ -84,7 +107,7 @@
                 commentList.isLoading = false;
 
                 if (!commentList.hasMore) {
-                    $('#moreButton').remove();
+                    $('#moreCommentButton').remove();
                 }
             });
         },
