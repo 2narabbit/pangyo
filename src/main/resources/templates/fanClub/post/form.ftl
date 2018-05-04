@@ -19,7 +19,13 @@
     </div>
 
     <div>
-        TODO : 이미지 업로드 (지금 수정하면 기존 이미지 날아감,,)
+        <input type="file">
+    </div>
+
+    <div id="imageArea">
+        <#if post?? && post.img??>
+            <img src="${post.img}" style="max-width:400px">
+        </#if>
     </div>
 
     <@common.importJS />
@@ -51,6 +57,11 @@
                 body: $('#body').val()
             };
 
+            var img = $('#imageArea > img').attr('src');
+            if (img) {
+                data['img'] = img;
+            }
+
             $.ajax({
                 url : '/api/fanClub/${star.id!}/post',
                 type : type,
@@ -65,6 +76,27 @@
                 }
             });
         }
+
+        $(":file").change(function(){
+            var file = this.files[0];
+
+            $.ajax({
+                url : '/api/image/' + file.name,
+                type : 'POST',
+                data : file,
+                cache: false,
+                processData: false,
+                contentType: false,
+                success: function(res) {
+                    var html = '<img src="/api/image/' + file.name + '" style="max-width:400px">';
+                    $('#imageArea').html(html);
+                },
+                error: function(res) {
+                    console.log(res);
+                    alert('이미지 업로드에 실패했습니다.');
+                }
+            });
+        });
     </script>
 </body>
 </html>

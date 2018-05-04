@@ -21,6 +21,6 @@
 
     <insert id="insert" parameterType="Image">
         INSERT INTO IMAGE (id, content_type, content_length, data)
-        VALUE (#{id}, #{content_type}, #{content_length}, #{data});
+        VALUE (#{id}, #{contentType}, #{contentLength}, #{data});
     </insert>
 </mapper>
