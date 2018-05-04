@@ -107,7 +107,7 @@
 
     <update id="updateMetaStatus" parameterType="Map">
         UPDATE COMMENT_META
-        SET status = #{status}, up_dttm = NOW()
+        SET status = #{status}
         WHERE
           content_type = #{contentType}
           AND content_id = #{contentId}
