@@ -6,6 +6,7 @@ import com.adinstar.pangyo.model.Comment;
 import com.adinstar.pangyo.model.FeedResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,9 +24,23 @@ public class CommentService {
         return new FeedResponse<>(postList, LIST_SIZE);
     }
 
+    public long getCount(PangyoEnum.ContentType contentType, long contentId) {
+        Long count = commentMapper.selectCount(contentType, contentId);
+        if (count == null)  {
+            count = 0L;
+        }
+
+        return count;
+    }
+
     // TODO: 로그인체크
+    @Transactional
     public void add(Comment comment) {
         commentMapper.insert(comment);
+        int rc = commentMapper.updateCount(comment.getContentType(), comment.getContentId(), 1);
+        if (rc == 0) {
+            commentMapper.insertCount(comment.getContentType(), comment.getContentId());
+        }
     }
 
     // TODO: 로그인체크, 유저권한 체크
@@ -34,7 +49,15 @@ public class CommentService {
     }
 
     // TODO: 로그인체크, 유저권한 체크
+    @Transactional
     public void remove(long id) {
+        Comment comment = commentMapper.selectById(id);
+
         commentMapper.updateStatus(id, PangyoEnum.CommentStatus.DELETED);
+        commentMapper.updateCount(comment.getContentType(), comment.getContentId(), -1);
+    }
+
+    public void removeMeta(PangyoEnum.ContentType contentType, long contentId) {
+        commentMapper.updateMetaStatus(contentType, contentId, PangyoEnum.CommentStatus.DELETED);
     }
 }

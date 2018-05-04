@@ -4,7 +4,6 @@ create table CAMPAIGN
 		primary key,
 	campaign_candidate_id bigint not null,
 	view_count bigint default '0' not null,
-	comment_count bigint default '0' not null,
 	support_count bigint default '0' not null,
 	is_register_ad tinyint(1) default '0' not null,
 	has_report tinyint(1) default '0' not null,
@@ -68,6 +67,17 @@ create table COMMENT
 	up_dttm datetime default CURRENT_TIMESTAMP null
 )
 comment '댓글' engine=InnoDB
+;
+
+create table COMMENT_META
+(
+	content_type enum('POST', 'CANDIDATE', 'CAMPAIGN') not null,
+	content_id bigint not null,
+	count bigint null,
+	status enum('SERVICE', 'DELETED') default 'SERVICE' null,
+	primary key (content_type, content_id)
+)
+comment '댓글 메타 정보' engine=InnoDB
 ;
 
 create index COMMENT_content_type_content_id_index
@@ -140,7 +150,6 @@ create table POST
 	img varchar(4096) null,
 	view_count bigint default '0' not null,
 	like_count bigint default '0' not null,
-	comment_count bigint default '0' not null,
 	status enum('SERVICE', 'DELETED') default 'SERVICE' not null,
 	reg_dttm datetime default CURRENT_TIMESTAMP not null,
 	up_dttm datetime default CURRENT_TIMESTAMP not null

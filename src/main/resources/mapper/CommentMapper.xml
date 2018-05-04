@@ -49,6 +49,16 @@
           #{size}
     </select>
 
+    <select id="selectById" parameterType="long" resultMap="CommentMap">
+        SELECT
+          <include refid="commentColumn"/>
+        FROM
+          <include refid="commentTable"/>
+        WHERE
+          cmt.status = 'SERVICE'
+          AND cmt.id = #{id}
+    </select>
+
     <insert id="insert" parameterType="Comment" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO COMMENT (id, content_type, content_id, user_id, body, status, reg_dttm, up_dttm)
         VALUE (#{id}, #{contentType}, #{contentId}, #{user.id}, #{body}, 'SERVICE', NOW(), NOW());
@@ -68,5 +78,38 @@
         UPDATE COMMENT
         SET status = #{status}, up_dttm = NOW()
         WHERE id = #{id}
+    </update>
+
+
+    <!-- 메타정보 관련 쿼리 -->
+
+    <select id="selectCount" parameterType="Map" resultType="Long">
+        SELECT count
+        FROM COMMENT_META
+        WHERE
+          status = 'SERVICE'
+          AND content_type = #{contentType}
+          AND content_id = #{contentId}
+    </select>
+
+    <insert id="insertCount" parameterType="Map">
+        INSERT INTO COMMENT_META (content_type, content_id, count)
+        VALUE (#{contentType}, #{contentId}, 1);
+    </insert>
+
+    <update id="updateCount" parameterType="Map">
+        UPDATE COMMENT_META
+        SET count = count + #{operand}
+        WHERE
+          content_type = #{contentType}
+          AND content_id = #{contentId}
+    </update>
+
+    <update id="updateMetaStatus" parameterType="Map">
+        UPDATE COMMENT_META
+        SET status = #{status}, up_dttm = NOW()
+        WHERE
+          content_type = #{contentType}
+          AND content_id = #{contentId}
     </update>
 </mapper>
