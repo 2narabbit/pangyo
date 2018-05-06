@@ -1,4 +1,5 @@
 <#import "/macro/common.ftl" as common />
+<#import "/macro/imageUploader.ftl" as imageUploader />
 
 <!DOCTYPE html>
 <html>
@@ -6,6 +7,8 @@
     <title>Post/Edit</title>
 </head>
 <body>
+    <@common.importJS />
+
     <table style="border:0px; text-align:center">
         <tr>
             <td><a id="backButton" href="#">뒤로</a></td>
@@ -30,22 +33,18 @@
             <br><input name="useCampaignRandingUrl" type="checkbox"> boostar 캠페인을 랜딩페이지로
         </div>
 
-        <div style="margin-top:10px">* 광고 소재 등록 (TODO)</div>
+        <div style="margin-top:10px">* 광고 소재 등록</div>
         <div>
             <input type="radio" name="bannerImgRegister" value="custom" checked> 직접 업로드
             <input type="radio" name="bannerImgRegister" value="admin"> boostar에 소재제작 요청
         </div>
 
-        <div style="margin-top:10px">
-            TODO : 이미지 업로드
-        </div>
+        <@imageUploader.defaultUI '' />
     </form>
 
     <div style="margin-top:10px">
         <a id="submitButton" href="#">등록 완료</a>
     </div>
-
-    <@common.importJS />
 
     <script type="text/javascript">
         $(document).ready(function() {
@@ -67,6 +66,10 @@
 
             if (data.useCampaignRandingUrl) {
                 data.randingUrl = '/fanClub/${starId!}/campaign-candidate';
+            }
+
+            if (data.bannerImgRegister == 'custom') {
+                data.bannerImg = getImageUrl();
             }
 
             $.ajax({
