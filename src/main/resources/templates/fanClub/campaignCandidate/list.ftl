@@ -24,7 +24,7 @@
                 <p>랜딩페이지 url : ${campaignCandidate.randingUrl!}</p>
                 <p>광고소재 : (TODO 현재 파일명 저장안하고 있음)</p>
                 <#if campaignCandidate.bannerImg?has_content>
-                    <img src="${campaignCandidate.bannerImg!}" style="width: 200px; height: 200px">
+                    <img src="${campaignCandidate.bannerImg!}" style="max-width: 400px;">
                 </#if>
             </div>
         </#list>

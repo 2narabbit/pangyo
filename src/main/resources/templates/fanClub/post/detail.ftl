@@ -23,7 +23,7 @@
 
         <p>${post.body!}</p> <!-- TODO : newline 노출 잘안되네; -->
         <#if post.img?has_content>
-            <img src="${post.img!}" style="width: 200px; height: 200px">
+            <img src="${post.img!}" style="max-width: 400px;">
         </#if>
 
         <div>
