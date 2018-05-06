@@ -42,12 +42,14 @@
                     <span>${post.dateTime.reg!}</span>
                 </div>
 
-                <p>${post.body!}</p>
-                <#if post.img?has_content>
-                    <img src="${post.img!}" style="max-width: 400px;">
-                </#if>
+                <div style="overflow: hidden; max-height: 300px;">
+                    <p>${post.body!}</p>
+                    <#if post.img?has_content>
+                        <img src="${post.img!}" style="max-width: 400px;">
+                    </#if>
+                </div>
 
-                <div>
+                <div style="margin-top: 10px;">
                     <span>조회 ${post.viewCount!}</span>
                     <span>좋아요 ${post.likeCount!}</span>
                     <span>댓글 ${post.commentCount!}</span>
@@ -67,12 +69,14 @@
                 <span><%= dateTime.reg %></span>
             </div>
 
-            <p><%= body %></p>
-            <% if (img) { %>
-                <img src="<%= img %>" style="max-width: 400px">
-            <% } %>
+            <div style="overflow: hidden; max-height: 300px;">
+                <p><%= body %></p>
+                <% if (img) { %>
+                    <img src="<%= img %>" style="max-width: 400px">
+                <% } %>
+            </div>
 
-            <div>
+            <div style="margin-top: 10px;">
                 <span>조회 <%= viewCount %></span>
                 <span>좋아요 <%= likeCount %></span>
                 <span>댓글 <%= commentCount %></span>

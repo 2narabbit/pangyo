@@ -21,7 +21,10 @@
             <button>신고하기(TODO)</button>
         </div>
 
-        <p>${post.body!}</p> <!-- TODO : newline 노출 잘안되네; -->
+        <div style="padding: 10px">
+            ${post.body!?replace('\n', '<br>')}
+        </div>
+
         <#if post.img?has_content>
             <img src="${post.img!}" style="max-width: 400px;">
         </#if>
