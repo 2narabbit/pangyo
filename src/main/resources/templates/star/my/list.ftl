@@ -40,7 +40,7 @@
 
     <script type="text/javascript">
         var starList = {
-            rankId: ${myStarFeed.lastId!},
+            lastId: ${myStarFeed.lastId!},
             hasMore: ${myStarFeed.hasMore!?string},
             isLoading: false,
 

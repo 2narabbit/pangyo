@@ -77,7 +77,7 @@
         };
 
         var starList = {
-            rankId: ${starFeed.lastId!},
+            lastId: ${starFeed.lastId!},
             hasMore: ${starFeed.hasMore!?string},
             isLoading: false,
 
