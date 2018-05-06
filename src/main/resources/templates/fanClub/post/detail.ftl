@@ -1,4 +1,5 @@
 <#import "/macro/common.ftl" as common />
+<#import "/macro/comment.ftl" as comment />
 
 <!DOCTYPE html>
 <html>
@@ -34,9 +35,7 @@
 
     <@common.importJS />
 
-    <#assign contentType = "POST">
-    <#assign contentId = post.id>
-    <#include "/component/comment.ftl" />
+    <@comment.defaultUI commentFeed, "POST", post.id />
 
     <script type="text/javascript">
         $(document).ready(function() {
