@@ -1,4 +1,5 @@
 <#import "/macro/common.ftl" as common />
+<#import "/macro/imageUploader.ftl" as imageUploader />
 
 <!DOCTYPE html>
 <html>
@@ -15,20 +16,12 @@
     </table>
 
     <div>
-        <textarea id="body" style="width:400px" rows="10" placeholder="${star.name!}님과 관련한 소식을 알려주세요."><#if post??>${post.body!}</#if></textarea>
-    </div>
-
-    <div>
-        <input type="file">
-    </div>
-
-    <div id="imageArea">
-        <#if post?? && post.img??>
-            <img src="${post.img}" style="max-width:400px">
-        </#if>
+        <textarea id="body" style="width:400px" rows="10" placeholder="${star.name!}님과 관련한 소식을 알려주세요.">${(post.body)!}</textarea>
     </div>
 
     <@common.importJS />
+
+    <@imageUploader.defaultUI (post.img)! />
 
     <script type="text/javascript">
         $(document).ready(function() {
@@ -54,13 +47,9 @@
                 </#if>
                 star: {id: ${star.id!}},
                 user: {id:2},  // TODO : 실 USER 주입
-                body: $('#body').val()
+                body: $('#body').val(),
+                img: getImageUrl()
             };
-
-            var img = $('#imageArea > img').attr('src');
-            if (img) {
-                data['img'] = img;
-            }
 
             $.ajax({
                 url : '/api/fanClub/${star.id!}/post',
@@ -77,26 +66,6 @@
             });
         }
 
-        $(":file").change(function(){
-            var file = this.files[0];
-
-            $.ajax({
-                url : '/api/image/' + file.name,
-                type : 'POST',
-                data : file,
-                cache: false,
-                processData: false,
-                contentType: false,
-                success: function(res) {
-                    var html = '<img src="/api/image/' + file.name + '" style="max-width:400px">';
-                    $('#imageArea').html(html);
-                },
-                error: function(res) {
-                    console.log(res);
-                    alert('이미지 업로드에 실패했습니다.');
-                }
-            });
-        });
     </script>
 </body>
 </html>

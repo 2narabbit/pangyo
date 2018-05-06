@@ -44,7 +44,7 @@
 
                 <p>${post.body!}</p>
                 <#if post.img?has_content>
-                    <img src="${post.img!}" style="width: 200px; height: 200px">
+                    <img src="${post.img!}" style="max-width: 400px;">
                 </#if>
 
                 <div>
@@ -60,7 +60,7 @@
     <div id="endOfListSection"></div>
 
     <script type="text/template" id="post-detail-template">
-        <div id="postDetailSection" style="border: 1px solid; padding: 10px; width:400px">
+        <div style="border: 1px solid; padding: 10px; width:400px">
             <div>
                 <img src="<%= user.profileImg %>"  style="width: 50px; height: 50px">
                 <strong><%= user.name %></strong>
@@ -69,7 +69,7 @@
 
             <p><%= body %></p>
             <% if (img) { %>
-                <img src="<%= img %>" style="width: 200px; height: 200px">
+                <img src="<%= img %>" style="max-width: 400px">
             <% } %>
 
             <div>
