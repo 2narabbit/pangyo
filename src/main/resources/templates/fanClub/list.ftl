@@ -37,14 +37,14 @@
         <#list postFeed.list as post>
             <div style="border: 1px solid; padding: 10px; width:400px">
                 <div>
-                    <img src="${post.user.profileImg!}"  style="max-width: 400px">
+                    <img src="${post.user.profileImg!}"  style="width: 50px; height: 50px">
                     <strong>${post.user.name!}</strong>
                     <span>${post.dateTime.reg!}</span>
                 </div>
 
                 <p>${post.body!}</p>
                 <#if post.img?has_content>
-                    <img src="${post.img!}" style="width: 200px; height: 200px">
+                    <img src="${post.img!}" style="max-width: 400px;">
                 </#if>
 
                 <div>
