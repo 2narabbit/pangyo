@@ -42,7 +42,7 @@ public class StarController {
     @MustLogin
     public String getMyStar(@ModelAttribute(ViewModelName.AUTH) LoginInfo loginInfo,
                              Model model) {
-        model.addAttribute(MY_STAR_FEED, starService.getJoinedStarRankListByUserId(loginInfo.getId(), Optional.empty(), 3));
+        model.addAttribute(MY_STAR_FEED, starService.getJoinedStarRankListByUserId(loginInfo.getId(), Optional.empty(), 5));
         return "star/my/list";
     }
 }

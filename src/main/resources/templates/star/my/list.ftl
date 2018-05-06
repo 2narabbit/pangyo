@@ -4,35 +4,55 @@
 <html>
 <head>
     <title>MY Star</title>
+    <style>
+        table {
+            width: 400px;
+            border: 1px solid;
+            border-collapse: collapse;
+        }
+        th, td {
+            border-bottom: 1px solid;
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
-    <div id="listSection" style="margin-top:20px; border: 1px;">
-        <span>MY STAR</span>
+    <h2>MY STAR</h2>
+    <table id="listSection">
         <#list myStarFeed.list as myStar>
             <#if myStar??>
-            <div style="border: 1px solid; padding: 10px; width:400px">
-                <img src="${myStar.data.mainImg!}" style="width: 400px; height: 200px">
-                <div>
-                    <h2>${myStar.data.name!}</h2>
-                    <span>${myStar.ranking!} 위</span>
-                    <span>${myStar.data.fanCount!}fans</span>
-                </div>
+                <tr>
+                    <td>
+                        <h2>${myStar.ranking!}</h2>
+                    </td>
+                    <td>
+                        <h3>${myStar.data.name!}</h3>
+                        <span>${myStar.data.fanCount!}fans</span>
+                    </td>
+                    <td style="text-align: center">
+                        <img src="${myStar.data.mainImg!}" style="max-height:100px;">
+                    </td>
+                </tr>
             </div>
             </#if>
         </#list>
-    </div>
+    </table>
 
     <div id="endOfListSection"></div>
 
     <script type="text/template" id="star-list-template">
-        <div style="border: 1px solid; padding: 10px; width:400px">
-            <img src="<%= data.mainImg %>" style="width: 400px; height: 200px">
-            <div>
-                <h2><%= data.name %></h2>
-                <span><%= ranking %> 위</span>
+        <tr>
+            <td>
+                <h2><%= ranking %></h2>
+            </td>
+            <td>
+                <h3><%= data.name %></h3>
                 <span><%= data.fanCount %>fans</span>
-            </div>
-        </div>
+            </td>
+            <td style="text-align: center">
+                <img src="<%= data.mainImg %>" style="max-height: 100px">
+            </td>
+        </tr>
     </script>
 
     <@common.importJS />

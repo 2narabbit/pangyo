@@ -4,56 +4,85 @@
 <html>
 <head>
     <title>Star</title>
+    <style>
+        table {
+            width: 400px;
+            border: 1px solid;
+            border-collapse: collapse;
+        }
+        th, td {
+            border-bottom: 1px solid;
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
     <div style="margin-top:20px; border: 1px;">
-        <span>MY STAR</span>
-        <#list myStarFeed.list as myStar>
-            <#if myStar??>
-            <div style="border: 1px solid; padding: 10px; width:400px">
-                <img src="${myStar.data.mainImg!}" style="width: 400px; height: 200px">
-                <div>
-                    <h2>${myStar.data.name!}</h2>
-                    <span>${myStar.ranking!} 위</span>
-                    <span>${myStar.data.fanCount!}fans</span>
-                </div>
-            </div>
-            </#if>
-        </#list>
+        <h2>MY STAR</h2>
         <#if myStarFeed.hasMore>
-            <a href="/star/my">더보기</a>
+            <a href="/star/my" style="padding-left:357px">더보기</a>
         </#if>
+
+        <table>
+            <#list myStarFeed.list as myStar>
+                <#if myStar??>
+                <tr>
+                    <td>
+                        <h2>${myStar.ranking!}</h2>
+                    </td>
+                    <td>
+                        <h3>${myStar.data.name!}</h3>
+                        <span>${myStar.data.fanCount!}fans</span>
+                    </td>
+                    <td style="text-align: center">
+                        <img src="${myStar.data.mainImg!}" style="max-height:100px;">
+                    </td>
+                </tr>
+                </#if>
+            </#list>
+        </table>
     </div>
 
-    <div id="listSection" style="margin-top:20px; border: 1px;">
-        <span>Everyone`s STAR</span>
+    <div id="listSection" style="margin-top:50px; border: 1px;">
+        <h2>Everyone`s STAR</h2>
+
+        <table>
         <#list starFeed.list as star>
             <#if star??>
-                <div style="border: 1px solid; padding: 10px; width:400px">
-                    <img src="${star.data.mainImg!}" style="width: 400px; height: 200px">
-                    <div>
-                        <h2>${star.data.name!}</h2>
-                        <span>${star.ranking!} 위</span>
+                <tr>
+                    <td>
+                        <h2>${star.ranking!}</h2>
+                    </td>
+                    <td>
+                        <h3>${star.data.name!}</h3>
                         <span>${star.data.fanCount!}fans</span>
-                    </div>
-                    <button id="joinBotton${star.data.id!}" onclick="joinStar(${star.data.id!})">+ Join</button>
-                </div>
+                        <button id="joinBotton${star.data.id!}" onclick="joinStar(${star.data.id!})">+ Join</button>
+                    </td>
+                    <td style="text-align: center">
+                        <img src="${star.data.mainImg!}" style="max-height: 100px;">
+                    </td>
+                </tr>
             </#if>
         </#list>
+        </table>
     </div>
 
     <div id="endOfListSection"></div>
 
     <script type="text/template" id="star-join-template">
-        <div style="border: 1px solid; padding: 10px; width:400px">
-            <img src="<%= data.mainImg %>" style="width: 400px; height: 200px">
-            <div>
-                <h2><%= data.name %></h2>
-                <span><%= ranking %> 위</span>
+        <tr>
+            <td>
+                <h2><%= ranking %></h2>
+            </td>
+            <td>
+                <h3><%= data.name %></h3>
                 <span><%= data.fanCount %>fans</span>
-            </div>
-            <button id="joinBotton<%= data.id %>" onclick="joinStar(<%= data.id %>)">+ Join</button>
-        </div>
+                <button id="joinBotton<%= data.id %>" onclick="joinStar(<%= data.id %>)">+ Join</button>
+            </td>
+            <td style="text-align: center">
+                <img src="<%= data.mainImg %>" style="max-height: 100px">
+            </td>
+        </tr>
     </script>
 
     <@common.importJS />
@@ -90,7 +119,7 @@
 
                     var template = _.template($("#star-join-template").html());
                     data.list.forEach(function(e, i){
-                        $('#listSection').append(template(e));
+                        $('#listSection > table').append(template(e));
                     });
 
                     starList.lastId = data.list[data.list.length-1].id;
