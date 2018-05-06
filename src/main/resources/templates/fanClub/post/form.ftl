@@ -19,13 +19,16 @@
     </div>
 
     <div>
-        <input type="file">
-    </div>
+        <div>
+            <input id="uploadImage" type="file">
+            <a id="removeImage" href="#">삭제</a>
+        </div>
 
-    <div id="imageArea">
-        <#if post?? && post.img??>
-            <img src="${post.img}" style="max-width:400px">
-        </#if>
+        <div id="imageView">
+            <#if post?? && post.img??>
+                <img src="${post.img}" style="max-width:400px">
+            </#if>
+        </div>
     </div>
 
     <@common.importJS />
@@ -57,9 +60,11 @@
                 body: $('#body').val()
             };
 
-            var img = $('#imageArea > img').attr('src');
+            var img = $('#imageView > img').attr('src');
             if (img) {
                 data['img'] = img;
+            } else {
+                data['img'] = '';
             }
 
             $.ajax({
@@ -77,7 +82,7 @@
             });
         }
 
-        $(":file").change(function(){
+        $("#uploadImage").change(function(){
             var file = this.files[0];
 
             $.ajax({
@@ -89,13 +94,19 @@
                 contentType: false,
                 success: function(res) {
                     var html = '<img src="/api/image/' + file.name + '" style="max-width:400px">';
-                    $('#imageArea').html(html);
+                    $('#imageView').html(html);
                 },
                 error: function(res) {
                     console.log(res);
                     alert('이미지 업로드에 실패했습니다.');
                 }
             });
+        });
+
+        $('#removeImage').click(function () {
+            if(confirm("이미지를 정말 삭제하시겠습니까?")) {
+                $('#imageView').html('');
+            }
         });
     </script>
 </body>
