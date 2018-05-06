@@ -8,7 +8,7 @@
 <body>
     <#include "/fanClub/layout/head.ftl">
 
-    <div style="margin-top:20px">NEXT WEEK CAMPAIGN</div>
+    <h3 style="margin-top:50px; margin-bottom:0px">NEXT WEEK CAMPAIGN</h3>
 
     <div style="border: 2px solid; padding: 10px; width:400px">
         <#if campaignCandidateList?has_content>
@@ -28,9 +28,9 @@
         </#if>
     </div>
 
-    <div style="margin-top:20px">
-        <span>STAR FEED</span>
-        <a href="/fanClub/${star.id!}/post/write">글쓰기</a>
+    <div style="margin-top:50px">
+        <h3 style="margin:0px">STAR FEED</h3>
+        <a href="/fanClub/${star.id!}/post/write" style="margin-left:377px">글쓰기</a>
     </div>
 
     <div id="listSection">
