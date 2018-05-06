@@ -1,3 +1,4 @@
+<!-- commentFeed, contentType, contentId 를 세팅 후 임포트해야함 -->
 <div style="margin-top:20px">
     <div>
         <input id="commentBody" type="text" style="width:350px">
