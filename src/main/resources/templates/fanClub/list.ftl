@@ -69,7 +69,7 @@
 
             <p><%= body %></p>
             <% if (img) { %>
-                <img src="<%= img %>" style="width: 200px; height: 200px">
+                <img src="<%= img %>" style="max-width: 400px">
             <% } %>
 
             <div>
