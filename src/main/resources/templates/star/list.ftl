@@ -31,7 +31,7 @@
                         <h2>${myStar.ranking!}</h2>
                     </td>
                     <td>
-                        <h3>${myStar.data.name!}</h3>
+                        <h3><a href="/fanClub/${myStar.data.id!}">${myStar.data.name!}</a></h3>
                         <span>${myStar.data.fanCount!}fans</span>
                     </td>
                     <td style="text-align: center">
