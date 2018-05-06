@@ -30,7 +30,7 @@
                         <span>${myStar.data.fanCount!}fans</span>
                     </td>
                     <td style="text-align: center">
-                        <img src="${myStar.data.mainImg!}" style="max-height:100px;">
+                        <img src="${myStar.data.profileImg!}" style="max-height:100px;">
                     </td>
                 </tr>
             </div>
@@ -50,7 +50,7 @@
                 <span><%= data.fanCount %>fans</span>
             </td>
             <td style="text-align: center">
-                <img src="<%= data.mainImg %>" style="max-height: 100px">
+                <img src="<%= data.profileImg %>" style="max-height: 100px">
             </td>
         </tr>
     </script>

@@ -35,7 +35,7 @@
                         <span>${myStar.data.fanCount!}fans</span>
                     </td>
                     <td style="text-align: center">
-                        <img src="${myStar.data.mainImg!}" style="max-height:100px;">
+                        <img src="${myStar.data.profileImg!}" style="max-height:100px;">
                     </td>
                 </tr>
                 </#if>
@@ -59,7 +59,7 @@
                         <button id="joinBotton${star.data.id!}" onclick="joinStar(${star.data.id!})">+ Join</button>
                     </td>
                     <td style="text-align: center">
-                        <img src="${star.data.mainImg!}" style="max-height: 100px;">
+                        <img src="${star.data.profileImg!}" style="max-height: 100px;">
                     </td>
                 </tr>
             </#if>
@@ -80,7 +80,7 @@
                 <button id="joinBotton<%= data.id %>" onclick="joinStar(<%= data.id %>)">+ Join</button>
             </td>
             <td style="text-align: center">
-                <img src="<%= data.mainImg %>" style="max-height: 100px">
+                <img src="<%= data.profileImg %>" style="max-height: 100px">
             </td>
         </tr>
     </script>
