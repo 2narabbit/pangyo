@@ -14,6 +14,7 @@
                 <img src="${myStar.data.mainImg!}" style="width: 400px; height: 200px">
                 <div>
                     <h2>${myStar.data.name!}</h2>
+                    <span>${myStar.ranking!} 위</span>
                     <span>${myStar.data.fanCount!}fans</span>
                 </div>
             </div>
@@ -32,6 +33,7 @@
                     <img src="${star.data.mainImg!}" style="width: 400px; height: 200px">
                     <div>
                         <h2>${star.data.name!}</h2>
+                        <span>${star.ranking!} 위</span>
                         <span>${star.data.fanCount!}fans</span>
                     </div>
                     <button id="joinBotton${star.data.id!}" onclick="joinStar(${star.data.id!})">+ Join</button>
@@ -47,6 +49,7 @@
             <img src="<%= data.mainImg %>" style="width: 400px; height: 200px">
             <div>
                 <h2><%= data.name %></h2>
+                <span><%= ranking %> 위</span>
                 <span><%= data.fanCount %>fans</span>
             </div>
             <button id="joinBotton<%= data.id %>" onclick="joinStar(<%= data.id %>)">+ Join</button>

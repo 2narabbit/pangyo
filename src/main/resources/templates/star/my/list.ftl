@@ -14,6 +14,7 @@
                 <img src="${myStar.data.mainImg!}" style="width: 400px; height: 200px">
                 <div>
                     <h2>${myStar.data.name!}</h2>
+                    <span>${myStar.ranking!} 위</span>
                     <span>${myStar.data.fanCount!}fans</span>
                 </div>
             </div>
@@ -28,6 +29,7 @@
             <img src="<%= data.mainImg %>" style="width: 400px; height: 200px">
             <div>
                 <h2><%= data.name %></h2>
+                <span><%= ranking %> 위</span>
                 <span><%= data.fanCount %>fans</span>
             </div>
         </div>
