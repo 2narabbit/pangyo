@@ -37,7 +37,7 @@
         <#list postFeed.list as post>
             <div style="border: 1px solid; padding: 10px; width:400px">
                 <div>
-                    <img src="${post.user.profileImg!}"  style="width: 50px; height: 50px">
+                    <img src="${post.user.profileImg!}"  style="max-width: 400px">
                     <strong>${post.user.name!}</strong>
                     <span>${post.dateTime.reg!}</span>
                 </div>
