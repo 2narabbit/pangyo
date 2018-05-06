@@ -2,11 +2,12 @@ package com.adinstar.pangyo.service;
 
 import com.adinstar.pangyo.common.annotation.CheckAuthority;
 import com.adinstar.pangyo.common.annotation.HintKey;
+import com.adinstar.pangyo.constant.PangyoEnum;
 import com.adinstar.pangyo.constant.PangyoEnum.CampaignCandidateStatus;
 import com.adinstar.pangyo.constant.PangyoEnum.CheckingType;
 import com.adinstar.pangyo.constant.PangyoEnum.ExecutionRuleType;
+import com.adinstar.pangyo.controller.exception.InvalidConditionException;
 import com.adinstar.pangyo.controller.exception.UnauthorizedException;
-import com.adinstar.pangyo.exception.InvalidSituation;
 import com.adinstar.pangyo.mapper.CampaignCandidateMapper;
 import com.adinstar.pangyo.mapper.ExecutionRuleMapper;
 import com.adinstar.pangyo.model.CampaignCandidate;
@@ -32,23 +33,18 @@ public class CampaignCandidateService {
     private ExecutionRuleMapper executionRuleMapper;
 
     public long getRunningExecuteRuleId() {
-        Long runningTurnNum = executionRuleMapper.selectRunningTurnNum();
-        if (runningTurnNum == null) {
-            throw InvalidSituation.NOT_FOUND_RUNNING_TURN;
-        }
-
-        ExecutionRule executionRule = executionRuleMapper.selectExecutionRuleByTurnAndType(runningTurnNum, ExecutionRuleType.CANDIDATE);
+        ExecutionRule executionRule = executionRuleMapper.selectByTypeAndStatus(ExecutionRuleType.CANDIDATE, PangyoEnum.ExecutionRuleStatus.RUNNING);
         if (executionRule == null) {
-            throw InvalidSituation.NOT_FOUND_EXECUTION_RULE;
+            throw InvalidConditionException.EXECUTION_RULE;
         }
 
         return executionRule.getId();
     }
 
-    public List<CampaignCandidate> getRunningList(long startId, Optional<Integer> opPage, Optional<Integer> opSize) {
+    public List<CampaignCandidate> getRunningList(long starId, Optional<Integer> opPage, Optional<Integer> opSize) {
         int size = opSize.orElse(LIST_SIZE);
         int offset = (opPage.orElse(DEFAULT_PAGE) - DEFAULT_PAGE) * size;
-        return campaignCandidateMapper.selectListByStarIdAndExecuteRuleId(startId, getRunningExecuteRuleId(), offset, size);
+        return campaignCandidateMapper.selectListByStarIdAndExecuteRuleId(starId, getRunningExecuteRuleId(), offset, size);
     }
 
     public CampaignCandidate getByStarIdAndId(long starId, long id) {
@@ -61,6 +57,7 @@ public class CampaignCandidateService {
             campaignCandidate.setExecuteRuleId(getRunningExecuteRuleId());
             campaignCandidateMapper.insert(campaignCandidate);
         } catch (DuplicateKeyException ex) {
+            // FIXME: 해당 exception이 발생하더라도 campaignCandidate ID가 소진됨
             throw UnauthorizedException.DUPLICATE_CANDIDATE_REGISTER;
         }
     }

@@ -4,12 +4,12 @@ import com.adinstar.pangyo.constant.PangyoEnum.*;
 import lombok.Data;
 
 @Data
-public class Comment {
+public class Comment implements PangyoData {
     private long id;
     private ContentType contentType;
     private long contentId;
-    private long userId;
+    private User user;
     private String body;
     private CommentStatus status;
-    private PangyoLocalDataTime dataTime;
+    private PangyoLocalDataTime dateTime;
 }

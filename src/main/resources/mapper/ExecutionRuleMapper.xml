@@ -3,26 +3,57 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.adinstar.pangyo.mapper.ExecutionRuleMapper">
+    <resultMap id="ExecutionRuleMap" type="ExecutionRule">
+        <result property="id" column="e_id"/>
+        <result property="turnNum" column="e_turn_num"/>
+        <result property="type" column="e_type"/>
+        <result property="startDttm" column="e_start_dttm"/>
+        <result property="endDttm" column="e_end_dttm"/>
+        <result property="status" column="e_status"/>
+        <association property="dateTime" javaType="PangyoLocalDataTime">
+            <result property="reg" column="e_reg_dttm"/>
+            <result property="up" column="e_up_dttm"/>
+        </association>
+    </resultMap>
+
+    <sql id="executionRuleColumn">
+        e.id AS e_id,
+        e.turn_num AS e_turn_num,
+        e.type AS e_type,
+        e.start_dttm AS e_start_dttm,
+        e.end_dttm AS e_end_dttm,
+        e.status AS e_status,
+        e.reg_dttm AS e_reg_dttm,
+        e.up_dttm AS e_up_dttm
+    </sql>
+
     <select id="selectRunningTurnNum" resultType="Long">
         SELECT
-          turn_num
+        turn_num
         FROM EXECUTION_RULE
         WHERE `type` = 'CANDIDATE'
-          AND start_dttm <![CDATA[ <= ]]> NOW() AND end_dttm <![CDATA[ >= ]]> NOW()
+        AND start_dttm <![CDATA[ <= ]]> NOW() AND end_dttm <![CDATA[ >= ]]> NOW()
     </select>
 
-    <select id="selectExecutionRuleListByTurnNum" resultType="ExecutionRule">
+    <select id="selectByTypeAndStatus" parameterType="Map" resultMap="ExecutionRuleMap">
         SELECT
-          id, turn_num, `type`, start_dttm, end_dttm, status, reg_dttm, up_dttm
-        FROM EXECUTION_RULE
-        WHERE turn_num = #{turnNum}
+            <include refid="executionRuleColumn"/>
+        FROM EXECUTION_RULE e
+        WHERE e.`type` = #{type} AND e.status = #{status}
     </select>
 
-    <select id="selectExecutionRuleListByStatus" resultType="ExecutionRule">
+    <select id="selectExecutionRuleListByTurnNum" resultMap="ExecutionRuleMap">
         SELECT
-        id, turn_num, `type`, start_dttm, end_dttm, status, reg_dttm, up_dttm
-        FROM EXECUTION_RULE
-        WHERE status = #{status}
+            <include refid="executionRuleColumn"/>
+        FROM EXECUTION_RULE e
+        WHERE e.turn_num = #{turnNum}
+    </select>
+
+    <select id="selectExecutionRuleListByStatus" resultType="ExecutionRuleMap">
+        SELECT
+            <include refid="executionRuleColumn"/>
+        FROM EXECUTION_RULE e
+        WHERE e.status = #{status}
     </select>
 
     <insert id="insertExecutionRule" useGeneratedKeys="true" keyProperty="id">
@@ -36,10 +67,10 @@
          WHERE id = #{id}
     </update>
 
-    <select id="selectExecutionRuleByTurnAndType" resultType="ExecutionRule">
+    <select id="selectExecutionRuleByTurnAndType" resultType="ExecutionRuleMap">
         SELECT
-          id, turn_num, `type`, start_dttm, end_dttm, status, reg_dttm, up_dttm
-        FROM EXECUTION_RULE
-        WHERE turn_num = #{turnNum} AND `type` = #{type}
+            <include refid="executionRuleColumn"/>
+        FROM EXECUTION_RULE e
+        WHERE e.turn_num = #{turnNum} AND e.`type` = #{type}
     </select>
 </mapper>

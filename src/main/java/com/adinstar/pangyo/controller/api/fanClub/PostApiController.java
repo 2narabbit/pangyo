@@ -26,7 +26,7 @@ public class PostApiController {
             @ApiImplicitParam(name="lastId", value="last post id", paramType="query", dataType="Long")
     })
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = List.class)
+            @ApiResponse(code = 200, message = "OK", response = FeedResponse.class)
     })
     @RequestMapping(method = RequestMethod.GET)
     public FeedResponse<Post> getListByStarId(@PathVariable("starId") long starId,

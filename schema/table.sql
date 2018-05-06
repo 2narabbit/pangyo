@@ -4,7 +4,6 @@ create table CAMPAIGN
 		primary key,
 	campaign_candidate_id bigint not null,
 	view_count bigint default '0' not null,
-	comment_count bigint default '0' not null,
 	support_count bigint default '0' not null,
 	is_register_ad tinyint(1) default '0' not null,
 	has_report tinyint(1) default '0' not null,
@@ -55,6 +54,28 @@ create table CAMPAIGN_OP
 comment '운영자가 캠페인 내용을 수정한 내역' engine=InnoDB
 ;
 
+CREATE TABLE `CAMPAIGN_RANK` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `campaign_id` bigint(20) NOT NULL COMMENT '캠페인 id',
+  `time` varchar(19) COLLATE utf8_bin NOT NULL COMMENT '순위 결정 시각',
+  `ranking` int(11) NOT NULL COMMENT '순위',
+  `reg_dttm` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+)
+comment '캠페인 순위 스냅샷' engine=InnoDB
+;
+
+CREATE TABLE `STAR_RANK` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `star_id` bigint(20) NOT NULL COMMENT '스타 id',
+  `time` varchar(19) COLLATE utf8_bin NOT NULL COMMENT '순위 결정 시각',
+  `ranking` int(11) NOT NULL COMMENT '순위',
+  `reg_dttm` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+)
+comment '스타 순위 스냅샷' engine=InnoDB
+;
+
 create table COMMENT
 (
 	id bigint auto_increment
@@ -68,6 +89,21 @@ create table COMMENT
 	up_dttm datetime default CURRENT_TIMESTAMP null
 )
 comment '댓글' engine=InnoDB
+;
+
+create table COMMENT_META
+(
+	content_type enum('POST', 'CANDIDATE', 'CAMPAIGN') not null,
+	content_id bigint not null,
+	count bigint null,
+	status enum('SERVICE', 'DELETED') default 'SERVICE' null,
+	primary key (content_type, content_id)
+)
+comment '댓글 메타 정보' engine=InnoDB
+;
+
+create index COMMENT_content_type_content_id_index
+	on COMMENT (content_type, content_id)
 ;
 
 create table EXECUTION_RULE
@@ -136,7 +172,6 @@ create table POST
 	img varchar(4096) null,
 	view_count bigint default '0' not null,
 	like_count bigint default '0' not null,
-	comment_count bigint default '0' not null,
 	status enum('SERVICE', 'DELETED') default 'SERVICE' not null,
 	reg_dttm datetime default CURRENT_TIMESTAMP not null,
 	up_dttm datetime default CURRENT_TIMESTAMP not null

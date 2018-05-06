@@ -16,8 +16,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        LoginInfo loginInfo = new LoginInfo();  // TODO : 로그인 오브젝트를 어떻게 관리할 지 고민해 보도록 하쟈규!
-        loginInfo.setId(100L);
+        LoginInfo loginInfo = getLoginInfo();
         request.setAttribute(ViewModelName.AUTH, loginInfo);
 
         if (handler != null && handler instanceof HandlerMethod) {
@@ -39,5 +38,22 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         }
 
         return true;
+    }
+
+
+    // 이부분은 나중에 나이스하게 풀어보자;;ㅎ
+    private LoginInfo getLoginInfo() {
+//        Random random = new Random();
+//        long id = random.nextInt(4);
+//        if (0 < id && id < 2) {
+//            LoginInfo loginInfo = new LoginInfo();
+//            loginInfo.setId(id);
+//            return loginInfo;
+//        }
+//        return null;
+
+        LoginInfo loginInfo = new LoginInfo();
+        loginInfo.setId(1L);
+        return loginInfo;
     }
 }

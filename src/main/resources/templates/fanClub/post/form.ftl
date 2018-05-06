@@ -1,4 +1,5 @@
 <#import "/macro/common.ftl" as common />
+<#import "/macro/imageUploader.ftl" as imageUploader />
 
 <!DOCTYPE html>
 <html>
@@ -15,14 +16,12 @@
     </table>
 
     <div>
-        <textarea id="body" style="width:400px" rows="10" placeholder="${star.name!}님과 관련한 소식을 알려주세요."><#if post??>${post.body!}</#if></textarea>
-    </div>
-
-    <div>
-        TODO : 이미지 업로드 (지금 수정하면 기존 이미지 날아감,,)
+        <textarea id="body" style="width:400px" rows="10" placeholder="${star.name!}님과 관련한 소식을 알려주세요.">${(post.body)!}</textarea>
     </div>
 
     <@common.importJS />
+
+    <@imageUploader.defaultUI (post.img)! />
 
     <script type="text/javascript">
         $(document).ready(function() {
@@ -48,7 +47,8 @@
                 </#if>
                 star: {id: ${star.id!}},
                 user: {id:2},  // TODO : 실 USER 주입
-                body: $('#body').val()
+                body: $('#body').val(),
+                img: getImageUrl()
             };
 
             $.ajax({
@@ -65,6 +65,7 @@
                 }
             });
         }
+
     </script>
 </body>
 </html>

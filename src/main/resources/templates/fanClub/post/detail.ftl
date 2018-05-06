@@ -1,4 +1,5 @@
 <#import "/macro/common.ftl" as common />
+<#import "/macro/comment.ftl" as comment />
 
 <!DOCTYPE html>
 <html>
@@ -22,7 +23,7 @@
 
         <p>${post.body!}</p> <!-- TODO : newline 노출 잘안되네; -->
         <#if post.img?has_content>
-            <img src="${post.img!}" style="width: 200px; height: 200px">
+            <img src="${post.img!}" style="max-width: 400px;">
         </#if>
 
         <div>
@@ -32,9 +33,9 @@
         </div>
     </div>
 
-    <strong> TODO : 댓글모듈</strong>
-
     <@common.importJS />
+
+    <@comment.defaultUI commentFeed, "POST", post.id />
 
     <script type="text/javascript">
         $(document).ready(function() {
