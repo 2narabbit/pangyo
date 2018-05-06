@@ -3,8 +3,34 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.adinstar.pangyo.mapper.ExecutionRuleMapper">
-    <select id="selectRuleId" resultType="long">
-        SELECT id FROM EXECUTION_RULE
-        WHERE `type` = #{type} AND status = #{status}
+    <resultMap id="ExecutionRuleMap" type="ExecutionRule">
+        <result property="id" column="e_id"/>
+        <result property="turnNum" column="e_turn_num"/>
+        <result property="type" column="e_type"/>
+        <result property="startDttm" column="e_start_dttm"/>
+        <result property="endDttm" column="e_end_dttm"/>
+        <result property="status" column="e_status"/>
+        <association property="dateTime" javaType="PangyoLocalDataTime">
+            <result property="reg" column="e_reg_dttm"/>
+            <result property="up" column="e_up_dttm"/>
+        </association>
+    </resultMap>
+
+    <sql id="executionRuleColumn">
+        e.id AS e_id,
+        e.turn_num AS e_turn_num,
+        e.type AS e_type,
+        e.start_dttm AS e_start_dttm,
+        e.end_dttm AS e_end_dttm,
+        e.status AS e_status,
+        e.reg_dttm AS e_reg_dttm,
+        e.up_dttm AS e_up_dttm
+    </sql>
+
+    <select id="selectByTypeAndStatus" parameterType="Map" resultMap="ExecutionRuleMap">
+        SELECT
+            <include refid="executionRuleColumn"/>
+        FROM EXECUTION_RULE e
+        WHERE e.`type` = #{type} AND e.status = #{status}
     </select>
 </mapper>

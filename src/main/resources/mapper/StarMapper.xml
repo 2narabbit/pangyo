@@ -18,6 +18,17 @@
         </association>
     </resultMap>
 
+    <resultMap id="RankStarMap" type="RankData">
+        <result property="id" column="sr_id"/>
+        <result property="dataId" column="sr_star_id"/>
+        <result property="time" column="sr_time"/>
+        <result property="ranking" column="sr_ranking"/>
+        <association property="data" javaType="Star" resultMap="StarMap"/>
+        <association property="dataTime" javaType="PangyoLocalDataTime">
+            <result property="reg" column="sr_reg_dttm"/>
+        </association>
+    </resultMap>
+
     <sql id="starColumn">
          s.id AS s_id,
          s.name AS s_name,
@@ -30,17 +41,109 @@
          s.reg_dttm AS s_reg_dttm,
          s.up_dttm AS s_up_dttm
     </sql>
+    <sql id="rankColumn">
+        sr.id AS sr_id,
+        sr.star_id AS sr_star_id,
+        sr.time AS sr_time,
+        sr.ranking AS sr_ranking,
+        sr.reg_dttm AS sr_reg_dttm
+    </sql>
 
-    <sql id="starTable">
+    <sql id="joinedStarIdForInSql">
+        (SELECT star_id FROM USER_STAR_MAP WHERE user_id = #{userId})
+    </sql>
+
+    <sql id="StarRankTable">
         STAR s
+        JOIN STAR_RANK sr ON (s.id = sr.star_id AND sr.time = #{time})
     </sql>
 
     <select id="selectById" parameterType="long" resultMap="StarMap">
         SELECT
           <include refid="starColumn"/>
-        FROM
-          <include refid="starTable"/>
-        WHERE
-          s.id = #{id}
+        FROM STAR s
+        WHERE s.display = true
+          AND s.id = #{id}
     </select>
+
+    <insert id="insert" parameterType="Star" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO STAR (`name`, naver_os, profile_img, main_img, display, fan_count, message, reg_dttm, up_dttm)
+        VALUES (#{name}, #{naverOs}, #{profileImg}, #{mainImg}, 1, 0, #{message}, NOW(), NOW())
+    </insert>
+
+    <update id="update" parameterType="Star">
+        UPDATE STAR
+        SET
+          <if test="name != null">
+              `name` = #{name},
+          </if>
+          <if test="naverOs != null">
+              naver_os = #{naverOs},
+          </if>
+          <if test="profileImg != null">
+              profile_img = #{profileImg},
+          </if>
+          <if test="mainImg != null">
+              main_img = #{mainImg},
+          </if>
+          <if test="display != null">
+              display = #{display},
+          </if>
+          <if test="message != null">
+              message = #{message},
+          </if>
+          up_dttm = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectStarRankList" parameterType="Map" resultMap="RankStarMap">
+        SELECT
+            <include refid="starColumn"/>,
+            <include refid="rankColumn"/>
+        FROM <include refid="StarRankTable"/>
+        WHERE s.display = true
+          AND sr.ranking > #{rankId}
+        ORDER BY sr.ranking ASC
+        LIMIT #{size}
+    </select>
+
+    <select id="selectJoinedStarRankListByUserId" parameterType="Map" resultMap="RankStarMap">
+        SELECT
+            <include refid="starColumn"/>,
+            <include refid="rankColumn"/>
+        FROM <include refid="StarRankTable"/>
+        WHERE s.display = true
+          AND sr.ranking > #{rankId}
+          AND s.id IN <include refid="joinedStarIdForInSql"/>
+        ORDER BY sr.ranking ASC
+        LIMIT #{size}
+    </select>
+
+    <select id="selectNotJoinedStarRankListByUserId" parameterType="Map" resultMap="RankStarMap">
+        SELECT
+            <include refid="starColumn"/>,
+            <include refid="rankColumn"/>
+        FROM <include refid="StarRankTable"/>
+        WHERE s.display = true
+          AND sr.ranking > #{rankId}
+          AND s.id NOT IN <include refid="joinedStarIdForInSql"/>
+        ORDER BY sr.ranking ASC
+        LIMIT #{size}
+    </select>
+
+    <insert id="insertJoin" parameterType="Map">
+        INSERT INTO USER_STAR_MAP (`star_id`, `user_id`,`reg_dttm`)
+        VALUES (#{starId}, #{userId}, NOW())
+    </insert>
+
+    <delete id="deleteJoin" parameterType="Map">
+        DELETE FROM USER_STAR_MAP
+        WHERE star_id = #{starId} AND user_id = #{userId}
+    </delete>
+
+    <update id="updateFanCount" parameterType="Map">
+        UPDATE STAR
+           SET fan_count = fan_count + #{delta}
+         WHERE id = #{starId}
+    </update>
 </mapper>

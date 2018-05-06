@@ -54,6 +54,28 @@ create table CAMPAIGN_OP
 comment '운영자가 캠페인 내용을 수정한 내역' engine=InnoDB
 ;
 
+CREATE TABLE `CAMPAIGN_RANK` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `campaign_id` bigint(20) NOT NULL COMMENT '캠페인 id',
+  `time` varchar(19) COLLATE utf8_bin NOT NULL COMMENT '순위 결정 시각',
+  `ranking` int(11) NOT NULL COMMENT '순위',
+  `reg_dttm` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+)
+comment '캠페인 순위 스냅샷' engine=InnoDB
+;
+
+CREATE TABLE `STAR_RANK` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `star_id` bigint(20) NOT NULL COMMENT '스타 id',
+  `time` varchar(19) COLLATE utf8_bin NOT NULL COMMENT '순위 결정 시각',
+  `ranking` int(11) NOT NULL COMMENT '순위',
+  `reg_dttm` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+)
+comment '스타 순위 스냅샷' engine=InnoDB
+;
+
 create table COMMENT
 (
 	id bigint auto_increment

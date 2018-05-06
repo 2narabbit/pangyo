@@ -7,7 +7,7 @@ public class PangyoEnum {
     public enum CampaignCandidateStatus { SERVICE, DELETED, SELECTED }
     public enum ContentType { POST, CANDIDATE, CAMPAIGN }
     public enum CommentStatus { SERVICE, DELETED }
-    public enum ExecutionRuleType { CAMPAIGN, CANDIDATE, AD }
+    public enum ExecutionRuleType { CAMPAIGN, CANDIDATE, AD, CAMPAIGN_SNAPSHOT, STAR_SNAPSHOT }
     public enum ExecutionRuleStatus { READY, RUNNING, DONE, END }
     public enum LovKey { COMMENT, POST, LIKE, SUPPORT }
     public enum PolicyKey { COMMENT, POST, LIKE,
