@@ -36,22 +36,6 @@ public class CampaignCandidateController {
         return "fanClub/campaignCandidate/list";
     }
 
-    @RequestMapping(value = "/{campaignCandidateId}", method = RequestMethod.GET)
-    public String get(@PathVariable("starId") long starId,
-                      @PathVariable("campaignCandidateId") long id,
-                      Model model) {
-        try{
-            campaignCandidateService.increaseViewCount(starId, id, 1);
-        } catch (Exception e) {
-            //ignore
-        }
-
-        model.addAttribute(STAR_ID, starId);
-        model.addAttribute(CAMPAIGN_CANDIDATE, campaignCandidateService.getByStarIdAndId(starId, id));
-
-        return "fanClub/campaignCandidate/detail";
-    }
-
     @MustLogin
     @RequestMapping(value = "/write", method = RequestMethod.GET)
     public String getWriteForm(@PathVariable("starId") long starId,
