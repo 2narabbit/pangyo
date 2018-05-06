@@ -60,7 +60,7 @@
     <div id="endOfListSection"></div>
 
     <script type="text/template" id="post-detail-template">
-        <div id="postDetailSection" style="border: 1px solid; padding: 10px; width:400px">
+        <div style="border: 1px solid; padding: 10px; width:400px">
             <div>
                 <img src="<%= user.profileImg %>"  style="width: 50px; height: 50px">
                 <strong><%= user.name %></strong>
