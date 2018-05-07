@@ -39,7 +39,7 @@ public class LikeService {
                 PangyoEnum.ActionType.LIKE, contentType, contentId, userId);
     }
 
-    public boolean doLike (PangyoEnum.ContentType contentType, long contentId, long userId) {
+    public boolean isLiked (PangyoEnum.ContentType contentType, long contentId, long userId) {
         return get(contentType, contentId, userId) != null;
     }
 

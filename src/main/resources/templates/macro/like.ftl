@@ -1,15 +1,15 @@
-<#macro defaultUI doLike, contentType, contentId>
+<#macro defaultUI isLiked, contentType, contentId>
     <style>
         #likeArea {
             color: black;
         }
-        #likeArea.doLike {
+        #likeArea.liked {
             color: red;
         }
     </style>
 
-    <#if doLike>
-        <#assign likeClass="doLike">
+    <#if isLiked>
+        <#assign likeClass="liked">
     </#if>
     <a id="likeArea" class="${likeClass!}" href="javascript:;">
         좋아요
@@ -24,7 +24,7 @@
                 contentType : "application/json",
                 success: function() {
                     $('#likeCount').text($('#likeCount').text()*1-1);
-                    $('#likeArea').removeClass('doLike');
+                    $('#likeArea').removeClass('liked');
                 },
                 error: function(res) {
                     console.log(res);
@@ -40,7 +40,7 @@
                 contentType : "application/json",
                 success: function() {
                     $('#likeCount').text($('#likeCount').text()*1+1);
-                    $('#likeArea').addClass('doLike');
+                    $('#likeArea').addClass('liked');
                 },
                 error: function(res) {
                     console.log(res);
@@ -50,7 +50,7 @@
         }
 
         $('#likeArea').click(function () {
-            if ($(this).hasClass('doLike')) {
+            if ($(this).hasClass('liked')) {
                 dontLike();
             } else {
                 doLike();

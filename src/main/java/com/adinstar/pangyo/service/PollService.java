@@ -39,7 +39,7 @@ public class PollService {
                 PangyoEnum.ActionType.POLL, contentType, contentId, userId);
     }
 
-    public boolean doPoll (PangyoEnum.ContentType contentType, long contentId, long userId) {
+    public boolean isPolled (PangyoEnum.ContentType contentType, long contentId, long userId) {
         return get(contentType, contentId, userId) != null;
     }
 

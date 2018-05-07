@@ -35,7 +35,7 @@
         <div>
             <span>조회 ${post.viewCount!}</span>
             <span>
-                <@like.defaultUI doLike, "POST", post.id />
+                <@like.defaultUI isLiked, "POST", post.id />
             </span>
             <span>댓글 ${post.commentCount!}</span>
         </div>

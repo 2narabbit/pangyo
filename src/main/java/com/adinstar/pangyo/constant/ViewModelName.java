@@ -18,5 +18,5 @@ public class ViewModelName {
 
     public static final String COMMENT_FEED = "commentFeed";
 
-    public static final String DO_LIKE = "doLike";
+    public static final String IS_LIKED = "isLiked";
 }
