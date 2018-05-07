@@ -3,6 +3,8 @@ package com.adinstar.pangyo.constant;
 public class ViewModelName {
     public static final String AUTH = "auth";
 
+    public static final String ERROR_MESSAGE = "errorMessage";
+
     public static final String STAR = "star";
     public static final String STAR_ID = "starId";
     public static final String STAR_FEED = "starFeed";

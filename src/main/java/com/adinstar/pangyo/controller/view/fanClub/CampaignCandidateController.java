@@ -1,6 +1,7 @@
 package com.adinstar.pangyo.controller.view.fanClub;
 
 import com.adinstar.pangyo.common.annotation.MustLogin;
+import com.adinstar.pangyo.constant.PangyoErrorMessage;
 import com.adinstar.pangyo.constant.ViewModelName;
 import com.adinstar.pangyo.controller.exception.NotFoundException;
 import com.adinstar.pangyo.controller.exception.UnauthorizedException;
@@ -48,7 +49,8 @@ public class CampaignCandidateController {
             LoginInfo loginInfo = (LoginInfo) request.getAttribute(ViewModelName.AUTH);  // 이 부분도 AOP도 채워 넣을지는 고민해보자!
             CampaignCandidate campaignCandidate = campaignCandidateService.getRunningCandidateByStarIdAndUserId(starId, loginInfo.getId());
             if (campaignCandidate != null) {
-                throw UnauthorizedException.DUPLICATE_CANDIDATE_REGISTER;
+                model.addAttribute(ViewModelName.ERROR_MESSAGE, PangyoErrorMessage.DUPLICATE_CANDIDATE_REGISTER);
+                return "error/alert";
             }
         } else {  // 수정을 목적으로
             CampaignCandidate campaignCandidate = campaignCandidateService.getByStarIdAndId(starId, id);
