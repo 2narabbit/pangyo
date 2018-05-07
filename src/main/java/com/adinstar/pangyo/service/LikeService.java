@@ -11,45 +11,27 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
-public class LikeService {
-
-    @Autowired
-    private ActionHistoryMapper actionHistoryMapper;
+public class LikeService extends ActionService {
 
     @Autowired
     private PostService postService;
 
+    public LikeService(ActionHistoryMapper actionHistoryMapper) {
+        super(actionHistoryMapper, PangyoEnum.ActionType.LIKE);
+    }
+
     @Transactional
     public void add(PangyoEnum.ContentType contentType, long contentId, long userId) {
-        ActionHistory actionHistory = new ActionHistory();
-        actionHistory.setActionType(PangyoEnum.ActionType.LIKE);
-        actionHistory.setContentType(contentType);
-        actionHistory.setContentId(contentId);
-        actionHistory.setUserId(userId);
-
-        actionHistoryMapper.insert(actionHistory);
+        super.add(contentType, contentId, userId);
 
         if (PangyoEnum.ContentType.POST.equals(contentType)) {
             postService.updateLikeCount(contentId, 1);
         }
     }
 
-    public ActionHistory get(PangyoEnum.ContentType contentType, long contentId, long userId) {
-        return actionHistoryMapper.selectByActionTypeAndContentTypeAndContentIdAndUserId(
-                PangyoEnum.ActionType.LIKE, contentType, contentId, userId);
-    }
-
-    public boolean isLiked (PangyoEnum.ContentType contentType, long contentId, long userId) {
-        return get(contentType, contentId, userId) != null;
-    }
-
     @Transactional
     public void remove(PangyoEnum.ContentType contentType, long contentId, long userId) {
-        int rc = actionHistoryMapper.deleteByActionTypeAndContentTypeAndContentIdAndUserId(
-                PangyoEnum.ActionType.LIKE, contentType, contentId, userId);
-        if (rc == 0) {
-            throw new NotFoundException(PangyoErrorMessage.NOT_FOUND_ACTION_HISTORY);
-        }
+        super.remove(contentType, contentId, userId);
 
         if (PangyoEnum.ContentType.POST.equals(contentType)) {
             postService.updateLikeCount(contentId, -1);
