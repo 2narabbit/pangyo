@@ -20,7 +20,7 @@
         ah.content_type AS ah_content_type,
         ah.content_id AS ah_content_id,
         ah.user_id AS ah_user_id,
-        ah.reg_dttm AS ah_reg_dttm,
+        ah.reg_dttm AS ah_reg_dttm
     </sql>
 
     <sql id="actionHistoryTable">
