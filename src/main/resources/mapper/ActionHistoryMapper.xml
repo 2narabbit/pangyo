@@ -39,6 +39,21 @@
           AND ah.user_id = #{userId}
     </select>
 
+    <select id="selectListByActionTypeAndContentTypeAndContentIdsAndUserId" parameterType="Map" resultMap="ActionHistoryMap">
+        SELECT
+          <include refid="actionHistoryColumn"/>
+        FROM
+          <include refid="actionHistoryTable"/>
+        WHERE
+          ah.action_type = #{actionType}
+          AND ah.content_type = #{contentType}
+          AND ah.user_id = #{userId}
+          AND ah.content_id IN
+          <foreach collection="contentIds" item="contentId"  open="(" close=")" separator=",">
+            #{contentId}
+          </foreach>
+    </select>
+
     <insert id="insert" parameterType="ActionHistory" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO ACTION_HISTORY (id, action_type, content_type, content_id, user_id, reg_dttm)
         VALUE (#{id}, #{actionType}, #{contentType}, #{contentId}, #{userId}, NOW());

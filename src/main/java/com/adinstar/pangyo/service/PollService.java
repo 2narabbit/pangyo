@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Service
 public class PollService {
@@ -37,6 +40,17 @@ public class PollService {
     public ActionHistory get(PangyoEnum.ContentType contentType, long contentId, long userId) {
         return actionHistoryMapper.selectByActionTypeAndContentTypeAndContentIdAndUserId(
                 PangyoEnum.ActionType.POLL, contentType, contentId, userId);
+    }
+
+    public List<ActionHistory> getList(PangyoEnum.ContentType contentType, List<Long> contentIds, long userId) {
+        return actionHistoryMapper.selectListByActionTypeAndContentTypeAndContentIdsAndUserId(
+                PangyoEnum.ActionType.POLL, contentType, contentIds, userId);
+    }
+
+    public List<Long> getContentIdList (PangyoEnum.ContentType contentType, List<Long> contentIds, long userId) {
+        return getList(contentType, contentIds, userId).stream()
+                .map(ActionHistory::getContentId)
+                .collect(Collectors.toList());
     }
 
     public boolean isPolled (PangyoEnum.ContentType contentType, long contentId, long userId) {
