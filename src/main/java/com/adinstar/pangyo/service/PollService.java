@@ -11,48 +11,48 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
-public class LikeService {
+public class PollService {
 
     @Autowired
     private ActionHistoryMapper actionHistoryMapper;
 
     @Autowired
-    private PostService postService;
+    private CampaignCandidateService campaignCandidateService;
 
     @Transactional
     public void add(PangyoEnum.ContentType contentType, long contentId, long userId) {
         ActionHistory actionHistory = new ActionHistory();
-        actionHistory.setActionType(PangyoEnum.ActionType.LIKE);
+        actionHistory.setActionType(PangyoEnum.ActionType.POLL);
         actionHistory.setContentType(contentType);
         actionHistory.setContentId(contentId);
         actionHistory.setUserId(userId);
 
         actionHistoryMapper.insert(actionHistory);
 
-        if (PangyoEnum.ContentType.POST.equals(contentType)) {
-            postService.updateLikeCount(contentId, 1);
+        if (PangyoEnum.ContentType.CANDIDATE.equals(contentType)) {
+            campaignCandidateService.updatePollCount(contentId, 1);
         }
     }
 
     public ActionHistory get(PangyoEnum.ContentType contentType, long contentId, long userId) {
         return actionHistoryMapper.selectByActionTypeAndContentTypeAndContentIdAndUserId(
-                PangyoEnum.ActionType.LIKE, contentType, contentId, userId);
+                PangyoEnum.ActionType.POLL, contentType, contentId, userId);
     }
 
-    public boolean doLike (PangyoEnum.ContentType contentType, long contentId, long userId) {
+    public boolean doPoll (PangyoEnum.ContentType contentType, long contentId, long userId) {
         return get(contentType, contentId, userId) != null;
     }
 
     @Transactional
     public void remove(PangyoEnum.ContentType contentType, long contentId, long userId) {
         int rc = actionHistoryMapper.deleteByActionTypeAndContentTypeAndContentIdAndUserId(
-                PangyoEnum.ActionType.LIKE, contentType, contentId, userId);
+                PangyoEnum.ActionType.POLL, contentType, contentId, userId);
         if (rc == 0) {
             throw new NotFoundException(PangyoErrorMessage.NOT_FOUND_ACTION_HISTORY);
         }
 
-        if (PangyoEnum.ContentType.POST.equals(contentType)) {
-            postService.updateLikeCount(contentId, -1);
+        if (PangyoEnum.ContentType.CANDIDATE.equals(contentType)) {
+            campaignCandidateService.updatePollCount(contentId, -1);
         }
     }
 }

@@ -103,9 +103,8 @@
 
     <update id="updatePollCount">
         UPDATE CAMPAIGN_CANDIDATE
-           SET poll_count = poll_count + #{delta},
-               up_dttm = NOW()
-         WHERE id = #{id} AND star_id = #{starId}
+           SET poll_count = poll_count + #{delta}
+         WHERE id = #{id}
     </update>
 
     <select id="selectByStarIdAndUserIdAndExecuteRuleId" resultMap="CampaignCandidateMap">

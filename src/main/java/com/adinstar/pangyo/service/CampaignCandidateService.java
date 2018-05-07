@@ -71,9 +71,8 @@ public class CampaignCandidateService {
         campaignCandidateMapper.updateStatus(starId, id, CampaignCandidateStatus.DELETED);
     }
 
-    @CheckAuthority(type = CampaignCandidate.class, checkType = CheckingType.ID, isCheckOwner = false)
-    public void increasePollCount(@HintKey(STAR_ID) long starId, @HintKey(CAMPAIGN_CANDIDATE_ID) long id, int delta) {
-        campaignCandidateMapper.updatePollCount(starId, id, delta);
+    public void updatePollCount(long id, int delta) {
+        campaignCandidateMapper.updatePollCount(id, delta);
     }
 
     public CampaignCandidate getRunningCandidateByStarIdAndUserId(long starId, long userId) {
