@@ -84,6 +84,12 @@
         WHERE id = #{id} AND star_id = #{star.id}
     </update>
 
+    <update id="updateLikeCount" parameterType="Map">
+        UPDATE POST
+        SET like_count = like_count + #{delta}
+        WHERE id = #{id}
+    </update>
+
     <update id="updateViewCount" parameterType="Map">
         UPDATE POST
         SET view_count = view_count + #{delta}

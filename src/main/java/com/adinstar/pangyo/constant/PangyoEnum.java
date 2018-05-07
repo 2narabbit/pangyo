@@ -12,6 +12,7 @@ public class PangyoEnum {
     public enum LovKey { COMMENT, POST, LIKE, SUPPORT }
     public enum PolicyKey { COMMENT, POST, LIKE,
                             CANDIDATE_RANGE, CANDIDATE_DONE_DATE, CAMPAIGN_RANGE, CAMPAIGN_DONE_DATE }
+    public enum ActionType { LIKE, POLL, SUPPORT }
 
 
     public enum CheckingType {ID, OBJECT}

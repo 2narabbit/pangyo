@@ -49,6 +49,10 @@ public class PostService {
         postMapper.updateStatus(starId, id, PangyoEnum.PostStatus.DELETED);
     }
 
+    public void updateLikeCount(long id, int delta) {
+        postMapper.updateLikeCount(id, delta);
+    }
+
     public void updateViewCount(long id, int delta) {
         postMapper.updateViewCount(id, delta);
     }

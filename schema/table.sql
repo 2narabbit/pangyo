@@ -1,3 +1,19 @@
+create table ACTION_HISTORY
+(
+	id bigint auto_increment
+		primary key,
+	action_type enum('LIKE', 'POLL', 'SUPPORT') not null,
+	content_type enum('POST', 'CANDIDATE', 'CAMPAIGN') not null,
+	content_id bigint not null,
+	user_id bigint not null,
+	reg_dttm datetime default CURRENT_TIMESTAMP not null,
+	constraint ACTION_HISTORY_action_type_content_type_content_id_user_id_pk
+		unique (action_type, content_type, content_id, user_id)
+)
+comment '사용자 액션 히스토리'
+;
+
+
 create table CAMPAIGN
 (
 	id bigint auto_increment
