@@ -15,12 +15,4 @@ public interface CommentMapper {
     int insert(Comment comment);
     int update(Comment comment);
     int updateStatus(@Param("id") long id, @Param("status") PangyoEnum.CommentStatus status);
-
-    //
-    // 메타정보 관련 쿼리
-    //
-    Long selectCount(@Param("contentType") PangyoEnum.ContentType contentType, @Param("contentId") long contentId);
-    int insertCount(@Param("contentType") PangyoEnum.ContentType contentType, @Param("contentId") long contentId);
-    int updateCount(@Param("contentType") PangyoEnum.ContentType contentType, @Param("contentId") long contentId, @Param("operand") int operand);
-    int updateMetaStatus(@Param("contentType") PangyoEnum.ContentType contentType, @Param("contentId") long contentId, @Param("status") PangyoEnum.CommentStatus status);
 }

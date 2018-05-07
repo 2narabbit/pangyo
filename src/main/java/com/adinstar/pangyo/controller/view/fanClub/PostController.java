@@ -37,7 +37,7 @@ public class PostController {
                       @PathVariable("postId") long postId,
                       Model model) {
         try {
-            postService.increaseViewCount(starId, postId, 1);
+            postService.updateViewCount(postId, 1);
         } catch (Exception e) {
             // ignore
         }
