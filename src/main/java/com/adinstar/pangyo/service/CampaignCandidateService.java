@@ -76,11 +76,6 @@ public class CampaignCandidateService {
         campaignCandidateMapper.updatePollCount(starId, id, delta);
     }
 
-    @CheckAuthority(type = CampaignCandidate.class, checkType = CheckingType.ID, isCheckOwner = false)
-    public void increaseViewCount(@HintKey(STAR_ID) long starId, @HintKey(CAMPAIGN_CANDIDATE_ID) long id, int delta) {
-        campaignCandidateMapper.updateViewCount(starId, id, delta);
-    }
-
     public CampaignCandidate getRunningCandidateByStarIdAndUserId(long starId, long userId) {
         return campaignCandidateMapper.selectByStarIdAndUserIdAndExecuteRuleId(starId, userId, getRunningExecuteRuleId());
     }
