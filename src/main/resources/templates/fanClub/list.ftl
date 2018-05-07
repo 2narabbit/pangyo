@@ -1,9 +1,11 @@
 <#import "/macro/common.ftl" as common />
+<#import "/macro/like.ftl" as like />
 
 <!DOCTYPE html>
 <html>
 <head>
     <title>FanClub</title>
+    <@like.defaultCSS />
 </head>
 <body>
     <#include "/fanClub/layout/head.ftl">
@@ -51,7 +53,14 @@
 
                 <div style="margin-top: 10px;">
                     <span>조회 ${post.viewCount!}</span>
-                    <span>좋아요 ${post.likeCount!}</span>
+                    <#if likedList?seq_contains(post.id)>
+                        <#assign likeClass="liked">
+                    <#else>
+                        <#assign likeClass="">
+                    </#if>
+                    <span class="likeArea ${likeClass!}">
+                        좋아요 ${post.likeCount!}
+                    </span>
                     <span>댓글 ${post.commentCount!}</span>
                     <a href="/fanClub/${star.id!}/post/${post.id!}">[더 보기]</a>
                 </div>
