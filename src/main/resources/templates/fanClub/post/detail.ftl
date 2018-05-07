@@ -6,6 +6,7 @@
 <html>
 <head>
     <title>Post</title>
+    <@like.defaultCSS />
 </head>
 <body>
 <div>
@@ -35,7 +36,7 @@
         <div>
             <span>조회 ${post.viewCount!}</span>
             <span>
-                <@like.defaultUI isLiked, "POST", post.id />
+                <@like.defaultUI isLiked, "POST", post.id, post.likeCount />
             </span>
             <span>댓글 ${post.commentCount!}</span>
         </div>

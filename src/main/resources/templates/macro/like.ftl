@@ -1,30 +1,35 @@
-<#macro defaultUI isLiked, contentType, contentId>
+<#macro defaultCSS>
     <style>
-        #likeArea {
+        .likeArea {
             color: black;
         }
-        #likeArea.liked {
+        .likeArea.liked {
             color: red;
         }
     </style>
+</#macro>
 
+<#macro defaultUI isLiked, contentType, contentId, count>
     <#if isLiked>
         <#assign likeClass="liked">
+    <#else>
+        <#assign likeClass="">
     </#if>
-    <a id="likeArea" class="${likeClass!}" href="javascript:;">
+    <a href="javascript:;" class="likeArea ${likeClass!}"  onclick="like(${contentId!}, this);">
         좋아요
-        <span id="likeCount">${post.likeCount!}</span>
+        <span class="likeCount">${count!}</span>
     </a>
 
     <script type="text/javascript">
-        function dontLike() {
+        function dontLike(contentId, $likeArea) {
             $.ajax({
-                url : '/api/like/${contentType!}/${contentId!}',
+                url : '/api/like/${contentType!}/' + contentId,
                 type : 'DELETE',
                 contentType : "application/json",
                 success: function() {
-                    $('#likeCount').text($('#likeCount').text()*1-1);
-                    $('#likeArea').removeClass('liked');
+                    var $likeCount = $likeArea.find('.likeCount');
+                    $likeCount.text($likeCount.text()*1-1);
+                    $likeArea.removeClass('liked');
                 },
                 error: function(res) {
                     console.log(res);
@@ -33,14 +38,15 @@
             });
         }
 
-        function doLike() {
+        function doLike(contentId, $likeArea) {
             $.ajax({
-                url : '/api/like/${contentType!}/${contentId!}',
+                url : '/api/like/${contentType!}/' + contentId,
                 type : 'POST',
                 contentType : "application/json",
                 success: function() {
-                    $('#likeCount').text($('#likeCount').text()*1+1);
-                    $('#likeArea').addClass('liked');
+                    var $likeCount = $likeArea.find('.likeCount');
+                    $likeCount.text($likeCount.text()*1+1);
+                    $likeArea.addClass('liked');
                 },
                 error: function(res) {
                     console.log(res);
@@ -49,12 +55,12 @@
             });
         }
 
-        $('#likeArea').click(function () {
-            if ($(this).hasClass('liked')) {
-                dontLike();
+        function like(contentId, _this) {
+            if ($(_this).hasClass('liked')) {
+                dontLike(contentId, $(_this));
             } else {
-                doLike();
+                doLike(contentId, $(_this));
             }
-        });
+        }
     </script>
 </#macro>
