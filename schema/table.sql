@@ -189,6 +189,7 @@ create table STAR
 	id bigint auto_increment
 		primary key,
 	name varchar(128) not null,
+	job varchar(64) null,
 	naver_os varchar(128) not null,
 	profile_img varchar(256) null,
 	main_img varchar(256) null,

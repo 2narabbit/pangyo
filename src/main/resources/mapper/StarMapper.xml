@@ -6,6 +6,7 @@
     <resultMap id="StarMap" type="Star">
         <result property="id" column="s_id"/>
         <result property="name" column="s_name"/>
+        <result property="job" column="s_job"/>
         <result property="naverOs" column="s_naver_os"/>
         <result property="profileImg" column="s_profile_img"/>
         <result property="mainImg" column="s_main_img"/>
@@ -32,6 +33,7 @@
     <sql id="starColumn">
          s.id AS s_id,
          s.name AS s_name,
+         s.job AS s_job,
          s.naver_os AS s_naver_os,
          s.profile_img AS s_profile_img,
          s.main_img AS s_main_img,
