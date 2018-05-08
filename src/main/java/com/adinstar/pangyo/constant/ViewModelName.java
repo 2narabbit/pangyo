@@ -22,4 +22,6 @@ public class ViewModelName {
     public static final String LIKED_LIST = "likedList";
 
     public static final String POLLED_LIST = "polledList";
+
+    public static final String EXECUTION_RULE_AD_RUNNING = "executionRuleAdRunning";
 }

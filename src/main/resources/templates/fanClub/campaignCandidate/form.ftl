@@ -62,7 +62,7 @@
             var type = 'POST';
             var data = getFormData($('form'));
             data.star = {id: ${starId!}};
-            data.user = {id: 4};  // TODO : 실 USER 주입
+            data.user = {id: 1};  // TODO : 실 USER 주입
 
             if (data.useCampaignRandingUrl) {
                 data.randingUrl = '/fanClub/${starId!}/campaign-candidate';
