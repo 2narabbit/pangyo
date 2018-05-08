@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -52,7 +53,8 @@ public class FanClubController {
         model.addAttribute(STAR, starService.getById(starId));
         model.addAttribute(CAMPAIGN_CANDIDATE_LIST, campaignCandidateService.getRunningList(starId, Optional.of(1), Optional.of(2)));
         model.addAttribute(POST_FEED, postFeedResponse);
-        model.addAttribute(LIKED_LIST, likeService.getContentIdList(PangyoEnum.ContentType.POST, ids, loginInfo.getId()));
+        model.addAttribute(LIKED_LIST,
+                ids.size() == 0 ? new ArrayList<>() : likeService.getContentIdList(PangyoEnum.ContentType.POST, ids, loginInfo.getId()));
 
         return "fanClub/list";
     }
