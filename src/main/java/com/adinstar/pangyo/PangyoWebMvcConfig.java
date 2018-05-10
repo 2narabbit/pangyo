@@ -22,12 +22,14 @@ public class PangyoWebMvcConfig extends WebMvcConfigurerAdapter {
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/api/**")
                 .addPathPatterns("/fanClub/**")
-                .addPathPatterns("/star/**");
+                .addPathPatterns("/star/**")
+                .addPathPatterns("/member/**");
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/js/**")
-                .addResourceLocations("classpath:/static/js/");
+        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+        registry.addResourceHandler("/js/**").addResourceLocations("classpath:/static/js/");
+        registry.addResourceHandler("/img/**").addResourceLocations("classpath:/images/");
     }
 }

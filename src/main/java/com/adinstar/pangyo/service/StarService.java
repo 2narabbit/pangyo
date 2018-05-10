@@ -25,7 +25,7 @@ public class StarService {
     private StarMapper starMapper;
 
     @Autowired
-    private ExecutionRuleMapper executionRuleMapper;
+    private ExecutionRuleService executionRuleService;
 
     public Star getById(long id) {
         return starMapper.selectById(id);
@@ -40,7 +40,7 @@ public class StarService {
     }
 
     private LocalDateTime getLastUpdateTime() {
-        ExecutionRule executionRule = executionRuleMapper.selectByTypeAndStatus(PangyoEnum.ExecutionRuleType.STAR_SNAPSHOT, PangyoEnum.ExecutionRuleStatus.RUNNING);
+        ExecutionRule executionRule = executionRuleService.getRunningExecuteRule(PangyoEnum.ExecutionRuleType.STAR_SNAPSHOT);
         if (executionRule == null) {
             throw InvalidConditionException.EXECUTION_RULE;
         }
