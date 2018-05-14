@@ -8,6 +8,6 @@ import lombok.Data;
  */
 
 @Data
-public class LoginInfo {
+public class LoginInfo {  // LoginUserInfo  <-- VIWER 란 이름으로 사용하자!!!
     private long id;
 }

@@ -1,5 +1,6 @@
 package com.adinstar.pangyo.service;
 
+import com.adinstar.pangyo.model.authorization.KTokenInfo;
 import com.adinstar.pangyo.model.authorization.KakaoLoginInfo;
 import com.adinstar.pangyo.model.authorization.KOauthInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,7 +23,7 @@ import java.time.LocalDateTime;
  */
 
 @Service
-public class KakaoLoginService {
+public class KakaoLoginService {   //  이 녀석은 인증 레이어기 때문에 기존 service 속성보다 밑에 있었으면 좋겠는데 딱히 좋은 아이디어가 생각나지 않는다.. 스뷰..ㅠ.ㅠ
 
     private static final String SCHEME = "https";
     private static final String AUTH_HOST = "kauth.kakao.com";
@@ -33,6 +34,7 @@ public class KakaoLoginService {
     private static final String SIGNUP_URL = "/v1/user/signup";
     private static final String UNLINK_URL = "/v1/user/unlink";
     private static final String ME_DATA_URL = "/v1/user/me";
+    private static final String TOKEN_DATA_URL = "/v1/user/access_token_info";
 
     @Value("${kakaotalk.rest-api}")
     private String CLIENT_ID;
@@ -137,9 +139,26 @@ public class KakaoLoginService {
         headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
 
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> entityForString = restTemplate.exchange(getRequestUri(ME_DATA_URL), HttpMethod.GET, new HttpEntity<>("", headers), String.class);
-        ResponseEntity<KakaoLoginInfo> entity = restTemplate.exchange(getRequestUri(ME_DATA_URL), HttpMethod.GET, new HttpEntity<>("", headers), KakaoLoginInfo.class);
-
+        ResponseEntity<KakaoLoginInfo> entity = restTemplate.exchange(getRequestUri(ME_DATA_URL), HttpMethod.POST, new HttpEntity<>(null, headers), KakaoLoginInfo.class);
         return entity.getBody();
+    }
+
+    public boolean isInvalidToken(String accessToken) {
+        KTokenInfo kTokenInfo = getKTokenInfo(accessToken);
+        return (kTokenInfo == null) ? true : false;
+    }
+
+    private KTokenInfo getKTokenInfo(String accessToken) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+        headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            ResponseEntity<KTokenInfo> entity = restTemplate.exchange(getRequestUri(TOKEN_DATA_URL), HttpMethod.GET, new HttpEntity<>(null, headers), KTokenInfo.class);
+            return entity.getBody();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

@@ -28,4 +28,23 @@
        u.reg_dttm AS u_reg_dttm,
        u.up_dttm AS u_up_dttm
     </sql>
+
+    <sql id="userTable">
+        USER u
+    </sql>
+
+    <select id="selectByServiceAndServiceUserId" parameterType="Map" resultMap="UserMap">
+        SELECT
+          <include refid="userColumn"/>
+        FROM
+          <include refid="userTable"/>
+        WHERE service = #{service}
+          AND service_user_id = #{serviceUserId}
+          AND status = 'MEMBER'
+    </select>
+
+    <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO USER (service, service_user_id, `name`, profile_img, recommand_code, status, reg_dttm, up_dttm)
+        VALUE (#{service}, #{serviceUserId}, #{name}, #{profileImg}, #{recommandCode}, 'MEMBER', NOW(), NOW());
+    </insert>
 </mapper>

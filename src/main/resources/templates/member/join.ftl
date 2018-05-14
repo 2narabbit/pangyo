@@ -3,59 +3,79 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width"/>
-    <title>Login Pangyo</title>
-    <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
-
+    <title>Join Pangyo</title>
 </head>
 <body>
-<a id="kakao-login-btn"></a>
-<a href="http://developers.kakao.com/logout"></a>
-<script type='text/javascript'>
-    //<![CDATA[
-    // 사용할 앱의 JavaScript 키를 설정해 주세요.
-    Kakao.init('YOUR APP KEY');
-    // 카카오 로그인 버튼을 생성합니다.
-    Kakao.Auth.createLoginButton({
-        container: '#kakao-login-btn',
-        success: function(authObj) {
-            alert(JSON.stringify(authObj));
-        },
-        fail: function(err) {
-            alert(JSON.stringify(err));
+    <form>
+        <div style="margin-top:10px">* 닉네임</div>
+        <div>
+            <input type="text" id="nickname" value="${nickname!}" maxlength="22" style="width:400px">
+        </div>
+
+        <div style="margin-top:10px">* 프로필 이미지</div>
+        <div>
+            <input type="text" id="profileImg" value="${profileImg!}" style="width:400px">
+        </div>
+
+        <div style="margin-top:10px">* 추천인 코드</div>
+        <div>
+            <input type="text" id="recommandCode" value="" style="width:400px">
+            <button id="checkBtn" onclick="checkValidCode()">검증하기</button>
+        </div>
+    </form>
+
+    <div style="margin-top:10px">
+        <a id="submitButton" href="#">등록 완료</a>
+    </div>
+
+     <@common.importJS />
+    <script src="/js/jquery.visible.js"></script>
+    <script type='text/javascript'>
+
+        function checkValidCode() {
+            var recommandCode = $('#recommandCode').val();
+
+            $.ajax({
+                url : '/api/member/recommandCode/'+recommandCode,
+                type : 'GET',
+                contentType : "application/json",
+                success: function() {
+                    alert('유효한 추천인 코드입니다.');
+                },
+                error: function(res) {
+                    console.log(res);
+                    alert('유효하지 않은 추천인 코드입니다.');
+                }
+            });
         }
-    });
-    //]]>
-</script>
 
-</body>
-</html>
+        function submit() {
+            var data = {  // 나중에 정상적으로 처리되면 data 부분에 필요없는 내용 버려야함!!!(service, serviceUserId)
+                service: '${service!}',
+                serviceUserId: 776431321,
+                name: $('#nickname').val(),
+                profileImg: $('#profileImg').val(),
+                recommandCode: $('#recommandCode').val(),
+            };
 
+            $.ajax({
+                url : '/api/member/join',
+                type : 'POST',
+                data : JSON.stringify(data),
+                contentType : "application/json",
+                success: function() {
+                    location.replace('${continueUrl!}');
+                },
+                error: function(res) {
+                    console.log(res);
+                    alert('회원가입에 실패했습니다.');
+                }
+            });
+        }
 
-
-
-<a id="custom-login-btn" href="javascript:loginWithKakao()">
-    <img src="//mud-kage.kakao.com/14/dn/btqbjxsO6vP/KPiGpdnsubSq3a0PHEGUK1/o.jpg" width="300"/>
-</a>
-<script type='text/javascript'>
-    //<![CDATA[
-    // 사용할 앱의 JavaScript 키를 설정해 주세요.
-    Kakao.init('YOUR APP KEY');
-    function loginWithKakao() {
-        // 로그인 창을 띄웁니다.
-        Kakao.Auth.login({
-            success: function(authObj) {
-                alert(JSON.stringify(authObj));
-            },
-            fail: function(err) {
-                alert(JSON.stringify(err));
-            }
+        $(document).ready(function() {
+            $('#submitButton').click(submit);
         });
-    };
-    //]]>
-</script>
-
+    </script>
 </body>
 </html>

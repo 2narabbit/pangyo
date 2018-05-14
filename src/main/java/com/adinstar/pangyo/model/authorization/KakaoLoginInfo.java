@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class KakaoLoginInfo {
+    private String service = "KAKAO";
     private long id;
     private String kaccountEmail;
     private Boolean verified;

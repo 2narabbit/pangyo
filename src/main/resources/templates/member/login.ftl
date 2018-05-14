@@ -6,19 +6,13 @@
     <title>Login Pangyo</title>
 </head>
 <body>
-    <#--<#if auth??>-->
-        <#--<button id="homeBtn" onclick="redirectHomePage()">-->
-            <#--<img src="/img/booo_star.png" width="300"/>-->
-        <#--</button>-->
-    <#--<#else>-->
         <#if kOauthInfo??>
             <span>accessToken : ${kOauthInfo.accessToken}</span>
             <span>refreshToken : ${kOauthInfo.refreshToken}</span>
         </#if>
-        <button id="loginBtn" onclick="redirectLoginPage()">
-            <img src="/img/login_btn.png" width="300"/>
-        </button>
-    <#--</#if>-->
+    <button id="loginBtn" onclick="redirectLoginPage()">
+        <img src="/img/login_btn.png" width="300"/>
+    </button>
 
     <script type="text/javascript">
         function redirectHomePage() {
