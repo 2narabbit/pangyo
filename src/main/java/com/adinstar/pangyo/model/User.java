@@ -6,12 +6,14 @@ import org.springframework.util.StringUtils;
 
 @Data
 public class User {
+    public static final long MAGIC_NUMBER = 1_000_000L;
+
     private long id;
     private String service;
     private String serviceUserId;
     private String name;
     private String profileImg;
-    private String recommandCode;
+    private String recommendCode;
     private UserStatus status;
     private PangyoLocalDataTime dateTime;
 
@@ -22,5 +24,9 @@ public class User {
         } else {
             return profileImg;
         }
+    }
+
+    public String getMyCode(){
+        return String.valueOf(id + MAGIC_NUMBER);
     }
 }

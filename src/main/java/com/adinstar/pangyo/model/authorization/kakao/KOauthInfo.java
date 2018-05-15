@@ -1,23 +1,22 @@
-package com.adinstar.pangyo.model.authorization;
+package com.adinstar.pangyo.model.authorization.kakao;
 
+import com.adinstar.pangyo.constant.PangyoEnum.AccountType;
+import com.adinstar.pangyo.model.authorization.AuthInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class KOauthInfo {
+public class KOauthInfo implements AuthInfo {
     private String accessToken;
     private String tokenType;
     private String refreshToken;
     private long expiresIn;
     private String scope;
-    private LocalDateTime loginDateTime;
 
     @JsonSetter("access_token")
-    public void setAccessToken(String accessToken){
+    public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
     }
 
@@ -36,11 +35,8 @@ public class KOauthInfo {
         this.expiresIn = expiresIn;
     }
 
-    public boolean isExpired() {
-        LocalDateTime expiredDateTime = loginDateTime.plusSeconds(expiresIn);
-        if (expiredDateTime.isBefore(LocalDateTime.now())) {
-            return true;
-        }
-        return false;
+    @Override
+    public AccountType getService() {
+        return AccountType.KAKAO;
     }
 }

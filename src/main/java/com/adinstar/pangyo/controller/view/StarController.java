@@ -3,7 +3,10 @@ package com.adinstar.pangyo.controller.view;
 
 import com.adinstar.pangyo.common.annotation.MustLogin;
 import com.adinstar.pangyo.constant.ViewModelName;
-import com.adinstar.pangyo.model.LoginInfo;
+import com.adinstar.pangyo.model.FeedResponse;
+import com.adinstar.pangyo.model.RankData;
+import com.adinstar.pangyo.model.Star;
+import com.adinstar.pangyo.model.ViwerInfo;
 import com.adinstar.pangyo.service.StarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,14 +28,14 @@ public class StarController {
     private StarService starService;
 
     @RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
-    public String getTopFeed(@ModelAttribute(ViewModelName.AUTH) LoginInfo loginInfo,
+    public String getTopFeed(@ModelAttribute(ViewModelName.VIEWER) ViwerInfo viwerInfo,
                              Model model) {
-        if (loginInfo == null) {
-            model.addAttribute(MY_STAR_FEED, Collections.EMPTY_LIST);
+        if (viwerInfo == null) {
+            model.addAttribute(MY_STAR_FEED, FeedResponse.EMPTY_LIST);
             model.addAttribute(STAR_FEED, starService.getStarRankList(Optional.empty(), LIST_SIZE));
         } else {
-            model.addAttribute(MY_STAR_FEED, starService.getJoinedStarRankListByUserId(loginInfo.getId(), Optional.empty(), 3));
-            model.addAttribute(STAR_FEED, starService.getNotJoinedStarRankListByUserId(loginInfo.getId(), Optional.empty(), 3));
+            model.addAttribute(MY_STAR_FEED, starService.getJoinedStarRankListByUserId(viwerInfo.getId(), Optional.empty(), 3));
+            model.addAttribute(STAR_FEED, starService.getNotJoinedStarRankListByUserId(viwerInfo.getId(), Optional.empty(), 3));
         }
         return "star/list";
     }
@@ -40,9 +43,9 @@ public class StarController {
     // 여기 위치 하지 않는게 안 맞는것 같지만;;;; 별도 컨트롤러를 두는게ㅠㅠ
     @RequestMapping(value = {"/my"}, method = RequestMethod.GET)
     @MustLogin
-    public String getMyStar(@ModelAttribute(ViewModelName.AUTH) LoginInfo loginInfo,
+    public String getMyStar(@ModelAttribute(ViewModelName.VIEWER) ViwerInfo viwerInfo,
                              Model model) {
-        model.addAttribute(MY_STAR_FEED, starService.getJoinedStarRankListByUserId(loginInfo.getId(), Optional.empty(), 5));
+        model.addAttribute(MY_STAR_FEED, starService.getJoinedStarRankListByUserId(viwerInfo.getId(), Optional.empty(), 5));
         return "star/my/list";
     }
 }

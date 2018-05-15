@@ -13,7 +13,7 @@ public class PangyoEnum {
     public enum PolicyKey { COMMENT, POST, LIKE,
                             CANDIDATE_RANGE, CANDIDATE_DONE_DATE, CAMPAIGN_RANGE, CAMPAIGN_DONE_DATE }
     public enum ActionType { LIKE, POLL, SUPPORT }
-
+    public enum AccountType { KAKAO }
 
     public enum CheckingType {ID, OBJECT}
 }

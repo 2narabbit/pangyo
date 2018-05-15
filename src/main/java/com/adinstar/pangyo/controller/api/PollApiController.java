@@ -4,7 +4,7 @@ import com.adinstar.pangyo.common.annotation.MustLogin;
 import com.adinstar.pangyo.constant.PangyoEnum;
 import com.adinstar.pangyo.constant.ViewModelName;
 import com.adinstar.pangyo.model.FeedResponse;
-import com.adinstar.pangyo.model.LoginInfo;
+import com.adinstar.pangyo.model.ViwerInfo;
 import com.adinstar.pangyo.service.PollService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +27,8 @@ public class PollApiController {
     @MustLogin
     public void add(@PathVariable("contentType") String contentType,
                     @PathVariable("contentId") long contentId,
-                    @ModelAttribute(ViewModelName.AUTH) LoginInfo loginInfo) {
-        pollService.add(PangyoEnum.ContentType.valueOf(contentType), contentId, loginInfo.getId());
+                    @ModelAttribute(ViewModelName.VIEWER) ViwerInfo viwerInfo) {
+        pollService.add(PangyoEnum.ContentType.valueOf(contentType), contentId, viwerInfo.getId());
     }
 
     @ApiOperation("removePoll")
@@ -41,7 +41,7 @@ public class PollApiController {
     @MustLogin
     public void remove(@PathVariable("contentType") String contentType,
                     @PathVariable("contentId") long contentId,
-                    @ModelAttribute(ViewModelName.AUTH) LoginInfo loginInfo) {
-        pollService.remove(PangyoEnum.ContentType.valueOf(contentType), contentId, loginInfo.getId());
+                    @ModelAttribute(ViewModelName.VIEWER) ViwerInfo viwerInfo) {
+        pollService.remove(PangyoEnum.ContentType.valueOf(contentType), contentId, viwerInfo.getId());
     }
 }

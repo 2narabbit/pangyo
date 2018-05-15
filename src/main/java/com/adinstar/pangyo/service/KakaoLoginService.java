@@ -1,8 +1,8 @@
 package com.adinstar.pangyo.service;
 
-import com.adinstar.pangyo.model.authorization.KTokenInfo;
-import com.adinstar.pangyo.model.authorization.KakaoLoginInfo;
-import com.adinstar.pangyo.model.authorization.KOauthInfo;
+import com.adinstar.pangyo.model.authorization.kakao.KOauthInfo;
+import com.adinstar.pangyo.model.authorization.kakao.KTokenInfo;
+import com.adinstar.pangyo.model.authorization.kakao.KakaoLoginInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +16,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.URI;
-import java.time.LocalDateTime;
 
 /*
  * https://developers.kakao.com/docs/restapi/user-management#%EC%95%B1-%EC%97%B0%EA%B2%B0
@@ -67,7 +66,6 @@ public class KakaoLoginService {   //  이 녀석은 인증 레이어기 때문�
         KOauthInfo KOauthInfo = null;
         try {
             KOauthInfo = mapper.readValue(responseStr, KOauthInfo.class);
-            KOauthInfo.setLoginDateTime(LocalDateTime.now());
         } catch (IOException e) {
             e.printStackTrace();  // try-catch로 잡을지 throw 할 지 고민해보자!
         }
@@ -93,8 +91,7 @@ public class KakaoLoginService {   //  이 녀석은 인증 레이어기 때문�
         KOauthInfo kOauthInfo = null;
         try {
             kOauthInfo = mapper.readValue(responseStr, KOauthInfo.class);
-            kOauthInfo.setLoginDateTime(LocalDateTime.now());
-            if (kOauthInfo.getRefreshToken() == null){
+            if (kOauthInfo.getRefreshToken() == null) {
                 kOauthInfo.setRefreshToken(refreshToken);
             }
         } catch (IOException e) {
@@ -109,19 +106,18 @@ public class KakaoLoginService {   //  이 녀석은 인증 레이어기 때문�
         headers.add("Authorization", "Bearer " + accessToken);
 
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> logoutString = restTemplate.exchange(getRequestUri(LOGOUT), HttpMethod.POST, new HttpEntity(null, headers), String.class);
-        return (logoutString == null) ? null : logoutString.getBody();
+        ResponseEntity<String> entity = restTemplate.exchange(getRequestUri(LOGOUT), HttpMethod.POST, new HttpEntity(null, headers), String.class);
+        return (entity == null) ? null : entity.getBody();
     }
 
-    // (?)  왜 때문에 signup이 정상적으로 동작하지 않을까? 400 이라니...
     public String signup(final String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessToken);
         headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
 
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> signupString = restTemplate.exchange(getRequestUri(SIGNUP_URL), HttpMethod.POST, new HttpEntity(null, headers), String.class);
-        return (signupString == null) ? null :signupString.getBody();
+        ResponseEntity<String> entity = restTemplate.exchange(getRequestUri(SIGNUP_URL), HttpMethod.POST, new HttpEntity(null, headers), String.class);
+        return (entity == null) ? null : entity.getBody();
     }
 
     public String unlink(String accessToken) {
@@ -129,8 +125,8 @@ public class KakaoLoginService {   //  이 녀석은 인증 레이어기 때문�
         headers.add("Authorization", "Bearer " + accessToken);
 
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> unlinkString = restTemplate.exchange(getRequestUri(UNLINK_URL), HttpMethod.POST, new HttpEntity(null, headers), String.class);
-        return (unlinkString == null) ? null : unlinkString.getBody();
+        ResponseEntity<String> entity = restTemplate.exchange(getRequestUri(UNLINK_URL), HttpMethod.POST, new HttpEntity(null, headers), String.class);
+        return (entity == null) ? null : entity.getBody();
     }
 
     public KakaoLoginInfo getKakaoLoginInfo(final String accessToken) {
@@ -140,25 +136,16 @@ public class KakaoLoginService {   //  이 녀석은 인증 레이어기 때문�
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<KakaoLoginInfo> entity = restTemplate.exchange(getRequestUri(ME_DATA_URL), HttpMethod.POST, new HttpEntity<>(null, headers), KakaoLoginInfo.class);
-        return entity.getBody();
+        return (entity == null) ? null : entity.getBody();
     }
 
-    public boolean isInvalidToken(String accessToken) {
-        KTokenInfo kTokenInfo = getKTokenInfo(accessToken);
-        return (kTokenInfo == null) ? true : false;
-    }
-
-    private KTokenInfo getKTokenInfo(String accessToken) {
+    public KTokenInfo getKTokenInfo(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessToken);
         headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
 
         RestTemplate restTemplate = new RestTemplate();
-        try {
-            ResponseEntity<KTokenInfo> entity = restTemplate.exchange(getRequestUri(TOKEN_DATA_URL), HttpMethod.GET, new HttpEntity<>(null, headers), KTokenInfo.class);
-            return entity.getBody();
-        } catch (Exception e) {
-            return null;
-        }
+        ResponseEntity<KTokenInfo> entity = restTemplate.exchange(getRequestUri(TOKEN_DATA_URL), HttpMethod.GET, new HttpEntity<>(null, headers), KTokenInfo.class);
+        return (entity == null) ? null : entity.getBody();
     }
 }

@@ -10,4 +10,6 @@ public class PangyoErrorMessage {
     public static final String INVALID_EXECUTION_RULE = "시스템 내부에 문제가 발생하였습니다(1) 운영자에게 문의주세요!";
     public static final String NEED_AUTH_CODE = "인증에 필요한 코드를 찾을 수 없습니다.";
     public static final String NEED_SIGNUP = "로그인 서비스 약관에 미동의 하였습니다.";
+    public static final String DUPLICATE_USER_REGISTER = "이미 가입되어 있습니다.";
+    public static final String NOT_FOUND_STAR = "존재하지 않는 팬클럽입니다.";
 }

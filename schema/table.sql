@@ -212,7 +212,7 @@ create table USER
 	service_user_id varchar(128) not null,
 	name varchar(128) not null,
 	profile_img varchar(256) null,
-	recommand_code bigint null,
+	recommend_code varchar(32) null,
 	status enum('MEMBER', 'DELETED') default 'MEMBER' not null,
 	reg_dttm datetime default CURRENT_TIMESTAMP not null,
 	up_dttm datetime default CURRENT_TIMESTAMP not null

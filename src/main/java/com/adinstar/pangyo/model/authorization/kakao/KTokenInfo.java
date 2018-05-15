@@ -1,4 +1,4 @@
-package com.adinstar.pangyo.model.authorization;
+package com.adinstar.pangyo.model.authorization.kakao;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;

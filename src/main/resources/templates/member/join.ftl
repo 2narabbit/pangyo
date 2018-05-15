@@ -19,7 +19,7 @@
 
         <div style="margin-top:10px">* 추천인 코드</div>
         <div>
-            <input type="text" id="recommandCode" value="" style="width:400px">
+            <input type="text" id="recommendCode" value="" style="width:400px">
             <button id="checkBtn" onclick="checkValidCode()">검증하기</button>
         </div>
     </form>
@@ -28,19 +28,31 @@
         <a id="submitButton" href="#">등록 완료</a>
     </div>
 
-     <@common.importJS />
+    <@common.importJS />
     <script src="/js/jquery.visible.js"></script>
     <script type='text/javascript'>
-
         function checkValidCode() {
-            var recommandCode = $('#recommandCode').val();
+            var recommendCode = $('#recommendCode').val();
+            console.log(recommendCode);
 
             $.ajax({
-                url : '/api/member/recommandCode/'+recommandCode,
+                url : '/api/member?recommendCode='+recommendCode,
                 type : 'GET',
                 contentType : "application/json",
-                success: function() {
-                    alert('유효한 추천인 코드입니다.');
+                success: function(res) {
+                    console.log(res);
+                    var isValid = false;
+                    if (res != null) {
+                        var user = JSON.parse(res);
+                        if (user.id > 0) {
+                            isValid = true;
+                            alert('유효한 추천인 코드입니다.');
+                        }
+                    }
+
+                    if (!isValid){
+                        alert('유효하지 않은 추천인 코드입니다.');
+                    }
                 },
                 error: function(res) {
                     console.log(res);
@@ -59,7 +71,7 @@
             };
 
             $.ajax({
-                url : '/api/member/join',
+                url : '/api/member',
                 type : 'POST',
                 data : JSON.stringify(data),
                 contentType : "application/json",

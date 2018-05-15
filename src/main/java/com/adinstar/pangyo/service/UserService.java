@@ -1,5 +1,6 @@
 package com.adinstar.pangyo.service;
 
+import com.adinstar.pangyo.constant.PangyoEnum;
 import com.adinstar.pangyo.mapper.UserMapper;
 import com.adinstar.pangyo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,16 +12,20 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
-    public User get(String service, long serviceUserId) {
-        return userMapper.selectByServiceAndServiceUserId(service, serviceUserId);
+    public User get(PangyoEnum.AccountType service, long serviceUserId) {
+        return userMapper.selectByServiceAndServiceUserId(service.name(), serviceUserId);
     }
 
     public void add(User user) {
         userMapper.insert(user);
     }
 
-    // TODO : 서비스랑 유저id 랑 어떻게 잘 mix해서 valid를 체크할지 고민하자!
-    public boolean isValidRecommandCode(String recommandCode) {
-        return true;
+    public User getRecommendedUser(String recommandCode) {
+        long id = Long.valueOf(recommandCode) - User.MAGIC_NUMBER;  // todo: 추천인 코드는 어떻게 제공하면 좋을지 고민하자... 걍 id로?
+        return (id < 0) ? null : userMapper.selectById(id);
+    }
+
+    public void withdrawal(long id) {
+        userMapper.updateStatus(id, PangyoEnum.UserStatus.DELETED);
     }
 }
