@@ -38,7 +38,7 @@ public class ScheduleController {
             @ApiImplicitParam(name = "turnNum", value = "요청 회차", paramType = "query", required = true, dataType = "long")
     })
     @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = Map.class)})
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.POST)
     public List<ExecutionRule> add(@RequestParam long turnNum) {
         ruleMaker.registeredExecutionRule(turnNum);
         return executionRuleService.getExecutionRuleListByTurnNum(turnNum);
