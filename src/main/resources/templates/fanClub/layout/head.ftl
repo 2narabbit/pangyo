@@ -1,5 +1,5 @@
-<img src="${star.mainImg!}" style="width: 400px; height: 200px">
+<img src="${star.mainImg!}" style="max-width: 400px;">
 <div>
-    <h2>${star.name!}</h2> <!-- TODO : 기획서엔 직업 노출되는데, DB에 직업없다 -->
+    <h2>${star.name!} ${star.job!}</h2>
     <span>${star.fanCount!}fans</span>
 </div>

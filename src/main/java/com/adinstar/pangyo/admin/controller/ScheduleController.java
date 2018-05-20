@@ -2,6 +2,7 @@ package com.adinstar.pangyo.admin.controller;
 
 import com.adinstar.pangyo.admin.service.RuleMaker;
 import com.adinstar.pangyo.model.ExecutionRule;
+import com.adinstar.pangyo.service.ExecutionRuleService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,9 @@ import java.util.Map;
 public class ScheduleController {
 
     @Autowired
+    private ExecutionRuleService executionRuleService;
+
+    @Autowired
     private RuleMaker ruleMaker;
 
     @ApiOperation("요청 회차의 ExecutionRule 정보 확인하기")
@@ -26,7 +30,7 @@ public class ScheduleController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = Map.class)})
     @RequestMapping(method = RequestMethod.GET)
     public List<ExecutionRule> get(@RequestParam long turnNum) {
-        return ruleMaker.getExecutionRuleByTurnNum(turnNum);
+        return executionRuleService.getExecutionRuleListByTurnNum(turnNum);
     }
 
     @ApiOperation("요청 회차의 ExecutionRule 추가하기")
@@ -37,7 +41,6 @@ public class ScheduleController {
     @RequestMapping(method = RequestMethod.GET)
     public List<ExecutionRule> add(@RequestParam long turnNum) {
         ruleMaker.registeredExecutionRule(turnNum);
-
-        return ruleMaker.getExecutionRuleByTurnNum(turnNum);
+        return executionRuleService.getExecutionRuleListByTurnNum(turnNum);
     }
 }

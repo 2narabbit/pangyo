@@ -1,6 +1,6 @@
 package com.adinstar.pangyo.admin.service;
 
-import com.adinstar.pangyo.exception.InvalidSituation;
+import com.adinstar.pangyo.controller.exception.InvalidConditionException;
 import com.adinstar.pangyo.mapper.CampaignRankMapper;
 import com.adinstar.pangyo.mapper.PolicyMapper;
 import com.adinstar.pangyo.model.Campaign;
@@ -48,7 +48,7 @@ public class Ranker {
     private long getPolicyByCampaignSnapshotTerm() {
         Policy policy = policyMapper.selectPolicyByKey(CAMPAIGN_SNAPSHOT_KEY);
         if (policy == null) {
-            throw InvalidSituation.NOT_FOUND_POLICY;
+            throw InvalidConditionException.POLICY;
         }
 
         return Long.valueOf(policy.getValue());

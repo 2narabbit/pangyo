@@ -1,3 +1,19 @@
+create table ACTION_HISTORY
+(
+	id bigint auto_increment
+		primary key,
+	action_type enum('LIKE', 'POLL', 'SUPPORT') not null,
+	content_type enum('POST', 'CANDIDATE', 'CAMPAIGN') not null,
+	content_id bigint not null,
+	user_id bigint not null,
+	reg_dttm datetime default CURRENT_TIMESTAMP not null,
+	constraint ACTION_HISTORY_action_type_content_type_content_id_user_id_pk
+		unique (action_type, content_type, content_id, user_id)
+)
+comment '사용자 액션 히스토리'
+;
+
+
 create table CAMPAIGN
 (
 	id bigint auto_increment
@@ -30,7 +46,6 @@ create table CAMPAIGN_CANDIDATE
 	body varchar(4096) not null,
 	randing_url varchar(4096) null,
 	banner_img varchar(4096) null,
-	view_count bigint default '0' not null,
 	poll_count bigint default '0' not null,
 	display tinyint(1) default '1' not null,
 	status enum('SERVICE', 'DELETED', 'SELECTED') default 'SERVICE' not null,
@@ -88,18 +103,7 @@ create table COMMENT
 	reg_dttm datetime default CURRENT_TIMESTAMP not null,
 	up_dttm datetime default CURRENT_TIMESTAMP null
 )
-comment '댓글' engine=InnoDB
-;
-
-create table COMMENT_META
-(
-	content_type enum('POST', 'CANDIDATE', 'CAMPAIGN') not null,
-	content_id bigint not null,
-	count bigint null,
-	status enum('SERVICE', 'DELETED') default 'SERVICE' null,
-	primary key (content_type, content_id)
-)
-comment '댓글 메타 정보' engine=InnoDB
+comment '댓글'
 ;
 
 create index COMMENT_content_type_content_id_index
@@ -172,11 +176,12 @@ create table POST
 	img varchar(4096) null,
 	view_count bigint default '0' not null,
 	like_count bigint default '0' not null,
+	comment_count bigint default '0' null,
 	status enum('SERVICE', 'DELETED') default 'SERVICE' not null,
 	reg_dttm datetime default CURRENT_TIMESTAMP not null,
 	up_dttm datetime default CURRENT_TIMESTAMP not null
 )
-comment '게시글' engine=InnoDB
+comment '게시글'
 ;
 
 create table STAR
@@ -184,6 +189,7 @@ create table STAR
 	id bigint auto_increment
 		primary key,
 	name varchar(128) not null,
+	job varchar(64) null,
 	naver_os varchar(128) not null,
 	profile_img varchar(256) null,
 	main_img varchar(256) null,
@@ -206,7 +212,7 @@ create table USER
 	service_user_id varchar(128) not null,
 	name varchar(128) not null,
 	profile_img varchar(256) null,
-	recommand_code bigint null,
+	recommend_code varchar(32) null,
 	status enum('MEMBER', 'DELETED') default 'MEMBER' not null,
 	reg_dttm datetime default CURRENT_TIMESTAMP not null,
 	up_dttm datetime default CURRENT_TIMESTAMP not null

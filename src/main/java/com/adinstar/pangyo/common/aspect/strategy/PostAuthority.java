@@ -6,13 +6,12 @@ import com.adinstar.pangyo.common.aspect.AuthorityStrategy;
 import com.adinstar.pangyo.controller.exception.BadRequestException;
 import com.adinstar.pangyo.controller.exception.NotFoundException;
 import com.adinstar.pangyo.controller.exception.UnauthorizedException;
-import com.adinstar.pangyo.model.LoginInfo;
+import com.adinstar.pangyo.model.ViwerInfo;
 import com.adinstar.pangyo.model.Post;
 import com.adinstar.pangyo.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -27,7 +26,7 @@ public class PostAuthority implements AuthorityStrategy {
     private PostService postService;
 
     @Override
-    public boolean isValid(LoginInfo loginInfo, Method method, Object[] args, CheckAuthority checkAuthority) {
+    public boolean isValid(ViwerInfo viwerInfo, Method method, Object[] args, CheckAuthority checkAuthority) {
         Map paramMap = getParamMap(method.getParameters(), args);
 
         long starId = (long) paramMap.getOrDefault(HintKey.STAR_ID, 0);
@@ -52,7 +51,7 @@ public class PostAuthority implements AuthorityStrategy {
                 }
                 break;
             default:
-                new NotImplementedException();
+                throw BadRequestException.INVALID_PARAM;
         }
 
         if (post == null) {
@@ -64,7 +63,7 @@ public class PostAuthority implements AuthorityStrategy {
         }
 
         // 향후 로그인 로직이 추가되면 해당 if 문 수정하면 됨!!
-        if (checkAuthority.isCheckOwner() && (post.getUser().getId() != post.getUser().getId() )) {  //loginInfo.getId()
+        if (checkAuthority.isCheckOwner() && (post.getUser().getId() != post.getUser().getId() )) {  //viwerInfo.getId()
             throw UnauthorizedException.NO_OWNER_SHIP;
         }
 
@@ -91,7 +90,7 @@ public class PostAuthority implements AuthorityStrategy {
                     paramMap.put(HintKey.POST_ID, args[i]);
                     break;
                 default:
-                    new NotImplementedException();
+                    throw BadRequestException.INVALID_PARAM;
             }
         }
 

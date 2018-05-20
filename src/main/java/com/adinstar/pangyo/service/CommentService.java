@@ -17,6 +17,9 @@ public class CommentService {
     @Autowired
     private CommentMapper commentMapper;
 
+    @Autowired
+    private PostService postService;
+
     private static final int LIST_SIZE = 5;
 
     public FeedResponse<Comment> getList(PangyoEnum.ContentType contentType, long contentId, Optional lastId) {
@@ -24,22 +27,12 @@ public class CommentService {
         return new FeedResponse<>(postList, LIST_SIZE);
     }
 
-    public long getCount(PangyoEnum.ContentType contentType, long contentId) {
-        Long count = commentMapper.selectCount(contentType, contentId);
-        if (count == null)  {
-            count = 0L;
-        }
-
-        return count;
-    }
-
     // TODO: 로그인체크
     @Transactional
     public void add(Comment comment) {
         commentMapper.insert(comment);
-        int rc = commentMapper.updateCount(comment.getContentType(), comment.getContentId(), 1);
-        if (rc == 0) {
-            commentMapper.insertCount(comment.getContentType(), comment.getContentId());
+        if (PangyoEnum.ContentType.POST.equals(comment.getContentType())) {
+            postService.updateCommentCount(comment.getContentId(), 1);
         }
     }
 
@@ -54,10 +47,8 @@ public class CommentService {
         Comment comment = commentMapper.selectById(id);
 
         commentMapper.updateStatus(id, PangyoEnum.CommentStatus.DELETED);
-        commentMapper.updateCount(comment.getContentType(), comment.getContentId(), -1);
-    }
-
-    public void removeMeta(PangyoEnum.ContentType contentType, long contentId) {
-        commentMapper.updateMetaStatus(contentType, contentId, PangyoEnum.CommentStatus.DELETED);
+        if (PangyoEnum.ContentType.POST.equals(comment.getContentType())) {
+            postService.updateCommentCount(comment.getContentId(), -1);
+        }
     }
 }

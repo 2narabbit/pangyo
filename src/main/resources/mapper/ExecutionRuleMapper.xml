@@ -49,7 +49,7 @@
         WHERE e.turn_num = #{turnNum}
     </select>
 
-    <select id="selectExecutionRuleListByStatus" resultType="ExecutionRuleMap">
+    <select id="selectExecutionRuleListByStatus" resultMap="ExecutionRuleMap">
         SELECT
             <include refid="executionRuleColumn"/>
         FROM EXECUTION_RULE e
@@ -67,7 +67,7 @@
          WHERE id = #{id}
     </update>
 
-    <select id="selectExecutionRuleByTurnAndType" resultType="ExecutionRuleMap">
+    <select id="selectExecutionRuleByTurnAndType" resultMap="ExecutionRuleMap">
         SELECT
             <include refid="executionRuleColumn"/>
         FROM EXECUTION_RULE e

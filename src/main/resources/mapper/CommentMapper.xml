@@ -79,37 +79,4 @@
         SET status = #{status}, up_dttm = NOW()
         WHERE id = #{id}
     </update>
-
-
-    <!-- 메타정보 관련 쿼리 -->
-
-    <select id="selectCount" parameterType="Map" resultType="Long">
-        SELECT count
-        FROM COMMENT_META
-        WHERE
-          status = 'SERVICE'
-          AND content_type = #{contentType}
-          AND content_id = #{contentId}
-    </select>
-
-    <insert id="insertCount" parameterType="Map">
-        INSERT INTO COMMENT_META (content_type, content_id, count)
-        VALUE (#{contentType}, #{contentId}, 1);
-    </insert>
-
-    <update id="updateCount" parameterType="Map">
-        UPDATE COMMENT_META
-        SET count = count + #{operand}
-        WHERE
-          content_type = #{contentType}
-          AND content_id = #{contentId}
-    </update>
-
-    <update id="updateMetaStatus" parameterType="Map">
-        UPDATE COMMENT_META
-        SET status = #{status}
-        WHERE
-          content_type = #{contentType}
-          AND content_id = #{contentId}
-    </update>
 </mapper>

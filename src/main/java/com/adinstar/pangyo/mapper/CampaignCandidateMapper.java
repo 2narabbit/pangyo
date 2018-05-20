@@ -19,9 +19,7 @@ public interface CampaignCandidateMapper {
 
     void updateStatus(@Param("starId") long starId, @Param("id") long id, @Param("status") CampaignCandidateStatus deleted);
 
-    void updatePollCount(@Param("starId") long starId, @Param("id") long id, @Param("delta") int delta);
-
-    void updateViewCount(@Param("starId") long starId, @Param("id") long id, @Param("delta") int delta);
+    void updatePollCount(@Param("id") long id, @Param("delta") int delta);
 
     CampaignCandidate selectByStarIdAndUserIdAndExecuteRuleId(@Param("starId") long starId, @Param("userId") long userId, @Param("executeRuleId") long executeRuleId);
 }

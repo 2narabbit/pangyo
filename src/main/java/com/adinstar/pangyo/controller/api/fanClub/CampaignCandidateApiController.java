@@ -65,18 +65,4 @@ public class CampaignCandidateApiController {
                        @PathVariable("campaignCandidateId") long id) {
         campaignCandidateService.remove(starId, id);
     }
-
-
-    ////////////////////////////////////////////////////// 2depth //////////////////////////////////////////////////////
-    @ApiOperation("캠페인 후보군에 투표하기")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "starId", value = "campaignCandidate 의 starId", paramType = "path", required = true, dataType = "long"),
-            @ApiImplicitParam(name = "campaignCandidateId", value = "campaignCandidate 의 id", paramType = "query", required = true, dataType = "long")
-    })
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = Map.class)})
-    @RequestMapping(value = "/{campaignCandidateId}/poll", method = RequestMethod.PUT)
-    @MustLogin
-    public void poll(@PathVariable long starId, @RequestParam("campaignCandidateId") long id, @RequestParam(value = "pollCount", defaultValue = "1") int pollCount) {
-        campaignCandidateService.increasePollCount(starId, id, pollCount);
-    }
 }

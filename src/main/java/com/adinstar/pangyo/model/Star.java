@@ -6,6 +6,7 @@ import lombok.Data;
 public class Star {
     private long id;
     private String name;
+    private String job;
     private String naverOs;
     private String profileImg;
     private String mainImg;

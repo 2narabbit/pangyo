@@ -7,10 +7,10 @@
     <title>Post/Edit</title>
 </head>
 <body>
-    <table style="border:0px; text-align:center">
+    <table style="border:0px; text-align:center; width: 400px">
         <tr>
             <td><a id="backButton" href="#">뒤로</a></td>
-            <td style="width:200px">글쓰기<br/>${star.name!} 팬클럽</td> <!-- TODO : 기획서에 직업 노출 있음. 현재DB에 직업없음 -->
+            <td style="width:200px">글쓰기<br/>${star.name!} 팬클럽</td>
             <td><a id="submitButton" href="#">완료</a></td>
         </tr>
     </table>

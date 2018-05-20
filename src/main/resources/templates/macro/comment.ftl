@@ -1,5 +1,5 @@
 <#macro defaultUI commentFeed, contentType, contentId>
-    <div style="margin-top:20px">
+    <div style="margin-top:30px">
         <div>
             <input id="commentBody" type="text" style="width:350px">
             <button id="addCommentButton" type="button">댓글쓰기</button>

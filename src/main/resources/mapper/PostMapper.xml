@@ -9,6 +9,7 @@
         <result property="img" column="p_img"/>
         <result property="viewCount" column="p_view_count"/>
         <result property="likeCount" column="p_like_count"/>
+        <result property="commentCount" column="p_comment_count"/>
         <result property="status" column="p_status"/>
         <association property="star" javaType="Star" resultMap="com.adinstar.pangyo.mapper.StarMapper.StarMap"/>
         <association property="user" javaType="User" resultMap="com.adinstar.pangyo.mapper.UserMapper.UserMap"/>
@@ -25,6 +26,7 @@
         p.img AS p_img,
         p.view_count AS p_view_count,
         p.like_count AS p_like_count,
+        p.comment_count AS p_comment_count,
         p.status AS p_status,
         p.reg_dttm AS p_reg_dttm,
         p.up_dttm AS p_up_dttm,
@@ -82,10 +84,22 @@
         WHERE id = #{id} AND star_id = #{star.id}
     </update>
 
+    <update id="updateLikeCount" parameterType="Map">
+        UPDATE POST
+        SET like_count = like_count + #{delta}
+        WHERE id = #{id}
+    </update>
+
     <update id="updateViewCount" parameterType="Map">
         UPDATE POST
-        SET view_count = view_count + #{delta}, up_dttm = NOW()
-        WHERE id = #{id} AND star_id = #{starId}
+        SET view_count = view_count + #{delta}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateCommentCount" parameterType="Map">
+        UPDATE POST
+        SET comment_count = comment_count + #{delta}
+        WHERE id = #{id}
     </update>
 
     <update id="updateStatus" parameterType="Map">

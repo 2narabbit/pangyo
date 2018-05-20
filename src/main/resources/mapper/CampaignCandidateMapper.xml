@@ -10,7 +10,6 @@
         <result property="body" column="cc_body"/>
         <result property="randingUrl" column="cc_randing_url"/>
         <result property="bannerImg" column="cc_banner_img"/>
-        <result property="viewCount" column="cc_view_count"/>
         <result property="pollCount" column="cc_poll_count"/>
         <result property="display" column="cc_display"/>
         <result property="status" column="cc_status"/>
@@ -29,7 +28,6 @@
         cc.body AS cc_body,
         cc.randing_url AS cc_randing_url,
         cc.banner_img AS cc_banner_img,
-        cc.view_count AS cc_view_count,
         cc.poll_count AS cc_poll_count,
         cc.display AS cc_display,
         cc.status AS cc_status,
@@ -105,16 +103,8 @@
 
     <update id="updatePollCount">
         UPDATE CAMPAIGN_CANDIDATE
-           SET poll_count = poll_count + #{delta},
-               up_dttm = NOW()
-         WHERE id = #{id} AND star_id = #{starId}
-    </update>
-
-    <update id="updateViewCount">
-        UPDATE CAMPAIGN_CANDIDATE
-           SET view_count = view_count + #{delta},
-               up_dttm = NOW()
-         WHERE id = #{id} AND star_id = #{starId}
+           SET poll_count = poll_count + #{delta}
+         WHERE id = #{id}
     </update>
 
     <select id="selectByStarIdAndUserIdAndExecuteRuleId" resultMap="CampaignCandidateMap">

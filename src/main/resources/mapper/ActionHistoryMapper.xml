@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.adinstar.pangyo.mapper.ActionHistoryMapper">
+    <resultMap id="ActionHistoryMap" type="ActionHistory">
+        <result property="id" column="ah_id"/>
+        <result property="actionType" column="ah_action_type"/>
+        <result property="contentType" column="ah_content_type"/>
+        <result property="contentId" column="ah_content_id"/>
+        <result property="userId" column="ah_user_id"/>
+        <association property="dateTime" javaType="PangyoLocalDataTime">
+            <result property="reg" column="ah_reg_dttm"/>
+        </association>
+    </resultMap>
+
+    <sql id="actionHistoryColumn">
+        ah.id AS ah_id,
+        ah.action_type AS ah_action_type,
+        ah.content_type AS ah_content_type,
+        ah.content_id AS ah_content_id,
+        ah.user_id AS ah_user_id,
+        ah.reg_dttm AS ah_reg_dttm
+    </sql>
+
+    <sql id="actionHistoryTable">
+        ACTION_HISTORY ah
+    </sql>
+
+    <select id="selectByActionTypeAndContentTypeAndContentIdAndUserId" parameterType="Map" resultMap="ActionHistoryMap">
+        SELECT
+          <include refid="actionHistoryColumn"/>
+        FROM
+          <include refid="actionHistoryTable"/>
+        WHERE
+          ah.action_type = #{actionType}
+          AND ah.content_type = #{contentType}
+          AND ah.content_id = #{contentId}
+          AND ah.user_id = #{userId}
+    </select>
+
+    <select id="selectListByActionTypeAndContentTypeAndContentIdsAndUserId" parameterType="Map" resultMap="ActionHistoryMap">
+        SELECT
+          <include refid="actionHistoryColumn"/>
+        FROM
+          <include refid="actionHistoryTable"/>
+        WHERE
+          ah.action_type = #{actionType}
+          AND ah.content_type = #{contentType}
+          AND ah.user_id = #{userId}
+          AND ah.content_id IN
+          <foreach collection="contentIds" item="contentId"  open="(" close=")" separator=",">
+            #{contentId}
+          </foreach>
+    </select>
+
+    <insert id="insert" parameterType="ActionHistory" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO ACTION_HISTORY (id, action_type, content_type, content_id, user_id, reg_dttm)
+        VALUE (#{id}, #{actionType}, #{contentType}, #{contentId}, #{userId}, NOW());
+    </insert>
+
+    <delete id="deleteByActionTypeAndContentTypeAndContentIdAndUserId" parameterType="Map">
+        DELETE FROM
+          ACTION_HISTORY
+        WHERE
+          action_type = #{actionType}
+          AND content_type = #{contentType}
+          AND content_id = #{contentId}
+          AND user_id = #{userId}
+    </delete>
+</mapper>

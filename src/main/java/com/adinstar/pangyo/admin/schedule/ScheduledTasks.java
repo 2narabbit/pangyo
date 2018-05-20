@@ -4,6 +4,7 @@ import com.adinstar.pangyo.admin.service.Ranker;
 import com.adinstar.pangyo.admin.service.RuleMaker;
 import com.adinstar.pangyo.constant.PangyoEnum.ExecutionRuleType;
 import com.adinstar.pangyo.model.ExecutionRule;
+import com.adinstar.pangyo.service.ExecutionRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -25,17 +26,20 @@ public class ScheduledTasks {
     private RuleMaker ruleMaker;
 
     @Autowired
+    private ExecutionRuleService executionRuleService;
+
+    @Autowired
     private Ranker ranker;
 
     @Async
     public void settingOfExecutionRule() {
-        long runningTurnNum = ruleMaker.getRunningTurnNum();
-        List<ExecutionRule> afterNextExecutionRuleList = ruleMaker.getExecutionRuleByTurnNum(runningTurnNum + AFTER_NEXT_TURN_NUM);  // 2회차 뒤 정보를 셋팅함으로써 한주를 벌 수 있습니다.
-        if (afterNextExecutionRuleList.size() == ExecutionRuleType.values().length) {  // 신규 타입이 들어오게 되면 해당 조건을 변경해야합니다!
+        long turnNumForSetting = ruleMaker.getRunningTurnNum() + AFTER_NEXT_TURN_NUM;   // 2회차 뒤 정보를 셋팅함으로써 한 주 여유를 갖도록 하였습니다.
+        List<ExecutionRule> afterNextExecutionRuleList = executionRuleService.getExecutionRuleListByTurnNum(turnNumForSetting);
+        if (afterNextExecutionRuleList.size() == ExecutionRuleType.values().length) {  // 신규 타입이 들어오게 되면 해당 조건을 통과 하기 위해 데이터를 셋팅하거나 조건을 변경해야합니다!
             return;
         }
 
-        ruleMaker.registeredExecutionRule(runningTurnNum + AFTER_NEXT_TURN_NUM);
+        ruleMaker.registeredExecutionRule(turnNumForSetting);
     }
 
     @Async

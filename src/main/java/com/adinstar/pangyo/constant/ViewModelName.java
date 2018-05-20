@@ -2,6 +2,9 @@ package com.adinstar.pangyo.constant;
 
 public class ViewModelName {
     public static final String AUTH = "auth";
+    public static final String VIEWER = "viewer";
+
+    public static final String ERROR_MESSAGE = "errorMessage";
 
     public static final String STAR = "star";
     public static final String STAR_ID = "starId";
@@ -15,4 +18,11 @@ public class ViewModelName {
     public static final String POST_FEED = "postFeed";
 
     public static final String COMMENT_FEED = "commentFeed";
+
+    public static final String IS_LIKED = "isLiked";
+    public static final String LIKED_LIST = "likedList";
+
+    public static final String POLLED_LIST = "polledList";
+
+    public static final String EXECUTION_RULE_AD_RUNNING = "executionRuleAdRunning";
 }

@@ -1,13 +1,17 @@
 <#import "/macro/common.ftl" as common />
 <#import "/macro/comment.ftl" as comment />
+<#import "/macro/like.ftl" as like />
 
 <!DOCTYPE html>
 <html>
 <head>
     <title>Post</title>
+    <@like.defaultCSS />
 </head>
 <body>
 <div>
+    <@common.importJS />
+
     <div style="border: 1px solid; padding: 10px; width:400px">
         <div>
             <img src="${post.user.profileImg!}"  style="width: 50px; height: 50px">
@@ -21,19 +25,22 @@
             <button>신고하기(TODO)</button>
         </div>
 
-        <p>${post.body!}</p> <!-- TODO : newline 노출 잘안되네; -->
+        <div style="padding: 10px">
+            ${post.body!?replace('\n', '<br>')}
+        </div>
+
         <#if post.img?has_content>
             <img src="${post.img!}" style="max-width: 400px;">
         </#if>
 
         <div>
             <span>조회 ${post.viewCount!}</span>
-            <span>좋아요(TODO) ${post.likeCount!}</span>
+            <span>
+                <@like.defaultUI isLiked, "POST", post.id, post.likeCount />
+            </span>
             <span>댓글 ${post.commentCount!}</span>
         </div>
     </div>
-
-    <@common.importJS />
 
     <@comment.defaultUI commentFeed, "POST", post.id />
 

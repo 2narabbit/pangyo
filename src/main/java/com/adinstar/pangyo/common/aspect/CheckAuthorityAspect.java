@@ -3,7 +3,7 @@ package com.adinstar.pangyo.common.aspect;
 import com.adinstar.pangyo.common.annotation.CheckAuthority;
 import com.adinstar.pangyo.constant.ViewModelName;
 import com.adinstar.pangyo.controller.exception.UnauthorizedException;
-import com.adinstar.pangyo.model.LoginInfo;
+import com.adinstar.pangyo.model.ViwerInfo;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -29,8 +29,8 @@ public class CheckAuthorityAspect {
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = servletRequestAttributes.getRequest();
 
-        LoginInfo loginInfo = (LoginInfo) request.getAttribute(ViewModelName.AUTH);
-        if (loginInfo == null) {
+        ViwerInfo viwerInfo = (ViwerInfo) request.getAttribute(ViewModelName.VIEWER);
+        if (viwerInfo == null) {
             throw UnauthorizedException.NEED_LOGIN;
         }
 
@@ -38,7 +38,7 @@ public class CheckAuthorityAspect {
         Method method = signature.getMethod();
         CheckAuthority checkAuthorityAnno = method.getAnnotation(CheckAuthority.class);
 
-        authorityStrategyFactory.getInstance(checkAuthorityAnno.type()).isValid(loginInfo, method, joinPoint.getArgs(), checkAuthorityAnno);
+        authorityStrategyFactory.getInstance(checkAuthorityAnno.type()).isValid(viwerInfo, method, joinPoint.getArgs(), checkAuthorityAnno);
 
         return joinPoint.proceed();
     }

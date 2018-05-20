@@ -8,9 +8,7 @@ import com.adinstar.pangyo.model.FeedResponse;
 import com.adinstar.pangyo.model.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 import static com.adinstar.pangyo.common.annotation.HintKey.POST;
@@ -23,24 +21,17 @@ public class PostService {
     @Autowired
     private PostMapper postMapper;
 
-    @Autowired
-    private CommentService commentService;
-
     private static final int LIST_SIZE = 10;
 
     public FeedResponse<Post> getListByStarId(long starId, Optional lastId) {
-        List<Post> postList = postMapper.selectListByStarId(starId, (long)lastId.orElse(Long.MAX_VALUE), LIST_SIZE+1);
-        for (Post post : postList) {
-            post.setCommentCount(commentService.getCount(PangyoEnum.ContentType.POST, post.getId()));
-        }
-        return new FeedResponse<>(postList, LIST_SIZE);
+        return new FeedResponse<>(
+                postMapper.selectListByStarId(starId, (long)lastId.orElse(Long.MAX_VALUE), LIST_SIZE+1),
+                LIST_SIZE
+        );
     }
 
     public Post getByStarIdAndId(long starId, long id) {
-        Post post = postMapper.selectByStarIdAndId(starId, id);
-        post.setCommentCount(commentService.getCount(PangyoEnum.ContentType.POST, post.getId()));
-
-        return post;
+        return postMapper.selectByStarIdAndId(starId, id);
     }
 
     @CheckAuthority(type = Post.class, checkType = PangyoEnum.CheckingType.OBJECT, isCheckOwner = false)
@@ -53,15 +44,20 @@ public class PostService {
         postMapper.update(post);
     }
 
-    @CheckAuthority(type = Post.class, checkType = PangyoEnum.CheckingType.ID, isCheckOwner = false)
-    public void increaseViewCount(@HintKey(STAR_ID) long starId, @HintKey(POST_ID) long id, int delta) {
-        postMapper.updateViewCount(starId, id, delta);
-    }
-
-    @Transactional
     @CheckAuthority(type = Post.class, checkType = PangyoEnum.CheckingType.ID)
     public void remove(@HintKey(STAR_ID) long starId, @HintKey(POST_ID) long id) {
         postMapper.updateStatus(starId, id, PangyoEnum.PostStatus.DELETED);
-        commentService.removeMeta(PangyoEnum.ContentType.POST, id);
+    }
+
+    public void updateLikeCount(long id, int delta) {
+        postMapper.updateLikeCount(id, delta);
+    }
+
+    public void updateViewCount(long id, int delta) {
+        postMapper.updateViewCount(id, delta);
+    }
+
+    public void updateCommentCount(long id, int delta) {
+        postMapper.updateCommentCount(id, delta);
     }
 }

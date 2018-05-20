@@ -13,6 +13,8 @@ public interface PostMapper {
     Post selectByStarIdAndId(@Param("starId") long starId, @Param("id") long id);
     int insert(Post post);
     int update(Post post);
-    int updateViewCount(@Param("starId") long starId, @Param("id") long id, @Param("delta") int delta);
+    int updateLikeCount(@Param("id") long id, @Param("delta") int delta);
+    int updateViewCount(@Param("id") long id, @Param("delta") int delta);
+    int updateCommentCount(@Param("id") long id, @Param("delta") int delta);
     int updateStatus(@Param("starId") long starId, @Param("id") long id, @Param("status") PangyoEnum.PostStatus status);
 }

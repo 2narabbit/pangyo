@@ -9,7 +9,7 @@
         <result property="serviceUserId" column="u_service_user_id"/>
         <result property="name" column="u_name"/>
         <result property="profileImg" column="u_profile_img"/>
-        <result property="recommandCode" column="u_recommand_code"/>
+        <result property="recommendCode" column="u_recommend_code"/>
         <result property="status" column="u_status"/>
         <association property="dateTime" javaType="PangyoLocalDataTime">
             <result property="reg" column="u_reg_dttm"/>
@@ -23,9 +23,43 @@
        u.service_user_id AS u_service_user_id,
        u.name AS u_name,
        u.profile_img AS u_profile_img,
-       u.recommand_code AS u_recommand_code,
+       u.recommend_code AS u_recommend_code,
        u.status AS u_status,
        u.reg_dttm AS u_reg_dttm,
        u.up_dttm AS u_up_dttm
     </sql>
+
+    <sql id="userTable">
+        USER u
+    </sql>
+
+    <select id="selectById" parameterType="long" resultMap="UserMap">
+        SELECT
+          <include refid="userColumn"/>
+        FROM
+          <include refid="userTable"/>
+        WHERE status = 'MEMBER'
+          AND id = #{id}
+    </select>
+
+    <select id="selectByServiceAndServiceUserId" parameterType="Map" resultMap="UserMap">
+        SELECT
+          <include refid="userColumn"/>
+        FROM
+          <include refid="userTable"/>
+        WHERE status = 'MEMBER'
+          AND service = #{service}
+          AND service_user_id = #{serviceUserId}
+    </select>
+
+    <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO USER (service, service_user_id, `name`, profile_img, recommend_code, status, reg_dttm, up_dttm)
+        VALUE (#{service}, #{serviceUserId}, #{name}, #{profileImg}, #{recommendCode}, 'MEMBER', NOW(), NOW());
+    </insert>
+
+    <update id="updateStatus" parameterType="Map">
+        UPDATE USER
+           SET status = #{status}, up_dttm = NOW()
+         WHERE id = #{id}
+    </update>
 </mapper>

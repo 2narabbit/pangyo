@@ -1,14 +1,16 @@
 <#import "/macro/common.ftl" as common />
+<#import "/macro/like.ftl" as like />
 
 <!DOCTYPE html>
 <html>
 <head>
     <title>FanClub</title>
+    <@like.defaultCSS />
 </head>
 <body>
     <#include "/fanClub/layout/head.ftl">
 
-    <div style="margin-top:20px">NEXT WEEK CAMPAIGN</div>
+    <h3 style="margin-top:50px; margin-bottom:0px">NEXT WEEK CAMPAIGN</h3>
 
     <div style="border: 2px solid; border-color: red; padding: 10px; width:400px;">
         <#if campaignCandidateList?has_content>
@@ -28,9 +30,9 @@
         </#if>
     </div>
 
-    <div style="margin-top:20px">
-        <span>STAR FEED</span>
-        <a href="/fanClub/${star.id!}/post/write">글쓰기</a>
+    <div style="margin-top:50px">
+        <h3 style="margin:0px">STAR FEED</h3>
+        <a href="/fanClub/${star.id!}/post/write" style="margin-left:377px">글쓰기</a>
     </div>
 
     <div id="listSection">
@@ -42,14 +44,23 @@
                     <span>${post.dateTime.reg!}</span>
                 </div>
 
-                <p>${post.body!}</p>
-                <#if post.img?has_content>
-                    <img src="${post.img!}" style="max-width: 400px;">
-                </#if>
+                <div style="overflow: hidden; max-height: 300px;">
+                    <p>${post.body!}</p>
+                    <#if post.img?has_content>
+                        <img src="${post.img!}" style="max-width: 400px;">
+                    </#if>
+                </div>
 
-                <div>
+                <div style="margin-top: 10px;">
                     <span>조회 ${post.viewCount!}</span>
-                    <span>좋아요 ${post.likeCount!}</span>
+                    <#if likedList?seq_contains(post.id)>
+                        <#assign likeClass="liked">
+                    <#else>
+                        <#assign likeClass="">
+                    </#if>
+                    <span class="likeArea ${likeClass!}">
+                        좋아요 ${post.likeCount!}
+                    </span>
                     <span>댓글 ${post.commentCount!}</span>
                     <a href="/fanClub/${star.id!}/post/${post.id!}">[더 보기]</a>
                 </div>
@@ -67,12 +78,14 @@
                 <span><%= dateTime.reg %></span>
             </div>
 
-            <p><%= body %></p>
-            <% if (img) { %>
-                <img src="<%= img %>" style="max-width: 400px">
-            <% } %>
+            <div style="overflow: hidden; max-height: 300px;">
+                <p><%= body %></p>
+                <% if (img) { %>
+                    <img src="<%= img %>" style="max-width: 400px">
+                <% } %>
+            </div>
 
-            <div>
+            <div style="margin-top: 10px;">
                 <span>조회 <%= viewCount %></span>
                 <span>좋아요 <%= likeCount %></span>
                 <span>댓글 <%= commentCount %></span>

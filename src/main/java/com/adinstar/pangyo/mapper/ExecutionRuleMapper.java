@@ -12,11 +12,11 @@ import java.util.List;
 public interface ExecutionRuleMapper {
     ExecutionRule selectByTypeAndStatus(@Param("type") ExecutionRuleType type, @Param("status") ExecutionRuleStatus status);
 
-    List<ExecutionRule> selectExecutionRuleListByTurnNum(long turnNum);
+    List<ExecutionRule> selectListByTurnNum(long turnNum);
 
-    List<ExecutionRule> selectExecutionRuleListByStatus(ExecutionRuleStatus status);
+    List<ExecutionRule> selectListByStatus(ExecutionRuleStatus status);
 
-    void insertExecutionRule(ExecutionRule executionRule);
+    void insert(ExecutionRule executionRule);
 
     void updateExecutionRuleStatusById(@Param("id") long id, @Param("status") ExecutionRuleStatus status);
 
