@@ -42,6 +42,7 @@ public class FanClubController {
     @Autowired
     private LikeService likeService;
 
+    // checked !! :  팬클럽만 해당 내용을 읽을 수 있나요? 혹은 팬클럽만 글쓰고 투표할 수 있나요???
     @RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
     @MustLogin
     public String getTopFeed(@PathVariable("starId") long starId,

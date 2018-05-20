@@ -82,15 +82,9 @@ public class MemberController {
     }
 
     @RequestMapping(value = "/join", method = RequestMethod.GET)
-    public String join(HttpServletRequest request, Model model) {
-        Map<String, Object> authMap = LoginInterceptor.getAuthInfoByCookie(request);
-        if (authMap == null || authMap.isEmpty() || isInvalidToken(authMap)) {
-            return "redirect:/member/login";
-        }
-
-        LoginInfo loginInfo = loginService.getLoginInfo((PangyoEnum.AccountType) authMap.get(PangyoAuthorizedKey.SERVICE), (String) authMap.get(PangyoAuthorizedKey.ACCESS_TOKEN));
+    public String join(HttpServletRequest request, @ModelAttribute(ViewModelName.AUTH) LoginInfo loginInfo, Model model) {
         if (loginInfo == null) {
-            return null;
+            return "redirect:/member/login";
         }
 
         String continueUrl = (String) WebUtils.getSessionAttribute(request, PangyoAuthorizedKey.CONTINUE);

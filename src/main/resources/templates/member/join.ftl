@@ -62,9 +62,7 @@
         }
 
         function submit() {
-            var data = {  // 나중에 정상적으로 처리되면 data 부분에 필요없는 내용 버려야함!!!(service, serviceUserId)
-                service: '${service!}',
-                serviceUserId: 776431321,
+            var data = {
                 name: $('#nickname').val(),
                 profileImg: $('#profileImg').val(),
                 recommandCode: $('#recommandCode').val(),

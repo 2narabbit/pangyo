@@ -34,7 +34,10 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        ViwerInfo viwerInfo = getViwerLoginInfo(request, response);
+        LoginInfo loginInfo = getLoginInfo(request, response);
+        request.setAttribute(ViewModelName.AUTH, loginInfo);
+
+        ViwerInfo viwerInfo = getViwerLoginInfo(loginInfo);
         request.setAttribute(ViewModelName.VIEWER, viwerInfo);
 
         if (handler != null && handler instanceof HandlerMethod) {
@@ -53,7 +56,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         return true;
     }
 
-    private ViwerInfo getViwerLoginInfo(HttpServletRequest request, HttpServletResponse response) {
+    private LoginInfo getLoginInfo(HttpServletRequest request, HttpServletResponse response) {
         Map authMap = getAuthInfoByCookie(request);
         if (authMap == null) {
             return null;
@@ -68,6 +71,14 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         }
 
         LoginInfo loginInfo = loginService.getLoginInfo(accountType, accessToken);
+        if (loginInfo == null) {
+            return null;
+        }
+
+        return loginInfo;
+    }
+
+    private ViwerInfo getViwerLoginInfo(LoginInfo loginInfo) {
         if (loginInfo == null) {
             return null;
         }

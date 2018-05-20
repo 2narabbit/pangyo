@@ -49,13 +49,7 @@ public class MemberApiController {
     })
     @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = Map.class)})
     @RequestMapping(method = RequestMethod.POST)
-    public void join(HttpServletRequest request, @RequestBody User user) {
-        Map<String, Object> authMap = LoginInterceptor.getAuthInfoByCookie(request);
-        if (authMap == null || authMap.isEmpty() || isInvalidToken(authMap)) {
-            throw UnauthorizedException.NEED_LOGIN;
-        }
-
-        LoginInfo loginInfo = loginService.getLoginInfo((PangyoEnum.AccountType) authMap.get(PangyoAuthorizedKey.SERVICE), (String) authMap.get(PangyoAuthorizedKey.ACCESS_TOKEN));
+    public void join(@ModelAttribute(ViewModelName.AUTH) LoginInfo loginInfo, @RequestBody User user) {
         if (loginInfo == null) {
             throw UnauthorizedException.NEED_LOGIN;
         }
@@ -65,11 +59,9 @@ public class MemberApiController {
             throw BadRequestException.DUPLICATE_USER_REGISTER;
         }
 
+        user.setService(loginInfo.getService().name());
+        user.setServiceUserId(String.valueOf(loginInfo.getId()));
         userService.add(user);  // 질문 : 추천인이 유효하지 않으면 어케해? 가입 안시켜 무시해? -- 보통 가입은 시키고 CS 들어오면 처리해준다.
-    }
-
-    private boolean isInvalidToken(Map<String, Object> authMap) {
-        return loginService.isInvalidToken((PangyoEnum.AccountType) authMap.get(PangyoAuthorizedKey.SERVICE), (String) authMap.get(PangyoAuthorizedKey.ACCESS_TOKEN));
     }
 
     @ApiOperation("withdrawal")

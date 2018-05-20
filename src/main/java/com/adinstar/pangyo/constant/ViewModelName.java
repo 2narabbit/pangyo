@@ -1,6 +1,7 @@
 package com.adinstar.pangyo.constant;
 
 public class ViewModelName {
+    public static final String AUTH = "auth";
     public static final String VIEWER = "viewer";
 
     public static final String ERROR_MESSAGE = "errorMessage";
