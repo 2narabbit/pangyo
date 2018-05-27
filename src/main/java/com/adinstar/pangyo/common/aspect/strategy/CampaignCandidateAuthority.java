@@ -7,7 +7,7 @@ import com.adinstar.pangyo.controller.exception.BadRequestException;
 import com.adinstar.pangyo.controller.exception.NotFoundException;
 import com.adinstar.pangyo.controller.exception.UnauthorizedException;
 import com.adinstar.pangyo.model.CampaignCandidate;
-import com.adinstar.pangyo.model.ViwerInfo;
+import com.adinstar.pangyo.model.ViewerInfo;
 import com.adinstar.pangyo.service.CampaignCandidateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,7 +27,7 @@ public class CampaignCandidateAuthority implements AuthorityStrategy {
     private CampaignCandidateService campaignCandidateService;
 
     @Override
-    public boolean isValid(ViwerInfo viwerInfo, Method method, Object[] args, CheckAuthority checkAuthority) {
+    public boolean isValid(ViewerInfo viewerInfo, Method method, Object[] args, CheckAuthority checkAuthority) {
         Map paramMap = getParamMap(method.getParameters(), args);
 
         long starId = (long) paramMap.getOrDefault(HintKey.STAR_ID, 0);
@@ -63,7 +63,7 @@ public class CampaignCandidateAuthority implements AuthorityStrategy {
             throw NotFoundException.CAMPAIGN_CANDIDATE;
         }
 
-        if (checkAuthority.isCheckOwner() && (viwerInfo.getId() != campaignCandidate.getUser().getId())) {
+        if (checkAuthority.isCheckOwner() && (viewerInfo.getId() != campaignCandidate.getUser().getId())) {
             throw UnauthorizedException.NO_OWNER_SHIP;
         }
 

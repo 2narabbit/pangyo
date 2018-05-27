@@ -6,7 +6,7 @@ import com.adinstar.pangyo.constant.PangyoEnum.AccountType;
 import com.adinstar.pangyo.constant.ViewModelName;
 import com.adinstar.pangyo.controller.exception.UnauthorizedException;
 import com.adinstar.pangyo.model.User;
-import com.adinstar.pangyo.model.ViwerInfo;
+import com.adinstar.pangyo.model.ViewerInfo;
 import com.adinstar.pangyo.model.authorization.AuthInfo;
 import com.adinstar.pangyo.model.authorization.LoginInfo;
 import com.adinstar.pangyo.service.LoginService;
@@ -37,8 +37,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         LoginInfo loginInfo = getLoginInfo(request, response);
         request.setAttribute(ViewModelName.AUTH, loginInfo);
 
-        ViwerInfo viwerInfo = getViwerLoginInfo(loginInfo);
-        request.setAttribute(ViewModelName.VIEWER, viwerInfo);
+        ViewerInfo viewerInfo = getViwerLoginInfo(loginInfo);
+        request.setAttribute(ViewModelName.VIEWER, viewerInfo);
 
         if (handler != null && handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
@@ -48,7 +48,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
                 return true;
             }
 
-            if (viwerInfo == null) {
+            if (viewerInfo == null) {
                 throw UnauthorizedException.NEED_LOGIN;
             }
         }
@@ -78,7 +78,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         return loginInfo;
     }
 
-    private ViwerInfo getViwerLoginInfo(LoginInfo loginInfo) {
+    private ViewerInfo getViwerLoginInfo(LoginInfo loginInfo) {
         if (loginInfo == null) {
             return null;
         }
@@ -88,7 +88,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             return null;
         }
 
-        return new ViwerInfo(user, loginInfo);
+        return new ViewerInfo(user, loginInfo);
     }
 
 

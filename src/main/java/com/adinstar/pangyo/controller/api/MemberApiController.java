@@ -8,7 +8,7 @@ import com.adinstar.pangyo.controller.exception.BadRequestException;
 import com.adinstar.pangyo.controller.exception.UnauthorizedException;
 import com.adinstar.pangyo.controller.interceptor.LoginInterceptor;
 import com.adinstar.pangyo.model.User;
-import com.adinstar.pangyo.model.ViwerInfo;
+import com.adinstar.pangyo.model.ViewerInfo;
 import com.adinstar.pangyo.model.authorization.LoginInfo;
 import com.adinstar.pangyo.service.LoginService;
 import com.adinstar.pangyo.service.UserService;
@@ -70,10 +70,10 @@ public class MemberApiController {
     @MustLogin
     public void withdrawal(HttpServletRequest request,
                            HttpServletResponse response,
-                           @ModelAttribute(ViewModelName.VIEWER) ViwerInfo viwerInfo) {
+                           @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
         Map<String, Object> authMap = LoginInterceptor.getAuthInfoByCookie(request);
         loginService.unlink((PangyoEnum.AccountType) authMap.get(PangyoAuthorizedKey.SERVICE), (String) authMap.get(PangyoAuthorizedKey.ACCESS_TOKEN));
-        userService.withdrawal(viwerInfo.getId());
+        userService.withdrawal(viewerInfo.getId());
         LoginInterceptor.expireCookieOfAccessToken(request, response);
     }
 
@@ -83,7 +83,7 @@ public class MemberApiController {
     @MustLogin
     public void logout(HttpServletRequest request,
                            HttpServletResponse response,
-                           @ModelAttribute(ViewModelName.VIEWER) ViwerInfo viwerInfo) {
+                           @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
         LoginInterceptor.expireCookieOfAccessToken(request, response);
     }
 }
