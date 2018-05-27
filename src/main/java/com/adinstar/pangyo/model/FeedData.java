@@ -1,5 +1,5 @@
 package com.adinstar.pangyo.model;
 
-public interface PangyoData {
+public interface FeedData {
     long getId();
 }

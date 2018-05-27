@@ -26,11 +26,11 @@
                         <h2>${myStar.ranking!}</h2>
                     </td>
                     <td>
-                        <h3><a href="/fanClub/${myStar.id!}">${myStar.data.name!}</a></h3>
-                        <span>${myStar.data.fanCount!}fans</span>
+                        <h3><a href="/fanClub/${myStar.content.id!}">${myStar.content.name!}</a></h3>
+                        <span>${myStar.content.fanCount!}fans</span>
                     </td>
                     <td style="text-align: center">
-                        <img src="${myStar.data.profileImg!}" style="max-height:100px;">
+                        <img src="${myStar.content.profileImg!}" style="max-height:100px;">
                     </td>
                 </tr>
             </div>
@@ -46,8 +46,8 @@
                 <h2><%= ranking %></h2>
             </td>
             <td>
-                <h3><a href="/fanClub/<%= data.id %>"><%= data.name %></a></h3>
-                <span><%= data.fanCount %>fans</span>
+                <h3><a href="/fanClub/<%= content.id %>"><%= content.name %></a></h3>
+                <span><%= content.fanCount %>fans</span>
             </td>
             <td style="text-align: center">
                 <img src="<%= data.profileImg %>" style="max-height: 100px">

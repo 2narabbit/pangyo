@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Data
-public class FeedResponse<T extends PangyoData> {
+public class FeedResponse<T extends FeedData> {
     private boolean hasMore;
     private long lastId;
     private List<T> list;

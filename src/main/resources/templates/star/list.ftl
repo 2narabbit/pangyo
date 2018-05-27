@@ -36,11 +36,11 @@
                         <h2>${myStar.ranking!}</h2>
                     </td>
                     <td>
-                        <h3><a href="/fanClub/${myStar.data.id!}">${myStar.data.name!}</a></h3>
-                        <span>${myStar.data.fanCount!}fans</span>
+                        <h3><a href="/fanClub/${myStar.content.id!}">${myStar.content.name!}</a></h3>
+                        <span>${myStar.content.fanCount!}fans</span>
                     </td>
                     <td style="text-align: center">
-                        <img src="${myStar.data.profileImg!}" style="max-height:100px;">
+                        <img src="${myStar.content.profileImg!}" style="max-height:100px;">
                     </td>
                 </tr>
                 </#if>
@@ -59,12 +59,12 @@
                         <h2>${star.ranking!}</h2>
                     </td>
                     <td>
-                        <h3>${star.data.name!}</h3>
-                        <span>${star.data.fanCount!}fans</span>
-                        <button id="joinBotton${star.data.id!}" onclick="joinStar(${star.data.id!})">+ Join</button>
+                        <h3>${star.content.name!}</h3>
+                        <span>${star.content.fanCount!}fans</span>
+                        <button id="joinBotton${star.content.id!}" onclick="joinStar(${star.content.id!})">+ Join</button>
                     </td>
                     <td style="text-align: center">
-                        <img src="${star.data.profileImg!}" style="max-height: 100px;">
+                        <img src="${star.content.profileImg!}" style="max-height: 100px;">
                     </td>
                 </tr>
             </#if>
@@ -80,9 +80,9 @@
                 <h2><%= ranking %></h2>
             </td>
             <td>
-                <h3><%= data.name %></h3>
-                <span><%= data.fanCount %>fans</span>
-                <button id="joinBotton<%= data.id %>" onclick="joinStar(<%= data.id %>)">+ Join</button>
+                <h3><%= content.name %></h3>
+                <span><%= content.fanCount %>fans</span>
+                <button id="joinBotton<%= data.id %>" onclick="joinStar(<%= content.id %>)">+ Join</button>
             </td>
             <td style="text-align: center">
                 <img src="<%= data.profileImg %>" style="max-height: 100px">
@@ -95,9 +95,14 @@
 
     <script type="text/javascript">
         function joinStar(starId){
-            var loginUser = ${viewer};
-            if (loginUser === null) {
+            <#if viewer??>
+              var loginUserId = ${viewer.getId()};
+            <#else >
+              var loginUserId = null;
+            </#if>
+            if (loginUserId === null) {
                 confirm('로그인하셔야 이용할 수 있습니다!');
+                return;
             }
 
             $.ajax({
@@ -166,7 +171,7 @@
                 type : 'GET',
                 success: function() {
                     alert("+_+bb 로그아웃 성공");
-                    location.replace('/member/login');
+                    location.reload();
                 },
                 error: function(res) {
                     console.log(res);

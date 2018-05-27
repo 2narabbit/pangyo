@@ -21,10 +21,10 @@
 
     <resultMap id="RankStarMap" type="RankData">
         <result property="id" column="sr_id"/>
-        <result property="dataId" column="sr_star_id"/>
+        <result property="contentId" column="sr_star_id"/>
         <result property="time" column="sr_time"/>
         <result property="ranking" column="sr_ranking"/>
-        <association property="data" javaType="Star" resultMap="StarMap"/>
+        <association property="content" javaType="Star" resultMap="StarMap"/>
         <association property="dataTime" javaType="PangyoLocalDataTime">
             <result property="reg" column="sr_reg_dttm"/>
         </association>

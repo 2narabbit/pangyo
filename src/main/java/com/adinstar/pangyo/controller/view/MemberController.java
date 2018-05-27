@@ -7,7 +7,7 @@ import com.adinstar.pangyo.constant.ViewModelName;
 import com.adinstar.pangyo.controller.exception.UnauthorizedException;
 import com.adinstar.pangyo.controller.interceptor.LoginInterceptor;
 import com.adinstar.pangyo.model.User;
-import com.adinstar.pangyo.model.ViwerInfo;
+import com.adinstar.pangyo.model.ViewerInfo;
 import com.adinstar.pangyo.model.authorization.AuthInfo;
 import com.adinstar.pangyo.model.authorization.LoginInfo;
 import com.adinstar.pangyo.service.LoginService;
@@ -39,7 +39,7 @@ public class MemberController {
 
     @RequestMapping(value = {"", "/login"}, method = RequestMethod.GET)
     public String login(HttpServletRequest request,
-                        @ModelAttribute(ViewModelName.VIEWER) ViwerInfo userInfo,
+                        @ModelAttribute(ViewModelName.VIEWER) ViewerInfo userInfo,
                         @RequestParam(value = "continue", required = false) String continueUrl) {
         if (continueUrl != null) {
             WebUtils.setSessionAttribute(request, PangyoAuthorizedKey.CONTINUE, continueUrl);

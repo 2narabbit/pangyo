@@ -5,7 +5,7 @@ import com.adinstar.pangyo.common.annotation.MustLogin;
 import com.adinstar.pangyo.constant.PangyoEnum;
 import com.adinstar.pangyo.constant.ViewModelName;
 import com.adinstar.pangyo.model.FeedResponse;
-import com.adinstar.pangyo.model.ViwerInfo;
+import com.adinstar.pangyo.model.ViewerInfo;
 import com.adinstar.pangyo.model.Post;
 import com.adinstar.pangyo.service.CampaignCandidateService;
 import com.adinstar.pangyo.service.LikeService;
@@ -46,7 +46,7 @@ public class FanClubController {
     @RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
     @MustLogin
     public String getTopFeed(@PathVariable("starId") long starId,
-                             @ModelAttribute(ViewModelName.VIEWER) ViwerInfo viwerInfo,
+                             @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo,
                              Model model) {
         FeedResponse<Post> postFeedResponse = postService.getListByStarId(starId, Optional.empty());
         List<Long> ids = postFeedResponse.getList().stream()
@@ -57,7 +57,7 @@ public class FanClubController {
         model.addAttribute(CAMPAIGN_CANDIDATE_LIST, campaignCandidateService.getRunningList(starId, Optional.of(1), Optional.of(2)));
         model.addAttribute(POST_FEED, postFeedResponse);
         model.addAttribute(LIKED_LIST,
-                ids.size() == 0 ? new ArrayList<>() : likeService.getContentIdList(PangyoEnum.ContentType.POST, ids, viwerInfo.getId()));
+                ids.size() == 0 ? new ArrayList<>() : likeService.getContentIdList(PangyoEnum.ContentType.POST, ids, viewerInfo.getId()));
 
         return "fanClub/list";  // 질문 : 로그인 한 유저만 list를 볼 수 있나요? +  팬클럽 회원만 list를 볼 수 있나요? url 따라오면 어디로 보내면 되나요?
     }

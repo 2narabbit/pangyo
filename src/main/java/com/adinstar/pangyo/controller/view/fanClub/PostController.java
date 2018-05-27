@@ -3,7 +3,7 @@ package com.adinstar.pangyo.controller.view.fanClub;
 
 import com.adinstar.pangyo.constant.PangyoEnum;
 import com.adinstar.pangyo.constant.ViewModelName;
-import com.adinstar.pangyo.model.ViwerInfo;
+import com.adinstar.pangyo.model.ViewerInfo;
 import com.adinstar.pangyo.service.CommentService;
 import com.adinstar.pangyo.service.LikeService;
 import com.adinstar.pangyo.service.PostService;
@@ -36,7 +36,7 @@ public class PostController {
     @RequestMapping(value = "/{postId}", method = RequestMethod.GET)
     public String get(@PathVariable("starId") long starId,
                       @PathVariable("postId") long postId,
-                      @ModelAttribute(ViewModelName.VIEWER) ViwerInfo viwerInfo,
+                      @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo,
                       Model model) {
         try {
             postService.updateViewCount(postId, 1);
@@ -46,7 +46,7 @@ public class PostController {
 
         model.addAttribute(POST, postService.getByStarIdAndId(starId, postId));
         model.addAttribute(COMMENT_FEED, commentService.getList(PangyoEnum.ContentType.POST, postId, Optional.empty()));
-        model.addAttribute(IS_LIKED, likeService.isActioned(PangyoEnum.ContentType.POST, postId, viwerInfo.getId()));
+        model.addAttribute(IS_LIKED, likeService.isActioned(PangyoEnum.ContentType.POST, postId, viewerInfo.getId()));
 
         return "fanClub/post/detail";
     }
