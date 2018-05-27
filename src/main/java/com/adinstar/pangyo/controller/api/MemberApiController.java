@@ -15,6 +15,7 @@ import com.adinstar.pangyo.service.UserService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -82,8 +83,9 @@ public class MemberApiController {
     @RequestMapping(value = {"/logout"}, method = RequestMethod.GET)
     @MustLogin
     public void logout(HttpServletRequest request,
-                           HttpServletResponse response,
-                           @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
+                       HttpServletResponse response,
+                       @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
+        request.getSession().removeAttribute(PangyoAuthorizedKey.CONTINUE);
         LoginInterceptor.expireCookieOfAccessToken(request, response);
     }
 }

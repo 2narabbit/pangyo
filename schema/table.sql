@@ -2,8 +2,8 @@ create table ACTION_HISTORY
 (
 	id bigint auto_increment
 		primary key,
-	action_type enum('LIKE', 'POLL', 'SUPPORT') not null,
-	content_type enum('POST', 'CANDIDATE', 'CAMPAIGN') not null,
+	action_type enum('LIKE', 'POLL', 'SUPPORT', 'JOIN') not null,
+	content_type enum('POST', 'CANDIDATE', 'CAMPAIGN', 'STAR') not null,
 	content_id bigint not null,
 	user_id bigint not null,
 	reg_dttm datetime default CURRENT_TIMESTAMP not null,

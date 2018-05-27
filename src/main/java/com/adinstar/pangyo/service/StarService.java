@@ -2,7 +2,6 @@ package com.adinstar.pangyo.service;
 
 import com.adinstar.pangyo.constant.PangyoEnum;
 import com.adinstar.pangyo.controller.exception.InvalidConditionException;
-import com.adinstar.pangyo.mapper.ExecutionRuleMapper;
 import com.adinstar.pangyo.mapper.StarMapper;
 import com.adinstar.pangyo.model.ExecutionRule;
 import com.adinstar.pangyo.model.FeedResponse;
@@ -65,16 +64,16 @@ public class StarService {
     @Transactional
     public void joinedStar(long starId, long userId) {
         starMapper.insertJoin(starId, userId);
-        increaseFanCount(starId, 1);
+        updateFanCount(starId, 1);
     }
 
     @Transactional
     public void secededStar(long starId, long userId) {
         starMapper.deleteJoin(starId, userId);
-        increaseFanCount(starId, -1);
+        updateFanCount(starId, -1);
     }
 
-    private void increaseFanCount(long starId, int delta){
+    private void updateFanCount(long starId, int delta){
         starMapper.updateFanCount(starId, delta);
     }
 }
