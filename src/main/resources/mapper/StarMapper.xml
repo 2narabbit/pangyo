@@ -148,4 +148,13 @@
            SET fan_count = fan_count + #{delta}
          WHERE id = #{starId}
     </update>
+
+    <select id="selectStarIdListOrderByFanCount" parameterType="Map" resultType="Long">
+        SELECT
+          s.id
+        FROM STAR s
+        WHERE s.display = true
+        ORDER BY s.fan_count DESC
+        LIMIT #{offset}, #{size}
+    </select>
 </mapper>

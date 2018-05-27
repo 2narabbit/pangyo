@@ -40,7 +40,7 @@ public class ScheduleController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = Map.class)})
     @RequestMapping(method = RequestMethod.POST)
     public List<ExecutionRule> add(@RequestParam long turnNum) {
-        ruleMaker.registeredExecutionRule(turnNum);
+        ruleMaker.addExecutionRule(turnNum);
         return executionRuleService.getExecutionRuleListByTurnNum(turnNum);
     }
 }

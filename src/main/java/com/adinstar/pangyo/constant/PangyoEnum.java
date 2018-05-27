@@ -7,11 +7,12 @@ public class PangyoEnum {
     public enum CampaignCandidateStatus { SERVICE, DELETED, SELECTED }
     public enum ContentType { POST, CANDIDATE, CAMPAIGN, STAR }
     public enum CommentStatus { SERVICE, DELETED }
-    public enum ExecutionRuleType { CAMPAIGN, CANDIDATE, AD, CAMPAIGN_SNAPSHOT, STAR_SNAPSHOT }
+    public enum ExecutionRuleType { CAMPAIGN, CANDIDATE, AD }
     public enum ExecutionRuleStatus { READY, RUNNING, DONE, END }
     public enum LovKey { COMMENT, POST, LIKE, SUPPORT }
     public enum PolicyKey { COMMENT, POST, LIKE,
-                            CANDIDATE_RANGE, CANDIDATE_DONE_DATE, CAMPAIGN_RANGE, CAMPAIGN_DONE_DATE }
+                            CANDIDATE_TURN, CANDIDATE_DONE, CAMPAIGN_TURN, CAMPAIGN_DONE, AD_TURN, AD_DONE,
+                            CAMPAIGN_SNAPSHOT_TERM, STAR_SNAPSHOT_TERM}
     public enum ActionType { LIKE, POLL, SUPPORT, JOIN }
     public enum AccountType { KAKAO }
 

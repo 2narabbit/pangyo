@@ -10,6 +10,7 @@ public class InvalidConditionException extends RuntimeException {
     public static final InvalidConditionException EXECUTION_RULE = new InvalidConditionException(PangyoErrorMessage.INVALID_EXECUTION_RULE);
     public static final InvalidConditionException POLICY = new InvalidConditionException(PangyoErrorMessage.INVALID_POLICY);
     public static final InvalidConditionException TRUN_NUM = new InvalidConditionException(PangyoErrorMessage.INVALID_TURN_NUM);
+    public static final InvalidConditionException LAST_TIME = new InvalidConditionException(PangyoErrorMessage.INVALID_LAST_TIME);
 
     public InvalidConditionException(String msg) {
         super(msg);

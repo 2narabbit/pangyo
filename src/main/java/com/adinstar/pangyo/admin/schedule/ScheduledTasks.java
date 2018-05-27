@@ -1,16 +1,11 @@
 package com.adinstar.pangyo.admin.schedule;
 
-import com.adinstar.pangyo.admin.service.Ranker;
+import com.adinstar.pangyo.admin.service.RankMaker;
 import com.adinstar.pangyo.admin.service.RuleMaker;
-import com.adinstar.pangyo.constant.PangyoEnum.ExecutionRuleType;
-import com.adinstar.pangyo.model.ExecutionRule;
-import com.adinstar.pangyo.service.ExecutionRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /*
  * 스케줄된 tasks는 실제 수행할 task들을 기록하는 곳!
@@ -20,44 +15,34 @@ import java.util.List;
 @Component
 public class ScheduledTasks {
 
-    private static final long AFTER_NEXT_TURN_NUM = 2L;
-
     @Autowired
     private RuleMaker ruleMaker;
 
     @Autowired
-    private ExecutionRuleService executionRuleService;
-
-    @Autowired
-    private Ranker ranker;
+    private RankMaker rankMaker;
 
     @Async
-    public void settingOfExecutionRule() {
-        long turnNumForSetting = ruleMaker.getRunningTurnNum() + AFTER_NEXT_TURN_NUM;   // 2회차 뒤 정보를 셋팅함으로써 한 주 여유를 갖도록 하였습니다.
-        List<ExecutionRule> afterNextExecutionRuleList = executionRuleService.getExecutionRuleListByTurnNum(turnNumForSetting);
-        if (afterNextExecutionRuleList.size() == ExecutionRuleType.values().length) {  // 신규 타입이 들어오게 되면 해당 조건을 통과 하기 위해 데이터를 셋팅하거나 조건을 변경해야합니다!
-            return;
+    public void addExecutionRules() {
+        if (!ruleMaker.haveNextTurnRules()) {
+            ruleMaker.addExecutionRule();
         }
-
-        ruleMaker.registeredExecutionRule(turnNumForSetting);
     }
 
     @Async
     @Transactional
-    public void processedExecutionRule() {
-        ruleMaker.processedFromDoneToEnd();
-        ruleMaker.processedFromRunningToDone();
-        ruleMaker.processedFromReadyToRunning(ruleMaker.getRunningTurnNum());
+    public void proceedExecutionRules() {   // 이것도 3개를 병렬로 수행하도록 하는게 좋을 지 이야기하자!
+        ruleMaker.proceedFromDoneToEnd();
+        ruleMaker.proceedFromRunningToDone();
+        ruleMaker.proceedFromReadyToRunning();
     }
 
     @Async
     public void snapshotForCampaign() {
-        /*
-         * 스냡샷은 파티션으로 구성하자! 일주일치를 하나의 파티션으로 묶을 수 있을지 고민해야겠다-
-         * 해서 일주일 지나면 해당 파티션 날리고!!
-         * 회차별 파티션을 만드는게 좋겠군!! --> mysql 파티션을 어떻게 관리하는지 추가로 확인해 보자! 별도 테이블로 관리하면 괜츈할 듯!!ㅎㅎ CAMPAIGN_RANK 와 같은!ㅎㅎ
-         * 한달 주기로 trancate 할 수 있도록 해야하는건가? snapshot에서 파티션 관리도 하돌고 ㅎ가ㅣ엔.. 책임이 2개임!
-         */
-        ranker.snapshotForCampaign();
+        rankMaker.snapshotForCampaign();
+    }
+
+    @Async
+    public void snapshotForStar() {
+        rankMaker.snapshotForStar();
     }
 }

@@ -24,18 +24,23 @@ public class Scheduler {
     private ScheduledTasks scheduledTasks;
 
     @Scheduled(cron = "0 */10 23 * * SUN")
-    public void settingOfExecutionRule() {
-        exec(() -> scheduledTasks.settingOfExecutionRule());
+    public void addExecutionRules() {
+        exec(() -> scheduledTasks.addExecutionRules());
     }
 
     @Scheduled(cron = "0 0,1 0 * * ?")
-    public void processedExecutionRule() {
-        exec(() -> scheduledTasks.processedExecutionRule());
+    public void proceedExecutionRules() {
+        exec(() -> scheduledTasks.proceedExecutionRules());
     }
 
-    @Scheduled(cron = "0 */30 * * * ?")
+    @Scheduled(cron = "0 0,30 * * * ?")
     public void snapshotForCampaign() {
         exec(() -> scheduledTasks.snapshotForCampaign());
+    }
+
+    @Scheduled(cron = "0 5,35 * * * ?")
+    public void snapshotForStar() {
+        exec(() -> scheduledTasks.snapshotForStar());
     }
 
     private boolean isRunnableHost(String runnableHostname) {

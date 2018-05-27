@@ -7,10 +7,11 @@ import com.adinstar.pangyo.service.ExecutionRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class RuleMaker {
@@ -23,28 +24,32 @@ public class RuleMaker {
     @Autowired
     private PolicyService policyService;
 
-    public long getRunningTurnNum() {
-        return executionRuleService.getRunningTurnNum(PangyoEnum.ExecutionRuleType.CANDIDATE);
-    }
-
     // 신규 타입이 추가됬을 때 유효하지 않습니다. default 룰 처리에 대한 고민을 해야하기 때문에 필요시 고민하는 걸로+_+
     @Transactional
-    public void registeredExecutionRule(final long turnNum) {
-        long beforeTurnNum = turnNum - 1;
-        if (beforeTurnNum < 1) {
+    public void addExecutionRule() {
+        ExecutionRule executionRule = executionRuleService.getProgressExecuteRuleByType(PangyoEnum.ExecutionRuleType.CANDIDATE);
+        if (executionRule == null) {
+            throw InvalidConditionException.EXECUTION_RULE;
+        }
+
+        addExecutionRule( executionRule.getTurnNum() + 1);
+    }
+
+    public void addExecutionRule(long nextTurnNum) {
+        List<ExecutionRule> beforeExecutionRuleList = executionRuleService.getExecutionRuleListByTurnNum(nextTurnNum - 1);
+        if (beforeExecutionRuleList.size() != PangyoEnum.ExecutionRuleType.values().length) {
             throw InvalidConditionException.TRUN_NUM;
         }
 
-        List<ExecutionRule> beforeExecutionRuleList = executionRuleService.getExecutionRuleListByTurnNum(beforeTurnNum);
-        if (CollectionUtils.isEmpty(beforeExecutionRuleList)) {
-            throw InvalidConditionException.TRUN_NUM;
-        }
+        executionRuleService.removeExecutionRuleByTurnNum(nextTurnNum);
+
+        Map<PangyoEnum.ExecutionRuleType, Long> daysMap = beforeExecutionRuleList.stream().map(r -> r.getType()).distinct()
+                .collect(Collectors.toMap(r -> r, r -> policyService.getPolicyValueByKey(r.name() + POLICY_TURN_SUBFIX)));
 
         for (ExecutionRule rule : beforeExecutionRuleList) {
-            long days = policyService.getPolicyValueByKey(rule.getType().name() + POLICY_TURN_SUBFIX);
-
+            long days = daysMap.get(rule.getType());
             ExecutionRule nextRule = new ExecutionRule();
-            nextRule.setTurnNum(turnNum);
+            nextRule.setTurnNum(nextTurnNum);
             nextRule.setType(rule.getType());
             nextRule.setStartDttm(rule.getStartDttm().plusDays(days));
             nextRule.setEndDttm(rule.getEndDttm().plusDays(days));
@@ -54,42 +59,51 @@ public class RuleMaker {
     }
 
     @Transactional
-    public void processedFromDoneToEnd() {
+    public void proceedFromDoneToEnd() {
         LocalDateTime now = LocalDateTime.now();
 
         List<ExecutionRule> doneRuleList = executionRuleService.getExecutionRuleListByStatus(PangyoEnum.ExecutionRuleStatus.DONE);
-        for (ExecutionRule rule : doneRuleList) {
-            if (now.isBefore(rule.getEndDttm())) {
-                executionRuleService.updateExecutionRuleStatusById(rule.getId(), PangyoEnum.ExecutionRuleStatus.END);
-            }
-        }
+        doneRuleList.stream()
+                .filter(r -> now.isBefore(r.getEndDttm()))
+                .forEach(r -> executionRuleService.updateExecutionRuleStatusById(r.getId(), PangyoEnum.ExecutionRuleStatus.END));
     }
 
     @Transactional
-    public void processedFromRunningToDone() {
+    public void proceedFromRunningToDone() {
         LocalDateTime now = LocalDateTime.now();
 
         List<ExecutionRule> runningRuleList = executionRuleService.getExecutionRuleListByStatus(PangyoEnum.ExecutionRuleStatus.RUNNING);
-        for (ExecutionRule rule : runningRuleList) {
-            String key = rule.getType().name() + POLICY_DONE_SUBFIX;
-            long days = policyService.getPolicyValueByKey(key);
 
-            LocalDateTime doneDate = rule.getEndDttm().minusDays(days);
-            if (now.isBefore(doneDate)) {
-                executionRuleService.updateExecutionRuleStatusById(rule.getId(), PangyoEnum.ExecutionRuleStatus.DONE);
-            }
-        }
+        Map<PangyoEnum.ExecutionRuleType, Long> daysMap = runningRuleList.stream().map(r -> r.getType()).distinct()
+                .collect(Collectors.toMap(r -> r, r -> policyService.getPolicyValueByKey(r.name() + POLICY_DONE_SUBFIX)));
+
+        runningRuleList.stream()
+                .filter(r -> now.isBefore(r.getEndDttm().minusDays(daysMap.getOrDefault(r.getType(), 0L))))
+                .forEach(r -> executionRuleService.updateExecutionRuleStatusById(r.getId(), PangyoEnum.ExecutionRuleStatus.DONE));
     }
 
     @Transactional
-    public void processedFromReadyToRunning(long turnNum) {
+    public void proceedFromReadyToRunning() {
         LocalDateTime now = LocalDateTime.now();
 
-        List<ExecutionRule> runningRuleList = executionRuleService.getExecutionRuleListByTurnNum(turnNum);
-        for (ExecutionRule rule : runningRuleList) {
-            if (now.isBefore(rule.getStartDttm())) {
-                executionRuleService.updateExecutionRuleStatusById(rule.getId(), PangyoEnum.ExecutionRuleStatus.RUNNING);
-            }
+        List<ExecutionRule> readyRuleList = executionRuleService.getExecutionRuleListByStatus(PangyoEnum.ExecutionRuleStatus.READY);
+        readyRuleList.stream()
+                .filter(r -> now.isBefore(r.getStartDttm()))
+                .forEach(r -> executionRuleService.updateExecutionRuleStatusById(r.getId(), PangyoEnum.ExecutionRuleStatus.RUNNING));
+    }
+
+    public boolean haveNextTurnRules() {
+        ExecutionRule executionRule = executionRuleService.getProgressExecuteRuleByType(PangyoEnum.ExecutionRuleType.CANDIDATE);
+        if (executionRule == null) {
+            return false;
         }
+
+        long nextTurnNum = executionRule.getTurnNum() + 1;
+        List<ExecutionRule> nextExecutionRuleList = executionRuleService.getExecutionRuleListByTurnNum(nextTurnNum);
+        if (nextExecutionRuleList.size() != PangyoEnum.ExecutionRuleType.values().length) {
+            return false;
+        }
+
+        return true;
     }
 }

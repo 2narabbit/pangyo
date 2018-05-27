@@ -14,25 +14,17 @@ public class ExecutionRuleService {
     @Autowired
     private ExecutionRuleMapper executionRuleMapper;
 
-    public ExecutionRule getRunningExecuteRule(PangyoEnum.ExecutionRuleType executionRuleType) {
-        return executionRuleMapper.selectByTypeAndStatus(executionRuleType, PangyoEnum.ExecutionRuleStatus.RUNNING);
+    public ExecutionRule getProgressExecuteRuleByType(PangyoEnum.ExecutionRuleType executionRuleType) {
+        ExecutionRule progressExecutionRule = executionRuleMapper.selectProgressExecuteRuleByType(executionRuleType);
+        return progressExecutionRule;
     }
 
-    public long getRunningExecuteRuleId(PangyoEnum.ExecutionRuleType executionRuleType) {
-        ExecutionRule executionRule = getRunningExecuteRule(executionRuleType);
+    public long getProgressExecuteRuleIdByType(PangyoEnum.ExecutionRuleType executionRuleType) {
+        ExecutionRule executionRule = getProgressExecuteRuleByType(executionRuleType);
         if (executionRule == null) {
             throw InvalidConditionException.EXECUTION_RULE;
         }
         return executionRule.getId();
-    }
-
-    public long getRunningTurnNum(PangyoEnum.ExecutionRuleType executionRuleType) {
-        ExecutionRule executionRule = getRunningExecuteRule(executionRuleType);
-        if (executionRule == null) {
-            throw InvalidConditionException.EXECUTION_RULE;
-        }
-
-        return executionRule.getTurnNum();
     }
 
     public List<ExecutionRule> getExecutionRuleListByTurnNum(long turnNum) {
@@ -49,5 +41,9 @@ public class ExecutionRuleService {
 
     public void updateExecutionRuleStatusById(long id, PangyoEnum.ExecutionRuleStatus status) {
         executionRuleMapper.updateExecutionRuleStatusById(id, status);
+    }
+
+    public void removeExecutionRuleByTurnNum(long turnNum) {
+        executionRuleMapper.deleteByTurnNum(turnNum);
     }
 }

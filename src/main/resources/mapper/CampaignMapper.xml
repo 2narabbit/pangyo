@@ -44,12 +44,21 @@
         JOIN USER u ON (cc.user_id = u.id)
     </sql>
 
-    <select id="selectCampaignListByExecutionRuleId" parameterType="long" resultMap="Campaign">
+    <select id="selectCampaignListByExecutionRuleId" parameterType="long" resultMap="CampaignMap">
         SELECT
           <include refid="campaignColumn"/>
         FROM
           <include refid="campaignTable"/>
         WHERE
           cc.id = #{executeRuleId}
+    </select>
+
+    <select id="selectCampaignIdListOrderBySupportCount" parameterType="Map" resultType="Long">
+        SELECT
+          c.id
+        FROM CAMPAIGN c
+        WHERE c.display = true
+        ORDER BY c.support_count DESC
+        LIMIT #{offset}, #{size}
     </select>
 </mapper>

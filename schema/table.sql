@@ -160,6 +160,7 @@ create table POLICY
 		primary key,
 	`key` varchar(256) not null,
 	value varchar(256) not null,
+	description varchar(256) null,
 	reg_dttm datetime default CURRENT_TIMESTAMP not null,
 	end_dttm datetime null
 )

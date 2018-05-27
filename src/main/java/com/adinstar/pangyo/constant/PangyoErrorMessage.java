@@ -21,4 +21,5 @@ public class PangyoErrorMessage {
     public static final String INVALID_EXECUTION_RULE = "시스템 내부에 문제가 발생하였습니다(1) 운영자에게 문의주세요!";
     public static final String INVALID_POLICY = "시스템 내부에 문제가 발생하였습니다(2) 운영자에게 문의주세요!";
     public static final String INVALID_TURN_NUM = "시스템 내부에 문제가 발생하였습니다(3) 운영자에게 문의주세요!";
+    public static final String INVALID_LAST_TIME = "시스템 내부에 문제가 발생하였습니다(4) 운영자에게 문의주세요!";
 }

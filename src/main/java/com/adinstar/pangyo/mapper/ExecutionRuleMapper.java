@@ -10,7 +10,7 @@ import java.util.List;
 
 @Mapper
 public interface ExecutionRuleMapper {
-    ExecutionRule selectByTypeAndStatus(@Param("type") ExecutionRuleType type, @Param("status") ExecutionRuleStatus status);
+    ExecutionRule selectProgressExecuteRuleByType(ExecutionRuleType type);
 
     List<ExecutionRule> selectListByTurnNum(long turnNum);
 
@@ -20,5 +20,5 @@ public interface ExecutionRuleMapper {
 
     void updateExecutionRuleStatusById(@Param("id") long id, @Param("status") ExecutionRuleStatus status);
 
-    ExecutionRule selectExecutionRuleByTurnAndType(@Param("turnNum") long turnNum, @Param("status") ExecutionRuleType candidate);
+    void deleteByTurnNum(long turnNum);
 }
