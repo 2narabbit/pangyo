@@ -7,7 +7,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class RankData<T> implements PangyoData {
+public class RankData<T> implements FeedData {
     private long id;
     private long dataId;
     private long ranking;
