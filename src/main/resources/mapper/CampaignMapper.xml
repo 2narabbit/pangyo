@@ -10,7 +10,6 @@
         <result property="supportCount" column="c_support_count"/>
         <result property="isRegisterAd" column="c_is_register_ad"/>
         <result property="hasReport" column="c_has_report"/>
-        <result property="ranking" column="c_ranking"/>
         <result property="goalExposureCount" column="c_goal_exposure_count"/>
         <result property="display" column="c_display"/>
         <result property="status" column="c_status"/>
@@ -28,7 +27,6 @@
         c.support_count AS c_support_count,
         c.is_register_ad AS c_is_register_ad,
         c.has_report AS c_has_report,
-        c.ranking AS c_ranking,
         c.goal_exposure_count AS c_goal_exposure_count,
         c.display AS c_display,
         c.status AS c_status,
@@ -37,10 +35,14 @@
         <include refid="com.adinstar.pangyo.mapper.CampaignCandidateMapper.campaignCandidateColumn"/>
     </sql>
 
-    <sql id="campaignTable">
+    <sql id="campaignTableMinimum">
         CAMPAIGN c
         JOIN CAMPAIGN_CANDIDATE cc
         JOIN STAR s ON (cc.star_id = s.id AND s.display = true)
+    </sql>
+
+    <sql id="campaignTable">
+        <include refid="campaignTableMinimum"/>
         JOIN USER u ON (cc.user_id = u.id)
     </sql>
 
@@ -56,8 +58,10 @@
     <select id="selectCampaignIdListOrderBySupportCount" parameterType="Map" resultType="Long">
         SELECT
           c.id
-        FROM CAMPAIGN c
-        WHERE c.display = true
+        FROM
+          <include refid="campaignTableMinimum"/>
+        WHERE
+          c.display = true
         ORDER BY c.support_count DESC
         LIMIT #{offset}, #{size}
     </select>

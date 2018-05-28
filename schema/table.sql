@@ -23,7 +23,6 @@ create table CAMPAIGN
 	support_count bigint default '0' not null,
 	is_register_ad tinyint(1) default '0' not null,
 	has_report tinyint(1) default '0' not null,
-	ranking int default '0' null,
 	goal_exposure_count bigint default '0' not null,
 	display tinyint(1) default '1' null,
 	status enum('SERVICE', 'DELETED') default 'SERVICE' not null,
