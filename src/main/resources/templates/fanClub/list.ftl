@@ -123,7 +123,7 @@
                         $('#listSection').append(template(e));
                     });
 
-                    postList.lastId = data.list[data.list.length-1].id;
+                    postList.lastId = data.lastId;
                     postList.hasMore = data.hasMore;
                     postList.isLoading = false;
                 });

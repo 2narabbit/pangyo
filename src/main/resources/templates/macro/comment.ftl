@@ -103,7 +103,7 @@
                         $('#commentListSection').append(template(e));
                     });
 
-                    commentList.lastId = data.list[data.list.length-1].id;
+                    commentList.lastId = data.lastId;
                     commentList.hasMore = data.hasMore;
                     commentList.isLoading = false;
 

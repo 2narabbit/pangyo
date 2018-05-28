@@ -137,7 +137,7 @@
                         $('#listSection > table').append(template(e));
                     });
 
-                    starList.lastId = data.list[data.list.length-1].id;
+                    starList.lastId = data.lastId;
                     starList.hasMore = data.hasMore;
                     starList.isLoading = false;
                 });

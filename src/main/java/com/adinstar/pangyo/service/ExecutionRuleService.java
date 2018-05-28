@@ -46,4 +46,14 @@ public class ExecutionRuleService {
     public void removeExecutionRuleByTurnNum(long turnNum) {
         executionRuleMapper.deleteByTurnNum(turnNum);
     }
+
+    public ExecutionRule getAdExecutionRuleByProgressExecuteRuleByType(PangyoEnum.ExecutionRuleType type) {
+        ExecutionRule progressExecutionRule = getProgressExecuteRuleByType(type);
+        if (progressExecutionRule == null) {
+            throw InvalidConditionException.EXECUTION_RULE;
+        }
+
+        List<ExecutionRule> executionRuleListByTurn = getExecutionRuleListByTurnNum(progressExecutionRule.getTurnNum());
+        return executionRuleListByTurn.stream().filter(r -> r.getType() == PangyoEnum.ExecutionRuleType.AD).findFirst().orElse(null);
+    }
 }
