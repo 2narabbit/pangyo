@@ -27,10 +27,40 @@
         e.up_dttm AS e_up_dttm
     </sql>
 
-    <select id="selectByTypeAndStatus" parameterType="Map" resultMap="ExecutionRuleMap">
+    <select id="selectProgressExecuteRuleByType" parameterType="Map" resultMap="ExecutionRuleMap">
         SELECT
             <include refid="executionRuleColumn"/>
         FROM EXECUTION_RULE e
-        WHERE e.`type` = #{type} AND e.status = #{status}
+        WHERE e.`type` = #{type} AND e.status in ('RUNNING', 'END')
     </select>
+
+    <select id="selectListByTurnNum" resultMap="ExecutionRuleMap">
+        SELECT
+            <include refid="executionRuleColumn"/>
+        FROM EXECUTION_RULE e
+        WHERE e.turn_num = #{turnNum}
+    </select>
+
+    <select id="selectListByStatus" resultMap="ExecutionRuleMap">
+        SELECT
+            <include refid="executionRuleColumn"/>
+        FROM EXECUTION_RULE e
+        WHERE e.status = #{status}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO EXECUTION_RULE (turn_num, `type`, `start_dttm`, `end_dttm`, `status`, `reg_dttm`,`up_dttm`)
+        VALUES (#{turnNum}, #{type}, #{startDttm}, #{end_dttm}, 'REDAY', NOW(), NOW())
+    </insert>
+
+    <update id="updateExecutionRuleStatusById">
+        UPDATE EXECUTION_RULE
+           SET status = #{status}
+         WHERE id = #{id}
+    </update>
+
+    <delete id="deleteByTurnNum" parameterType="long">
+        DELETE FROM EXECUTION_RULE e
+        WHERE e.turn_num = #{turnNum}
+    </delete>
 </mapper>

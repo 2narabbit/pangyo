@@ -53,7 +53,7 @@ public class ActionService {
         int rc = actionHistoryMapper.deleteByActionTypeAndContentTypeAndContentIdAndUserId(
                 actionType, contentType, contentId, userId);
         if (rc == 0) {
-            throw new NotFoundException(PangyoErrorMessage.NOT_FOUND_ACTION_HISTORY);
+            throw NotFoundException.ACTION_HISTORY;
         }
     }
 }

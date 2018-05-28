@@ -12,7 +12,7 @@
 
     <h3 style="margin-top:50px; margin-bottom:0px">NEXT WEEK CAMPAIGN</h3>
 
-    <div style="border: 2px solid; padding: 10px; width:400px">
+    <div style="border: 2px solid; border-color: red; padding: 10px; width:400px;">
         <#if campaignCandidateList?has_content>
             <div id="campaignCandidate">
                 <#list campaignCandidateList as campaignCandidate>
@@ -123,7 +123,7 @@
                         $('#listSection').append(template(e));
                     });
 
-                    postList.lastId = data.list[data.list.length-1].id;
+                    postList.lastId = data.lastId;
                     postList.hasMore = data.hasMore;
                     postList.isLoading = false;
                 });

@@ -17,7 +17,7 @@ import javax.naming.ServiceUnavailableException;
 
 // todo : 에러에 대해서 전체적으로 정리하는 날이 와야할 듯ㅠ 아오!!!ㅠ 제대로 하는게 없넹;
 
-@ControllerAdvice(annotations = RestController.class)
+@RestControllerAdvice
 public class RestControllerExceptionHandler {
 
     @ExceptionHandler({

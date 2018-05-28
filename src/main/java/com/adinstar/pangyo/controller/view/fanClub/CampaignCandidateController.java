@@ -50,7 +50,7 @@ public class CampaignCandidateController {
         model.addAttribute(STAR, starService.getById(starId));
         model.addAttribute(CAMPAIGN_CANDIDATE_LIST, campaignCandidateList);
         model.addAttribute(POLLED_LIST, pollService.getContentIdList(PangyoEnum.ContentType.CANDIDATE, ids, viewerInfo.getId()));
-        model.addAttribute(EXECUTION_RULE_AD_RUNNING, executionRuleService.getRunningExecuteRule(PangyoEnum.ExecutionRuleType.AD));
+        model.addAttribute(AD_EXECUTION_RULE, executionRuleService.getAdExecutionRuleByProgressExecuteRuleByType(PangyoEnum.ExecutionRuleType.CANDIDATE));
 
         return "fanClub/campaignCandidate/list";
     }

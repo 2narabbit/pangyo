@@ -33,7 +33,7 @@
                         </span>
                     </div>
                     <p>${campaignCandidate.body!}</p>
-                    <p>캠페인 노출 기간 : ${executionRuleAdRunning.startDttm!} ~ ${executionRuleAdRunning.endDttm!}</p>
+                    <p>캠페인 노출 기간 : ${adExecutionRule.startDttm!} ~ ${adExecutionRule.endDttm!}</p>
                     <p>랜딩페이지 url : ${campaignCandidate.randingUrl!}</p>
                     <p>광고소재 : (TODO 현재 파일명 저장안하고 있음)</p>
                     <#if campaignCandidate.bannerImg?has_content>

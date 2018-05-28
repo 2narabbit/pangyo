@@ -29,7 +29,7 @@ public class CampaignCandidateService {
     private ExecutionRuleService executionRuleService;
 
     public long getRunningExecuteRuleId() {
-        return executionRuleService.getRunningExecuteRuleId(ExecutionRuleType.CANDIDATE);
+        return executionRuleService.getProgressExecuteRuleIdByType(ExecutionRuleType.CANDIDATE);
     }
 
     public List<CampaignCandidate> getRunningList(long starId, Optional<Integer> opPage, Optional<Integer> opSize) {

@@ -12,7 +12,6 @@ import com.adinstar.pangyo.service.CampaignCandidateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -52,7 +51,7 @@ public class CampaignCandidateAuthority implements AuthorityStrategy {
                 }
                 break;
             default:
-                new NotImplementedException();
+                throw BadRequestException.INVALID_PARAM;
         }
 
         if (campaignCandidate == null) {
@@ -90,7 +89,7 @@ public class CampaignCandidateAuthority implements AuthorityStrategy {
                     paramMap.put(HintKey.CAMPAIGN_CANDIDATE_ID, args[i]);
                     break;
                 default:
-                    new NotImplementedException();
+                    throw BadRequestException.INVALID_PARAM;
             }
         }
 

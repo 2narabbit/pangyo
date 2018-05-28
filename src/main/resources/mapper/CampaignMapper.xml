@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.adinstar.pangyo.mapper.CampaignMapper">
+    <resultMap id="CampaignMap" type="Campaign">
+        <result property="id" column="c_id"/>
+        <result property="viewCount" column="c_view_count"/>
+        <result property="commentCount" column="c_comment_count"/>
+        <result property="supportCount" column="c_support_count"/>
+        <result property="isRegisterAd" column="c_is_register_ad"/>
+        <result property="hasReport" column="c_has_report"/>
+        <result property="goalExposureCount" column="c_goal_exposure_count"/>
+        <result property="display" column="c_display"/>
+        <result property="status" column="c_status"/>
+        <association property="campaignCandidate" javaType="CampaignCandidate" resultMap="com.adinstar.pangyo.mapper.CampaignCandidateMapper.CampaignCandidateMap"/>
+        <association property="dateTime" javaType="PangyoLocalDataTime">
+            <result property="reg" column="s_reg_dttm"/>
+            <result property="up" column="s_up_dttm"/>
+        </association>
+    </resultMap>
+
+    <sql id="campaignColumn">
+        c.id AS c_id,
+        c.view_count AS c_view_count,
+        c.comment_count AS c_comment_count,
+        c.support_count AS c_support_count,
+        c.is_register_ad AS c_is_register_ad,
+        c.has_report AS c_has_report,
+        c.goal_exposure_count AS c_goal_exposure_count,
+        c.display AS c_display,
+        c.status AS c_status,
+        c.reg_dttm AS c_reg_dttm,
+        c.up_dttm AS c_up_dttm
+        <include refid="com.adinstar.pangyo.mapper.CampaignCandidateMapper.campaignCandidateColumn"/>
+    </sql>
+
+    <sql id="campaignTableMinimum">
+        CAMPAIGN c
+        JOIN CAMPAIGN_CANDIDATE cc
+        JOIN STAR s ON (cc.star_id = s.id AND s.display = true)
+    </sql>
+
+    <sql id="campaignTable">
+        <include refid="campaignTableMinimum"/>
+        JOIN USER u ON (cc.user_id = u.id)
+    </sql>
+
+    <select id="selectCampaignListByExecutionRuleId" parameterType="long" resultMap="CampaignMap">
+        SELECT
+          <include refid="campaignColumn"/>
+        FROM
+          <include refid="campaignTable"/>
+        WHERE
+          cc.id = #{executeRuleId}
+    </select>
+
+    <select id="selectCampaignIdListOrderBySupportCount" parameterType="Map" resultType="Long">
+        SELECT
+          c.id
+        FROM
+          <include refid="campaignTableMinimum"/>
+        WHERE
+          c.display = true
+        ORDER BY c.support_count DESC
+        LIMIT #{offset}, #{size}
+    </select>
+</mapper>

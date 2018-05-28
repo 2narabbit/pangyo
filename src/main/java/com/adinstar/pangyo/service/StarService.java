@@ -1,9 +1,8 @@
 package com.adinstar.pangyo.service;
 
-import com.adinstar.pangyo.constant.PangyoEnum;
+import com.adinstar.pangyo.admin.mapper.StarRankMapper;
 import com.adinstar.pangyo.controller.exception.InvalidConditionException;
 import com.adinstar.pangyo.mapper.StarMapper;
-import com.adinstar.pangyo.model.ExecutionRule;
 import com.adinstar.pangyo.model.FeedResponse;
 import com.adinstar.pangyo.model.RankData;
 import com.adinstar.pangyo.model.Star;
@@ -18,13 +17,13 @@ import java.util.Optional;
 @Service
 public class StarService {
 
-    private static final long TOP_RANK = 0L;
+    private static final long TOP_RANK = 1L;
 
     @Autowired
     private StarMapper starMapper;
 
     @Autowired
-    private ExecutionRuleService executionRuleService;
+    private StarRankMapper starRankMapper;
 
     public Star getById(long id) {
         return starMapper.selectById(id);
@@ -38,26 +37,26 @@ public class StarService {
         starMapper.update(star);
     }
 
-    private LocalDateTime getLastUpdateTime() {
-        ExecutionRule executionRule = executionRuleService.getRunningExecuteRule(PangyoEnum.ExecutionRuleType.STAR_SNAPSHOT);
-        if (executionRule == null) {
-            throw InvalidConditionException.EXECUTION_RULE;
+    private LocalDateTime getLastTime() {
+        LocalDateTime lastTime = starRankMapper.selectLastTime();
+        if (lastTime == null) {
+            throw InvalidConditionException.LAST_TIME;
         }
-        return executionRule.getStartDttm();
+        return lastTime;
     }
 
-    public FeedResponse<RankData<Star>> getStarRankList(Optional rankId, int size) {
-        List<RankData<Star>> starList = starMapper.selectStarRankList((long) rankId.orElse(TOP_RANK), getLastUpdateTime(), size + 1);
+    public FeedResponse<RankData<Star>> getStarRankList(Optional<Long> rankId, int size) {
+        List<RankData<Star>> starList = starMapper.selectStarRankList(rankId.orElse(TOP_RANK), getLastTime(), size + 1);
         return new FeedResponse<>(starList, size);
     }
 
-    public FeedResponse<RankData<Star>> getJoinedStarRankListByUserId(long userId, Optional rankId, int size) {
-        List<RankData<Star>> starList = starMapper.selectJoinedStarRankListByUserId(userId, (long) rankId.orElse(TOP_RANK), getLastUpdateTime(), size + 1);
+    public FeedResponse<RankData<Star>> getJoinedStarRankListByUserId(long userId, Optional<Long> rankId, int size) {
+        List<RankData<Star>> starList = starMapper.selectJoinedStarRankListByUserId(userId, rankId.orElse(TOP_RANK), getLastTime(), size + 1);
         return new FeedResponse<>(starList, size);
     }
 
-    public FeedResponse<RankData<Star>> getNotJoinedStarRankListByUserId(long userId, Optional rankId, int size) {
-        List<RankData<Star>> starList = starMapper.selectNotJoinedStarRankListByUserId(userId, (long) rankId.orElse(TOP_RANK), getLastUpdateTime(), size + 1);
+    public FeedResponse<RankData<Star>> getNotJoinedStarRankListByUserId(long userId, Optional<Long> rankId, int size) {
+        List<RankData<Star>> starList = starMapper.selectNotJoinedStarRankListByUserId(userId, rankId.orElse(TOP_RANK), getLastTime(), size + 1);
         return new FeedResponse<>(starList, size);
     }
 
@@ -75,5 +74,9 @@ public class StarService {
 
     private void updateFanCount(long starId, int delta){
         starMapper.updateFanCount(starId, delta);
+    }
+
+    public List<Long> getStarIdListOrderByFanCount(long offset, int size) {
+        return starMapper.selectStarIdListOrderByFanCount(offset, size);
     }
 }
