@@ -7,7 +7,7 @@ import com.adinstar.pangyo.controller.exception.BadRequestException;
 import com.adinstar.pangyo.controller.exception.NotFoundException;
 import com.adinstar.pangyo.controller.exception.UnauthorizedException;
 import com.adinstar.pangyo.model.CampaignCandidate;
-import com.adinstar.pangyo.model.LoginInfo;
+import com.adinstar.pangyo.model.ViewerInfo;
 import com.adinstar.pangyo.service.CampaignCandidateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,7 +27,7 @@ public class CampaignCandidateAuthority implements AuthorityStrategy {
     private CampaignCandidateService campaignCandidateService;
 
     @Override
-    public boolean isValid(LoginInfo loginInfo, Method method, Object[] args, CheckAuthority checkAuthority) {
+    public boolean isValid(ViewerInfo viewerInfo, Method method, Object[] args, CheckAuthority checkAuthority) {
         Map paramMap = getParamMap(method.getParameters(), args);
 
         long starId = (long) paramMap.getOrDefault(HintKey.STAR_ID, 0);
@@ -63,15 +63,14 @@ public class CampaignCandidateAuthority implements AuthorityStrategy {
             throw NotFoundException.CAMPAIGN_CANDIDATE;
         }
 
-        // 향후 로그인 로직이 추가되면 해당 if 문 수정하면 됨!!
-        if (checkAuthority.isCheckOwner() && (campaignCandidate.getUser().getId() != campaignCandidate.getUser().getId() )) {  //loginInfo.getId()
+        if (checkAuthority.isCheckOwner() && (viewerInfo.getId() != campaignCandidate.getUser().getId())) {
             throw UnauthorizedException.NO_OWNER_SHIP;
         }
 
         return true;
     }
 
-    // 개선 : 이 부분을 이렇게 구리게 set하는게 아니라 param 정보로 한번에 가져올 수 없는지 고민해 보도록 한다!!!
+    // TODO : 이 부분을 이렇게 구리게 set하는게 아니라 param 정보로 한번에 가져올 수 없는지 고민해 보도록 한다!!!
     private Map getParamMap(Parameter[] parameters, Object[] args) {
         Map paramMap = new HashMap();
         for (int i = 0; i < parameters.length; i++) {

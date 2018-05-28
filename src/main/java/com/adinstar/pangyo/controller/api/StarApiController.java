@@ -28,9 +28,9 @@ public class StarApiController {
     @RequestMapping(method = RequestMethod.GET)
     public FeedResponse<RankData<Star>> getList(@RequestParam(value = "rankId", required = false) Long rankId,
                                                 @RequestParam(value = "isJoined", defaultValue = "false") boolean isJoined,
-                                                @ModelAttribute(ViewModelName.AUTH) LoginInfo loginInfo) {
-        if (isJoined == false && loginInfo != null) {
-            return starService.getNotJoinedStarRankListByUserId(loginInfo.getId(), Optional.ofNullable(rankId), LIST_SIZE);
+                                                @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
+        if (isJoined == false && viewerInfo != null) {
+            return starService.getNotJoinedStarRankListByUserId(viewerInfo.getId(), Optional.ofNullable(rankId), LIST_SIZE);
         }
         return starService.getStarRankList(Optional.ofNullable(rankId), LIST_SIZE);
     }
@@ -65,8 +65,8 @@ public class StarApiController {
     @RequestMapping(value = "/my", method = RequestMethod.GET)
     @MustLogin
     public FeedResponse<RankData<Star>> getListByUserId(@RequestParam(value = "rankId", required = false) Long rankId,
-                                                        @ModelAttribute(ViewModelName.AUTH) LoginInfo loginInfo) {
-        return starService.getJoinedStarRankListByUserId(loginInfo.getId(), Optional.ofNullable(rankId), LIST_SIZE);
+                                                        @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
+        return starService.getJoinedStarRankListByUserId(viewerInfo.getId(), Optional.ofNullable(rankId), LIST_SIZE);
     }
 
     ////////////////////////////////////////////////////// 2depth //////////////////////////////////////////////////////
@@ -78,8 +78,8 @@ public class StarApiController {
     @RequestMapping(value = "/join/{starId}", method = RequestMethod.POST)
     @MustLogin
     public void joinedStar(@PathVariable("starId") long starId,
-                           @ModelAttribute(ViewModelName.AUTH) LoginInfo loginInfo) {
-        starService.joinedStar(starId, loginInfo.getId());
+                           @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
+        starService.joinedStar(starId, viewerInfo.getId());
     }
 
     @ApiOperation("secededStar")
@@ -90,7 +90,7 @@ public class StarApiController {
     @RequestMapping(value = "/join/{starId}", method = RequestMethod.DELETE)
     @MustLogin
     public void secededStar(@PathVariable("starId") long starId,
-                            @ModelAttribute(ViewModelName.AUTH) LoginInfo loginInfo) {
-        starService.secededStar(starId, loginInfo.getId());
+                            @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
+        starService.secededStar(starId, viewerInfo.getId());
     }
 }

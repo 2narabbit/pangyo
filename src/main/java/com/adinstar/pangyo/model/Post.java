@@ -4,7 +4,7 @@ import com.adinstar.pangyo.constant.PangyoEnum.*;
 import lombok.Data;
 
 @Data
-public class Post implements PangyoData {
+public class Post implements FeedData {
     private long id;
     private Star star;
     private User user;

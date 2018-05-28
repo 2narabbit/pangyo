@@ -2,8 +2,8 @@ create table ACTION_HISTORY
 (
 	id bigint auto_increment
 		primary key,
-	action_type enum('LIKE', 'POLL', 'SUPPORT') not null,
-	content_type enum('POST', 'CANDIDATE', 'CAMPAIGN') not null,
+	action_type enum('LIKE', 'POLL', 'SUPPORT', 'JOIN') not null,
+	content_type enum('POST', 'CANDIDATE', 'CAMPAIGN', 'STAR') not null,
 	content_id bigint not null,
 	user_id bigint not null,
 	reg_dttm datetime default CURRENT_TIMESTAMP not null,
@@ -212,7 +212,7 @@ create table USER
 	service_user_id varchar(128) not null,
 	name varchar(128) not null,
 	profile_img varchar(256) null,
-	recommand_code bigint null,
+	recommend_code varchar(32) null,
 	status enum('MEMBER', 'DELETED') default 'MEMBER' not null,
 	reg_dttm datetime default CURRENT_TIMESTAMP not null,
 	up_dttm datetime default CURRENT_TIMESTAMP not null

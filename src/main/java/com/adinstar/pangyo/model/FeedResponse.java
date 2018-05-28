@@ -3,10 +3,11 @@ package com.adinstar.pangyo.model;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Data
-public class FeedResponse<T extends PangyoData> {
+public class FeedResponse<T extends FeedData> {
     private boolean hasMore;
     private long lastId;
     private List<T> list;
@@ -26,4 +27,6 @@ public class FeedResponse<T extends PangyoData> {
             this.lastId = this.list.get(this.list.size()-1).getId();
         }
     }
+
+    public static final FeedResponse<?> EMPTY_LIST  = new FeedResponse(Collections.emptyList(), 0);
 }
