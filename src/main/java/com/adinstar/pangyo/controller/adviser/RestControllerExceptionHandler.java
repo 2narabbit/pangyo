@@ -17,7 +17,7 @@ import javax.naming.ServiceUnavailableException;
 
 // todo : 에러에 대해서 전체적으로 정리하는 날이 와야할 듯ㅠ 아오!!!ㅠ 제대로 하는게 없넹;
 
-@RestControllerAdvice
+@RestControllerAdvice(annotations = RestController.class)
 public class RestControllerExceptionHandler {
 
     @ExceptionHandler({
@@ -27,42 +27,36 @@ public class RestControllerExceptionHandler {
             ServletRequestBindingException.class,
             HttpRequestMethodNotSupportedException.class
     })
-    @ResponseBody
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ErrorResult handleBadRequestException(Exception e) {
         return new ErrorResult(e);
     }
 
     @ExceptionHandler(NotFoundException.class)
-    @ResponseBody
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ErrorResult handleNotFoundException(NotFoundException e) {
         return new ErrorResult(e);
     }
 
     @ExceptionHandler(UnauthorizedException.class)
-    @ResponseBody
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
     public Object handleUnauthorizedException(UnauthorizedException e) {
         return new ErrorResult(e);
     }
 
     @ExceptionHandler(ServiceUnavailableException.class)
-    @ResponseBody
     @ResponseStatus(value = HttpStatus.SERVICE_UNAVAILABLE)
     public ErrorResult handleServiceUnavailableException(ServiceUnavailableException e) {
         return new ErrorResult(e);
     }
 
     @ExceptionHandler(InvalidConditionException.class)
-    @ResponseBody
     @ResponseStatus(value = HttpStatus.FORBIDDEN)
     public Object handleInvalidConditionException(InvalidConditionException e) {
         return new ErrorResult(e);
     }
 
     @ExceptionHandler(Exception.class)
-    @ResponseBody
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResult handleAllException(Exception e) {
         return new ErrorResult(e);
