@@ -51,7 +51,7 @@
         });
 
         function goToModify() {
-            location.replace('/fanClub/${starId!}/post/write?postId='+${post.id!});
+            location.replace('/fanClub/${post.star.id!}/post/write?postId='+${post.id!});
         }
 
         function remove() {
@@ -60,11 +60,11 @@
             }
 
             $.ajax({
-                url : '/api/fanClub/${starId!}/post/' + ${post.id!},
+                url : '/api/post/' + ${post.id!},
                 type : 'DELETE',
                 contentType : "application/json",
                 success: function() {
-                    location.replace('/fanClub/${starId!}');
+                    location.replace('/fanClub/${post.star.id!}');
                 },
                 error: function(res) {
                     console.log(res);

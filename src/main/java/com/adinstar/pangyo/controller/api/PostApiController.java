@@ -1,4 +1,4 @@
-package com.adinstar.pangyo.controller.api.fanClub;
+package com.adinstar.pangyo.controller.api;
 
 
 import com.adinstar.pangyo.common.annotation.MustLogin;
@@ -14,28 +14,27 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/api/fanClub/{starId}/post")
+@RequestMapping("/api/post")
 public class PostApiController {
     @Autowired
     private PostService postService;
 
     @ApiOperation("getPostListByStarId")
     @ApiImplicitParams({
-            @ApiImplicitParam(name="starId", value="star id", paramType="path", dataType="Long"),
+            @ApiImplicitParam(name="starId", value="star id", paramType="query", dataType="Long"),
             @ApiImplicitParam(name="lastId", value="last post id", paramType="query", dataType="Long")
     })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = FeedResponse.class)
     })
     @RequestMapping(method = RequestMethod.GET)
-    public FeedResponse<Post> getListByStarId(@PathVariable("starId") long starId,
+    public FeedResponse<Post> getListByStarId(@RequestParam("starId") long starId,
                                               @RequestParam(value = "lastId", required = false) Long lastId) {
         return postService.getListByStarId(starId, Optional.ofNullable(lastId));
     }
 
     @ApiOperation("getPost")
     @ApiImplicitParams({
-            @ApiImplicitParam(name="starId", value="star id", paramType="path", dataType="Long"),
             @ApiImplicitParam(name="postId", value="post id", paramType="path", required=true, dataType="long")
     })
     @ApiResponses(value = {
@@ -43,17 +42,15 @@ public class PostApiController {
             @ApiResponse(code = 404, message = "Not Found")
     })
     @RequestMapping(value = "/{postId}", method = RequestMethod.GET)
-    public Post get(@PathVariable("starId") long starId,
-                    @PathVariable("postId") long postId) {
-        return postService.getByStarIdAndId(starId, postId);
+    public Post get(@PathVariable("postId") long postId) {
+        return postService.getById(postId);
     }
 
     //
-    // test : curl -X POST -H "Content-Type: application/json" -d '{"starId":2, "user":{"id":2}, "body":"api test"}' http://localhost:8080/api/post
+    // test : curl -X POST -H "Content-Type: application/json" -d '{"star":{"id":2}, "user":{"id":2}, "body":"api test"}' http://localhost:8080/api/post
     //
     @ApiOperation("addPost")
     @ApiImplicitParams({
-            @ApiImplicitParam(name="starId", value="star id", paramType="path", dataType="Long"),
             @ApiImplicitParam(name="post", value="post object", paramType="body", required=true, dataType="Post")
     })
     @ApiResponses(value = {
@@ -61,9 +58,8 @@ public class PostApiController {
     })
     @RequestMapping(method = RequestMethod.POST)
     @MustLogin
-    public void add(@PathVariable("starId") long starId,
-                    @RequestBody Post post) {
-        postService.add(starId, post);
+    public void add(@RequestBody Post post) {
+        postService.add(post);
     }
 
     //
@@ -71,7 +67,6 @@ public class PostApiController {
     //
     @ApiOperation("modifyPost")
     @ApiImplicitParams({
-            @ApiImplicitParam(name="starId", value="star id", paramType="path", dataType="Long"),
             @ApiImplicitParam(name="post", value="post object", paramType="body", required=true, dataType="Post")
     })
     @ApiResponses(value = {
@@ -79,14 +74,12 @@ public class PostApiController {
     })
     @RequestMapping(method = RequestMethod.PUT)
     @MustLogin
-    public void modify(@PathVariable("starId") long starId,
-                       @RequestBody Post post) {
-        postService.modify(starId, post);
+    public void modify(@RequestBody Post post) {
+        postService.modify(post);
     }
 
     @ApiOperation("removePost")
     @ApiImplicitParams({
-            @ApiImplicitParam(name="starId", value="star id", paramType="path", dataType="Long"),
             @ApiImplicitParam(name="postId", value="post id", paramType="path", required=true, dataType="long")
     })
     @ApiResponses(value = {
@@ -94,8 +87,7 @@ public class PostApiController {
     })
     @RequestMapping(value = "/{postId}", method = RequestMethod.DELETE)
     @MustLogin
-    public void remove(@PathVariable("starId") long starId,
-                       @PathVariable("postId") long postId) {
-        postService.remove(starId, postId);
+    public void remove(@PathVariable("postId") long postId) {
+        postService.remove(postId);
     }
 }

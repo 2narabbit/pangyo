@@ -42,7 +42,8 @@ public class PostAuthority implements AuthorityStrategy {
                     throw BadRequestException.INVALID_PARAM;
                 }
 
-                post = postService.getByStarIdAndId(starId, postId);
+                // fixme: 이게원래 starId와 postId 조합으로 post를 가져오는 부분이라 스타와 포스트의 일치여부를 확인할 수 있었는데, 포스트가 더이상 팬클럽 종속이 아니게 되면서 아래 로직은 사실상 무의미해져따
+                post = postService.getById(postId);
                 break;
             case OBJECT:
                 post = (Post) paramMap.getOrDefault(HintKey.POST, post);

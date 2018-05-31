@@ -34,8 +34,7 @@ public class PostController {
     private LikeService likeService;
 
     @RequestMapping(value = "/{postId}", method = RequestMethod.GET)
-    public String get(@PathVariable("starId") long starId,
-                      @PathVariable("postId") long postId,
+    public String get(@PathVariable("postId") long postId,
                       @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo,
                       Model model) {
         try {
@@ -44,7 +43,7 @@ public class PostController {
             // ignore
         }
 
-        model.addAttribute(POST, postService.getByStarIdAndId(starId, postId));
+        model.addAttribute(POST, postService.getById(postId));
         model.addAttribute(COMMENT_FEED, commentService.getList(PangyoEnum.ContentType.POST, postId, Optional.empty()));
         model.addAttribute(IS_LIKED, likeService.isActioned(PangyoEnum.ContentType.POST, postId, viewerInfo.getId()));
 
@@ -53,10 +52,10 @@ public class PostController {
 
     @RequestMapping(value = "/write", method = RequestMethod.GET)
     public String getWriteForm(@PathVariable("starId") long starId,
-                                   @RequestParam(value = "postId", required = false) Long postId,
-                                   Model model) {
+                               @RequestParam(value = "postId", required = false) Long postId,
+                               Model model) {
         if (postId != null) {
-            model.addAttribute(POST, postService.getByStarIdAndId(starId, postId));
+            model.addAttribute(POST, postService.getById(postId));
         }
         model.addAttribute(STAR, starService.getById(starId));
         return "fanClub/post/form";

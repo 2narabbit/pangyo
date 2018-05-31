@@ -132,11 +132,12 @@
             getData: function() {
                 var data = {};
                 if (postList.lastId != null) {
+                    data.starId = ${star.id!};
                     data.lastId = postList.lastId;
                 }
 
                 return $.ajax({
-                    url : '/api/fanClub/${star.id!}/post',
+                    url : '/api/post',
                     data : data,
                     type : 'GET',
                     success: function(result) {

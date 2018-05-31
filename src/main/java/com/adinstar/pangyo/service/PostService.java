@@ -1,7 +1,5 @@
 package com.adinstar.pangyo.service;
 
-import com.adinstar.pangyo.common.annotation.CheckAuthority;
-import com.adinstar.pangyo.common.annotation.HintKey;
 import com.adinstar.pangyo.constant.PangyoEnum;
 import com.adinstar.pangyo.mapper.PostMapper;
 import com.adinstar.pangyo.model.FeedResponse;
@@ -10,10 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
-import static com.adinstar.pangyo.common.annotation.HintKey.POST;
-import static com.adinstar.pangyo.common.annotation.HintKey.POST_ID;
-import static com.adinstar.pangyo.common.annotation.HintKey.STAR_ID;
 
 @Service
 public class PostService {
@@ -30,23 +24,20 @@ public class PostService {
         );
     }
 
-    public Post getByStarIdAndId(long starId, long id) {
-        return postMapper.selectByStarIdAndId(starId, id);
+    public Post getById(long id) {
+        return postMapper.selectById(id);
     }
 
-    @CheckAuthority(type = Post.class, checkType = PangyoEnum.CheckingType.OBJECT, isCheckOwner = false)
-    public void add(@HintKey(STAR_ID) long starId, @HintKey(POST) Post post) {
+    public void add(Post post) {
         postMapper.insert(post);
     }
 
-    @CheckAuthority(type = Post.class, checkType = PangyoEnum.CheckingType.OBJECT)
-    public void modify(@HintKey(STAR_ID) long starId, @HintKey(POST) Post post) {
+    public void modify(Post post) {
         postMapper.update(post);
     }
 
-    @CheckAuthority(type = Post.class, checkType = PangyoEnum.CheckingType.ID)
-    public void remove(@HintKey(STAR_ID) long starId, @HintKey(POST_ID) long id) {
-        postMapper.updateStatus(starId, id, PangyoEnum.PostStatus.DELETED);
+    public void remove(long id) {
+        postMapper.updateStatus(id, PangyoEnum.PostStatus.DELETED);
     }
 
     public void updateLikeCount(long id, int delta) {

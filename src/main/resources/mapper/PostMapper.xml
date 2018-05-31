@@ -55,7 +55,7 @@
           #{size}
     </select>
 
-    <select id="selectByStarIdAndId" parameterType="Map" resultMap="PostMap">
+    <select id="selectById" parameterType="Map" resultMap="PostMap">
         SELECT
           <include refid="postColumn"/>
         FROM
@@ -63,7 +63,6 @@
         WHERE
           p.status = 'SERVICE'
           AND p.id = #{id}
-          AND p.star_id = #{starId}
     </select>
 
     <insert id="insert" parameterType="Post" useGeneratedKeys="true" keyProperty="id">
@@ -105,6 +104,6 @@
     <update id="updateStatus" parameterType="Map">
         UPDATE POST
         SET status = #{status}, up_dttm = NOW()
-        WHERE id = #{id} AND star_id = #{starId}
+        WHERE id = #{id}
     </update>
 </mapper>

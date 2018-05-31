@@ -52,7 +52,7 @@
             };
 
             $.ajax({
-                url : '/api/fanClub/${star.id!}/post',
+                url : '/api/post',
                 type : type,
                 data : JSON.stringify(data),
                 contentType : "application/json",
