@@ -73,7 +73,7 @@
             }
 
             $.ajax({
-                url : '/api/fanClub/${starId!}/campaign-candidate',
+                url : '/api/campaign-candidate',
                 type : type,
                 data : JSON.stringify(data),
                 contentType : "application/json",

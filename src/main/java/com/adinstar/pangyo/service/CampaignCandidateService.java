@@ -1,9 +1,6 @@
 package com.adinstar.pangyo.service;
 
-import com.adinstar.pangyo.common.annotation.CheckAuthority;
-import com.adinstar.pangyo.common.annotation.HintKey;
 import com.adinstar.pangyo.constant.PangyoEnum.CampaignCandidateStatus;
-import com.adinstar.pangyo.constant.PangyoEnum.CheckingType;
 import com.adinstar.pangyo.constant.PangyoEnum.ExecutionRuleType;
 import com.adinstar.pangyo.controller.exception.UnauthorizedException;
 import com.adinstar.pangyo.mapper.CampaignCandidateMapper;
@@ -14,8 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
-import static com.adinstar.pangyo.common.annotation.HintKey.*;
 
 @Service
 public class CampaignCandidateService {
@@ -38,29 +33,25 @@ public class CampaignCandidateService {
         return campaignCandidateMapper.selectListByStarIdAndExecuteRuleId(starId, getRunningExecuteRuleId(), offset, size);
     }
 
-    public CampaignCandidate getByStarIdAndId(long starId, long id) {
-        return campaignCandidateMapper.selectByStarIdAndId(starId, id);
+    public CampaignCandidate getById(long id) {
+        return campaignCandidateMapper.selectById(id);
     }
 
-    @CheckAuthority(type = CampaignCandidate.class, checkType = CheckingType.OBJECT, isCheckOwner = false)
-    public void add(@HintKey(STAR_ID) long starId, @HintKey(CAMPAIGN_CANDIDATE) CampaignCandidate campaignCandidate) {
+    public void add(CampaignCandidate campaignCandidate) {
         try {
             campaignCandidate.setExecuteRuleId(getRunningExecuteRuleId());
             campaignCandidateMapper.insert(campaignCandidate);
         } catch (DuplicateKeyException ex) {
-            // FIXME: 해당 exception이 발생하더라도 campaignCandidate ID가 소진됨
             throw UnauthorizedException.DUPLICATE_CANDIDATE_REGISTER;
         }
     }
 
-    @CheckAuthority(type = CampaignCandidate.class, checkType = CheckingType.OBJECT)
-    public void modify(@HintKey(STAR_ID) long starId, @HintKey(CAMPAIGN_CANDIDATE) CampaignCandidate campaignCandidate) {
+    public void modify(CampaignCandidate campaignCandidate) {
         campaignCandidateMapper.update(campaignCandidate);
     }
 
-    @CheckAuthority(type = CampaignCandidate.class, checkType = CheckingType.ID)
-    public void remove(@HintKey(STAR_ID) long starId, @HintKey(CAMPAIGN_CANDIDATE_ID) long id) {
-        campaignCandidateMapper.updateStatus(starId, id, CampaignCandidateStatus.DELETED);
+    public void remove(long id) {
+        campaignCandidateMapper.updateStatus(id, CampaignCandidateStatus.DELETED);
     }
 
     public void updatePollCount(long id, int delta) {

@@ -70,7 +70,7 @@ public class CampaignCandidateController {
                 return "error/alert";
             }
         } else {  // 수정을 목적으로
-            CampaignCandidate campaignCandidate = campaignCandidateService.getByStarIdAndId(starId, id);
+            CampaignCandidate campaignCandidate = campaignCandidateService.getById(id);
             if (campaignCandidate == null) {
                 throw NotFoundException.CAMPAIGN_CANDIDATE;
             }

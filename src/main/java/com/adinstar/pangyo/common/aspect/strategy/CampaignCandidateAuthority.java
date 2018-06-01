@@ -42,7 +42,8 @@ public class CampaignCandidateAuthority implements AuthorityStrategy {
                     throw BadRequestException.INVALID_PARAM;
                 }
 
-                campaignCandidate = campaignCandidateService.getByStarIdAndId(starId, campaignCandidateId);
+                // fixme: 이게원래 starId와 ccId 조합으로 cc를 가져오는 부분이라 스타와 cc의 일치여부를 확인할 수 있었는데, cc가 더이상 팬클럽 종속이 아니게 되면서 아래 로직은 사실상 무의미해져따
+                campaignCandidate = campaignCandidateService.getById(campaignCandidateId);
                 break;
             case OBJECT:
                 campaignCandidate = (CampaignCandidate) paramMap.getOrDefault(HintKey.CAMPAIGN_CANDIDATE, campaignCandidate);

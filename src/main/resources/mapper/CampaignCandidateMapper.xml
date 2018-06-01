@@ -60,14 +60,13 @@
         LIMIT #{offset}, #{size}
     </select>
 
-    <select id="selectByStarIdAndId" resultMap="CampaignCandidateMap">
+    <select id="selectById" resultMap="CampaignCandidateMap">
         SELECT
           <include refid="campaignCandidateColumn"/>
         FROM
           <include refid="campaignCandidateTable"/>
         WHERE <include refid="serviceableCondition"/>
           AND cc.id = #{id}
-          AND cc.star_id = #{starId}
     </select>
 
     <insert id="insert" parameterType="CampaignCandidate" useGeneratedKeys="true" keyProperty="id">
@@ -98,7 +97,7 @@
         UPDATE CAMPAIGN_CANDIDATE
            SET status = #{status},
                up_dttm = NOW()
-         WHERE id = #{id} AND star_id = #{starId}
+         WHERE id = #{id}
     </update>
 
     <update id="updatePollCount">
