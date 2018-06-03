@@ -8,7 +8,6 @@ import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -35,28 +34,6 @@ public class StarApiController {
         return starService.getStarRankList(Optional.ofNullable(rankId), LIST_SIZE);
     }
 
-    // 나중에 어드민 권한 관련해서 챙기도록+_+ (어드민 용 api 나오면 그곳으로 빼던지!!!)
-    @ApiOperation("addStar")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name="star", value="star object", paramType="body", required=true, dataType="Star")
-    })
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = FeedResponse.class)})
-    @RequestMapping(method = RequestMethod.POST)
-    public void add(@RequestBody Star star) {
-        starService.add(star);
-    }
-
-    // 나중에 어드민 권한 관련해서 챙기도록+_+ (어드민 용 api 나오면 그곳으로 빼던지!!!)
-    @ApiOperation("modifyStar")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name="star", value="star object", paramType="body", required=true, dataType="Star")
-    })
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = FeedResponse.class)})
-    @RequestMapping(method = RequestMethod.PUT)
-    public void modify(@RequestBody Star star) {
-        starService.modify(star);
-    }
-
     @ApiOperation("getMyStarList")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "rankId", value = "next rank Id", paramType = "query", dataType = "Long")
@@ -67,30 +44,5 @@ public class StarApiController {
     public FeedResponse<RankData<Star>> getListByUserId(@RequestParam(value = "rankId", required = false) Long rankId,
                                                         @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
         return starService.getJoinedStarRankListByUserId(viewerInfo.getId(), Optional.ofNullable(rankId), LIST_SIZE);
-    }
-
-    ////////////////////////////////////////////////////// 2depth //////////////////////////////////////////////////////
-    @ApiOperation("joinedStar")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "starId", value = "star Id", paramType = "path", dataType = "long")
-    })
-    @ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = Map.class)})
-    @RequestMapping(value = "/join/{starId}", method = RequestMethod.POST)
-    @MustLogin
-    public void joinedStar(@PathVariable("starId") long starId,
-                           @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
-        starService.joinedStar(starId, viewerInfo.getId());
-    }
-
-    @ApiOperation("secededStar")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "starId", value = "star Id", paramType = "path", dataType = "long")
-    })
-    @ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = Map.class)})
-    @RequestMapping(value = "/join/{starId}", method = RequestMethod.DELETE)
-    @MustLogin
-    public void secededStar(@PathVariable("starId") long starId,
-                            @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
-        starService.secededStar(starId, viewerInfo.getId());
     }
 }

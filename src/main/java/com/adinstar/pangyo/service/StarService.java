@@ -62,14 +62,18 @@ public class StarService {
 
     @Transactional
     public void joinedStar(long starId, long userId) {
-        starMapper.insertJoin(starId, userId);
-        updateFanCount(starId, 1);
+        int insertedRowCount = starMapper.insertJoin(starId, userId);
+        if (insertedRowCount > 0) {
+            updateFanCount(starId, 1);
+        }
     }
 
     @Transactional
     public void secededStar(long starId, long userId) {
-        starMapper.deleteJoin(starId, userId);
-        updateFanCount(starId, -1);
+        int deletedRawCount = starMapper.deleteJoin(starId, userId);
+        if (deletedRawCount > 0) {
+            updateFanCount(starId, -1);
+        }
     }
 
     private void updateFanCount(long starId, int delta){
@@ -78,5 +82,11 @@ public class StarService {
 
     public List<Long> getStarIdListOrderByFanCount(long offset, int size) {
         return starMapper.selectStarIdListOrderByFanCount(offset, size);
+    }
+
+    // 이 메소드는 스타한테 있어야해? 유저한테 있어야해?아오- (USER_STAR_MAP 중심을 잡아야 한다..ㅠ)
+    public boolean isJoined(long starId, long userId) {
+       Star star = starMapper.selectByStarIdAndUserId(starId, userId);
+       return (star == null) ? false : true;
     }
 }

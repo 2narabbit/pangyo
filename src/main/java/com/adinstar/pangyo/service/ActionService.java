@@ -5,17 +5,19 @@ import com.adinstar.pangyo.constant.PangyoErrorMessage;
 import com.adinstar.pangyo.controller.exception.NotFoundException;
 import com.adinstar.pangyo.mapper.ActionHistoryMapper;
 import com.adinstar.pangyo.model.ActionHistory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ActionService {
 
+    @Autowired
     private ActionHistoryMapper actionHistoryMapper;
+
     private PangyoEnum.ActionType actionType;
 
-    public ActionService(ActionHistoryMapper actionHistoryMapper, PangyoEnum.ActionType actionType) {
-        this.actionHistoryMapper = actionHistoryMapper;
+    public ActionService(PangyoEnum.ActionType actionType) {
         this.actionType = actionType;
     }
 
@@ -46,7 +48,7 @@ public class ActionService {
     }
 
     public boolean isActioned (PangyoEnum.ContentType contentType, long contentId, long userId) {
-        return get(contentType, contentId, userId) != null;
+        return (get(contentType, contentId, userId) == null) ? false : true;
     }
 
     public void remove(PangyoEnum.ContentType contentType, long contentId, long userId) {

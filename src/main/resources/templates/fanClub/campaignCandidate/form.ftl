@@ -61,11 +61,10 @@
         function submit() {
             var type = 'POST';
             var data = getFormData($('form'));
-            data.star = {id: ${starId!}};
-            data.user = {id: 1};  // TODO : 실 USER 주입
+            data.star = {id: ${star.id!}};
 
             if (data.useCampaignRandingUrl) {
-                data.randingUrl = '/fanClub/${starId!}/campaign-candidate';
+                data.randingUrl = '/fanClub/${star.id!}/campaign-candidate';
             }
 
             if (data.bannerImgRegister == 'custom') {
@@ -78,7 +77,7 @@
                 data : JSON.stringify(data),
                 contentType : "application/json",
                 success: function() {
-                    location.replace('/fanClub/${starId!}/campaign-candidate');
+                    location.replace('/fanClub/${star.id!}/campaign-candidate');
                 },
                 error: function(res) {
                     console.log(res);

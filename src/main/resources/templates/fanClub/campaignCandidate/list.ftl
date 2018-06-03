@@ -18,7 +18,7 @@
     <#include "/fanClub/layout/head.ftl">
     <div style="margin-top:20px">
         <span>NEXT WEEK CAMPAIGN</span>
-        <a href="/fanClub/${starId}/campaign-candidate/write">등록하기</a>
+        <a href="/fanClub/${star.id}/campaign-candidate/write">등록하기</a>
     </div>
 
     <#if campaignCandidateList?has_content>

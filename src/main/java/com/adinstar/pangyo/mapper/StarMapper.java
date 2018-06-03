@@ -22,11 +22,13 @@ public interface StarMapper {
 
     List<RankData<Star>> selectNotJoinedStarRankListByUserId(@Param("userId") long userId, @Param("rankId") long rankId, @Param("time") LocalDateTime time, @Param("size") int size);
 
-    void insertJoin(@Param("starId") long starId, @Param("userId") long userId);
+    int insertJoin(@Param("starId") long starId, @Param("userId") long userId);
 
-    void deleteJoin(@Param("starId") long starId, @Param("userId") long userId);
+    int deleteJoin(@Param("starId") long starId, @Param("userId") long userId);
 
     void updateFanCount(@Param("starId")long starId, @Param("delta") int delta);
 
     List<Long> selectStarIdListOrderByFanCount(@Param("offset") long offset, @Param("size") int size);
+
+    Star selectByStarIdAndUserId(@Param("starId") long starId, @Param("userId") long userId);
 }

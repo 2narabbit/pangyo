@@ -12,6 +12,7 @@ import com.adinstar.pangyo.model.authorization.LoginInfo;
 import com.adinstar.pangyo.service.LoginService;
 import com.adinstar.pangyo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -24,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
+@Order(1)
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 
     @Autowired
@@ -43,13 +45,18 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         if (handler != null && handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
 
-            MustLogin mustLoginAnno = handlerMethod.getMethodAnnotation(MustLogin.class);
-            if (mustLoginAnno == null) {
-                return true;
+            MustLogin mustFanClass = handlerMethod.getMethod().getDeclaringClass().getAnnotation(MustLogin.class);
+            if (mustFanClass != null) {
+                if (viewerInfo == null) {
+                    throw UnauthorizedException.NEED_LOGIN;
+                }
             }
 
-            if (viewerInfo == null) {
-                throw UnauthorizedException.NEED_LOGIN;
+            MustLogin mustLoginMethod = handlerMethod.getMethodAnnotation(MustLogin.class);
+            if (mustLoginMethod != null) {
+                if (viewerInfo == null) {
+                    throw UnauthorizedException.NEED_LOGIN;
+                }
             }
         }
 

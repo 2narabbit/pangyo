@@ -27,7 +27,6 @@ public class CommentService {
         return new FeedResponse<>(postList, LIST_SIZE);
     }
 
-    // TODO: 로그인체크
     @Transactional
     public void add(Comment comment) {
         commentMapper.insert(comment);
@@ -36,12 +35,10 @@ public class CommentService {
         }
     }
 
-    // TODO: 로그인체크, 유저권한 체크
     public void modify(Comment comment) {
         commentMapper.update(comment);
     }
 
-    // TODO: 로그인체크, 유저권한 체크
     @Transactional
     public void remove(long id) {
         Comment comment = commentMapper.selectById(id);
@@ -50,5 +47,9 @@ public class CommentService {
         if (PangyoEnum.ContentType.POST.equals(comment.getContentType())) {
             postService.updateCommentCount(comment.getContentId(), -1);
         }
+    }
+
+    public Comment getById(long id){
+        return commentMapper.selectById(id);
     }
 }

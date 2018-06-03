@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/poll")
+@MustLogin
 public class PollApiController {
 
     @Autowired
@@ -24,7 +25,6 @@ public class PollApiController {
     })
     @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = FeedResponse.class)})
     @RequestMapping(value = "/{contentType}/{contentId}", method = RequestMethod.POST)
-    @MustLogin
     public void add(@PathVariable("contentType") String contentType,
                     @PathVariable("contentId") long contentId,
                     @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
@@ -38,10 +38,9 @@ public class PollApiController {
     })
     @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = FeedResponse.class)})
     @RequestMapping(value = "/{contentType}/{contentId}", method = RequestMethod.DELETE)
-    @MustLogin
     public void remove(@PathVariable("contentType") String contentType,
-                    @PathVariable("contentId") long contentId,
-                    @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
+                       @PathVariable("contentId") long contentId,
+                       @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
         pollService.remove(PangyoEnum.ContentType.valueOf(contentType), contentId, viewerInfo.getId());
     }
 }

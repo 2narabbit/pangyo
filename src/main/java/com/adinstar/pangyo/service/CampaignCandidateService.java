@@ -5,6 +5,7 @@ import com.adinstar.pangyo.constant.PangyoEnum.ExecutionRuleType;
 import com.adinstar.pangyo.controller.exception.UnauthorizedException;
 import com.adinstar.pangyo.mapper.CampaignCandidateMapper;
 import com.adinstar.pangyo.model.CampaignCandidate;
+import com.adinstar.pangyo.model.RankData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
@@ -38,12 +39,8 @@ public class CampaignCandidateService {
     }
 
     public void add(CampaignCandidate campaignCandidate) {
-        try {
-            campaignCandidate.setExecuteRuleId(getRunningExecuteRuleId());
-            campaignCandidateMapper.insert(campaignCandidate);
-        } catch (DuplicateKeyException ex) {
-            throw UnauthorizedException.DUPLICATE_CANDIDATE_REGISTER;
-        }
+        campaignCandidate.setExecuteRuleId(getRunningExecuteRuleId());
+        campaignCandidateMapper.insert(campaignCandidate);
     }
 
     public void modify(CampaignCandidate campaignCandidate) {

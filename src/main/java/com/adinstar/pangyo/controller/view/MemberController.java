@@ -23,7 +23,6 @@ import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/member")
@@ -39,13 +38,13 @@ public class MemberController {
 
     @RequestMapping(value = {"", "/login"}, method = RequestMethod.GET)
     public String login(HttpServletRequest request,
-                        @ModelAttribute(ViewModelName.VIEWER) ViewerInfo userInfo,
+                        @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo,
                         @RequestParam(value = "continue", required = false) String continueUrl) {
         if (continueUrl != null) {
             WebUtils.setSessionAttribute(request, PangyoAuthorizedKey.CONTINUE, continueUrl);
         }
 
-        if (userInfo != null) {
+        if (viewerInfo != null) {
             return "redirect:" + HOME_URL;     // welcome 페이지를 만들까??
         }
 
@@ -95,11 +94,6 @@ public class MemberController {
         model.addAttribute("continueUrl", continueUrl == null ? HOME_URL : continueUrl);
         return "member/join";
     }
-
-    private boolean isInvalidToken(Map<String, Object> authMap) {
-        return loginService.isInvalidToken((PangyoEnum.AccountType) authMap.get(PangyoAuthorizedKey.SERVICE), (String) authMap.get(PangyoAuthorizedKey.ACCESS_TOKEN));
-    }
-
 
     @RequestMapping(value = "/withdrawal", method = RequestMethod.GET)
     @MustLogin

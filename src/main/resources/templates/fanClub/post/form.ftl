@@ -38,21 +38,24 @@
         function submit() {
             <#if post??>
                 var type = 'PUT';
+                var data = {
+                    id: ${post.id!},
+                    star: {id: ${star.id!}},
+                    body: $('#body').val(),
+                    img: getImageUrl()
+                };
+                var restUrl = '/api/post/${post.id!}';
             <#else>
                 var type = 'POST';
+                var data = {
+                    star: {id: ${star.id!}},
+                    body: $('#body').val(),
+                    img: getImageUrl()
+                };
+                var restUrl = '/api/post';
             </#if>
-            var data = {
-                <#if post??>
-                    id: ${post.id!},
-                </#if>
-                star: {id: ${star.id!}},
-                user: {id:2},  // TODO : 실 USER 주입
-                body: $('#body').val(),
-                img: getImageUrl()
-            };
-
             $.ajax({
-                url : '/api/post',
+                url : restUrl,
                 type : type,
                 data : JSON.stringify(data),
                 contentType : "application/json",
@@ -65,7 +68,6 @@
                 }
             });
         }
-
     </script>
 </body>
 </html>
