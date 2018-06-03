@@ -5,7 +5,7 @@
 <mapper namespace="com.adinstar.pangyo.mapper.PolicyMapper">
     <select id="selectPolicyByKey" resultType="Policy">
         SELECT
-          id, `key`, `value`, description, reg_dttm, up_dttm
+          id, `key`, `value`, description, reg_dttm AS reg, end_dttm AS end
         FROM POLICY
         WHERE `key` = #{key}
           AND reg_dttm <![CDATA[ <= ]]> NOW() AND end_dttm IS NULL
