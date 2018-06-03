@@ -37,7 +37,7 @@
 
     <sql id="campaignTableMinimum">
         CAMPAIGN c
-        JOIN CAMPAIGN_CANDIDATE cc
+        JOIN CAMPAIGN_CANDIDATE cc ON (c.campaign_candidate_id = cc.id)
         JOIN STAR s ON (cc.star_id = s.id AND s.display = true)
     </sql>
 
