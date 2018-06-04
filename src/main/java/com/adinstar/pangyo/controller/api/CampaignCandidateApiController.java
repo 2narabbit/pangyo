@@ -35,13 +35,10 @@ public class CampaignCandidateApiController {
     })
     @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = Map.class)})
     @RequestMapping(method = RequestMethod.GET)
+    @CheckAuthority
     public List<CampaignCandidate> getRunningList(@RequestParam long starId,
                                                   @RequestParam int page,
                                                   @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
-        if (!starService.isJoined(starId, viewerInfo.getId())) {
-            throw UnauthorizedException.NEED_JOIN;
-        }
-
         return campaignCandidateService.getRunningList(starId, Optional.of(page), Optional.empty());
     }
 
@@ -53,7 +50,7 @@ public class CampaignCandidateApiController {
     @RequestMapping(method = RequestMethod.POST)
     public void add(@RequestBody CampaignCandidate campaignCandidate,
                     @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
-        if (campaignCandidate.getStar() == null) {   // RequestBody 도 pathInterceptor에서 처리해줘야하나ㅠㅠ
+        if (campaignCandidate.getStar() == null) {   // TODO: RequestBody 도 pathInterceptor에서 처리해줘야하나ㅠㅠ
             throw BadRequestException.INVALID_PARAM;
         }
 

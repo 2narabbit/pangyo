@@ -36,12 +36,10 @@ public class PostApiController {
             @ApiResponse(code = 200, message = "OK", response = FeedResponse.class)
     })
     @RequestMapping(method = RequestMethod.GET)
+    @CheckAuthority
     public FeedResponse<Post> getListByStarId(@RequestParam("starId") long starId,
                                               @RequestParam(value = "lastId", required = false) Long lastId,
                                               @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
-        if (!starService.isJoined(starId, viewerInfo.getId())) {
-            throw UnauthorizedException.NEED_JOIN;
-        }
         return postService.getListByStarId(starId, Optional.ofNullable(lastId));
     }
 
@@ -54,14 +52,11 @@ public class PostApiController {
             @ApiResponse(code = 404, message = "Not Found")
     })
     @RequestMapping(value = "/{postId}", method = RequestMethod.GET)
-    public Post get(@PathVariable("postId") long postId,
-                    @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
-        Post post = postService.getById(postId);
-        if (!starService.isJoined(post.getStar().getId(), viewerInfo.getId())) {
-            throw UnauthorizedException.NEED_JOIN;
-        }
-
-        return post;
+    @CheckAuthority
+    public Post get(@PathVariable("postId") long postId) {
+        // fixme: CheckAuthority 에서도 get을 하기 때문에 2번 get을 하게됨. Mybatis 캐시로 해결하자
+        // 아마 미자님도 2번 get하는 이슈때문에 여기서 auth 체크를 한 것 같은데 맞나요?^^;
+        return postService.getById(postId);
     }
 
     @ApiOperation("addPost")
@@ -74,7 +69,7 @@ public class PostApiController {
     @RequestMapping(method = RequestMethod.POST)
     public void add(@RequestBody Post post,
                     @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
-        if (post.getStar() == null) {   // RequestBody 도 pathInterceptor에서 처리해줘야하나ㅠㅠ
+        if (post.getStar() == null) {   // TODO: RequestBody 도 pathInterceptor에서 처리해줘야하나ㅠㅠ
             throw BadRequestException.INVALID_PARAM;
         }
 
