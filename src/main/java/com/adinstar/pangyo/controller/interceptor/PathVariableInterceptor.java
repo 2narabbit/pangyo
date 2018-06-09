@@ -3,6 +3,7 @@ package com.adinstar.pangyo.controller.interceptor;
 import com.adinstar.pangyo.common.annotation.CheckAuthority;
 import com.adinstar.pangyo.constant.ViewModelName;
 import com.adinstar.pangyo.controller.exception.BadRequestException;
+import com.adinstar.pangyo.controller.exception.InvalidConditionException;
 import com.adinstar.pangyo.controller.exception.NotFoundException;
 import com.adinstar.pangyo.controller.exception.UnauthorizedException;
 import com.adinstar.pangyo.model.*;
@@ -41,6 +42,7 @@ public class PathVariableInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         Map pathVariables  = (Map) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+        // TODO: 진짜 메소드가 해당 쿼리파라미터를 변수로 받는지 확인
         Map paramVariables = request.getParameterMap();
         if (pathVariables == null && paramVariables == null) {
             return true;
@@ -122,6 +124,10 @@ public class PathVariableInterceptor extends HandlerInterceptorAdapter {
                 Comment comment = commentService.getById(Long.valueOf(String.valueOf(value)));
                 if (comment == null) {
                     throw NotFoundException.COMMENT;
+                }
+
+                if (finalIsCheckFan) {
+                    throw InvalidConditionException.UNSUPPORTED_ANNOTATION;
                 }
 
                 if (finalIsCheckOwner && comment.getUser().getId() != viewerInfo.getId()) {
