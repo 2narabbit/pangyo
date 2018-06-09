@@ -37,10 +37,10 @@ public class PostController {
     public String get(@PathVariable("postId") long postId,
                       @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo,
                       Model model) {
-
-        model.addAttribute(COMMENT_FEED, commentService.getList(PangyoEnum.ContentType.POST, postId, Optional.empty()));
-        model.addAttribute(IS_LIKED, likeService.isActioned(PangyoEnum.ContentType.POST, postId, viewerInfo.getId()));
+        model.addAttribute(COMMENT_FEED, commentService.getList(PangyoEnum.ContentType.POST, postId, Optional.empty(), viewerInfo == null ? null : viewerInfo.getId()));
+        model.addAttribute(IS_LIKED, viewerInfo != null && likeService.isActioned(PangyoEnum.ContentType.POST, postId, viewerInfo.getId()));
         postService.updateViewCount(postId, 1);
+
         return "fanClub/post/detail";
     }
 

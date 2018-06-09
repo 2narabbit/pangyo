@@ -4,10 +4,8 @@ import com.adinstar.pangyo.common.annotation.CheckAuthority;
 import com.adinstar.pangyo.common.annotation.MustLogin;
 import com.adinstar.pangyo.constant.PangyoEnum;
 import com.adinstar.pangyo.constant.ViewModelName;
-import com.adinstar.pangyo.controller.exception.BadRequestException;
-import com.adinstar.pangyo.controller.exception.UnauthorizedException;
 import com.adinstar.pangyo.model.Comment;
-import com.adinstar.pangyo.model.FeedResponse;
+import com.adinstar.pangyo.model.CommentFeedResponse;
 import com.adinstar.pangyo.model.ViewerInfo;
 import com.adinstar.pangyo.service.CommentService;
 import io.swagger.annotations.*;
@@ -29,13 +27,14 @@ public class CommentApiController {
             @ApiImplicitParam(name="lastId", value="last post id", paramType="query", dataType="Long")
     })
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = FeedResponse.class)
+            @ApiResponse(code = 200, message = "OK", response = CommentFeedResponse.class)
     })
     @RequestMapping(value = "/{contentType}/{contentId}", method = RequestMethod.GET)
-    public FeedResponse<Comment> getList(@PathVariable("contentType") String contentType,
-                                         @PathVariable("contentId") long contentId,
-                                         @RequestParam(value = "lastId", required = false) Long lastId) {
-        return commentService.getList(PangyoEnum.ContentType.valueOf(contentType), contentId, Optional.ofNullable(lastId));
+    public CommentFeedResponse getList(@PathVariable("contentType") String contentType,
+                                       @PathVariable("contentId") long contentId,
+                                       @RequestParam(value = "lastId", required = false) Long lastId,
+                                       @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
+        return commentService.getList(PangyoEnum.ContentType.valueOf(contentType), contentId, Optional.ofNullable(lastId), viewerInfo == null ? null : viewerInfo.getId());
     }
 
     @ApiOperation("addComment")

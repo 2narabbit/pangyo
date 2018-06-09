@@ -63,7 +63,7 @@ public class PathVariableInterceptor extends HandlerInterceptorAdapter {
 
             CheckAuthority checkAuthorityMethod = handlerMethod.getMethodAnnotation(CheckAuthority.class);
             if (checkAuthorityMethod != null) {
-                isCheckFan = checkAuthorityClass.isFan();
+                isCheckFan = checkAuthorityMethod.isFan();
                 isCheckOwner = checkAuthorityMethod.isOwner();
             }
         }

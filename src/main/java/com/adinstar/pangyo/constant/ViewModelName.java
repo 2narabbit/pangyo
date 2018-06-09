@@ -12,6 +12,7 @@ public class ViewModelName {
 
     public static final String CAMPAIGN_CANDIDATE = "campaignCandidate";
     public static final String CAMPAIGN_CANDIDATE_LIST = "campaignCandidateList";
+    public static final String CAMPAIGN_CANDIDATE_FEED = "campaignCandidateFeed";
 
     public static final String POST = "post";
     public static final String POST_FEED = "postFeed";
@@ -20,9 +21,6 @@ public class ViewModelName {
     public static final String COMMENT_FEED = "commentFeed";
 
     public static final String IS_LIKED = "isLiked";
-    public static final String LIKED_LIST = "likedList";
-
-    public static final String POLLED_LIST = "polledList";
 
     public static final String AD_EXECUTION_RULE = "adExecutionRule";
 }
