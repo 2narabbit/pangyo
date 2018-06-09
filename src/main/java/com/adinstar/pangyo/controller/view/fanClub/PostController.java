@@ -44,7 +44,7 @@ public class PostController {
         }
 
         model.addAttribute(POST, postService.getById(postId));
-        model.addAttribute(COMMENT_FEED, commentService.getList(PangyoEnum.ContentType.POST, postId, Optional.empty()));
+        model.addAttribute(COMMENT_FEED, commentService.getList(PangyoEnum.ContentType.POST, postId, Optional.empty(), viewerInfo == null ? null : viewerInfo.getId()));
         model.addAttribute(IS_LIKED, likeService.isActioned(PangyoEnum.ContentType.POST, postId, viewerInfo.getId()));
 
         return "fanClub/post/detail";

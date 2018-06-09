@@ -11,7 +11,7 @@
                 <div>
                     <strong>${comment.user.name!}</strong>
                     <span>${comment.dateTime.reg!}</span>
-                    <#if comment.user.id == 2> <!-- TODO: 실 user 주입 -->
+                    <#if commentFeed.myList?seq_contains(comment.user.id)>
                         <button id="removeCommentButton" onclick="removeComment(${comment.id!})">삭제</button>
                     </#if>
                 </div>
@@ -31,7 +31,7 @@
             <div>
                 <strong><%= user.name %></strong>
                 <span><%= dateTime.reg %></span>
-                <% if (user.id == 2) { %>  <!-- TODO: 실 user 주입 -->
+                <% if (myList.includes(user.id)) { %>
                     <button id="removeCommentButton" onclick="removeComment(<%= id %>)">삭제</button>
                 <% } %>
             </div>
@@ -99,6 +99,7 @@
 
                     var template = _.template($("#comment-detail-template").html());
                     data.list.forEach(function(e, i){
+                        e.myList = data.myList;
                         $('#commentListSection').append(template(e));
                     });
 
