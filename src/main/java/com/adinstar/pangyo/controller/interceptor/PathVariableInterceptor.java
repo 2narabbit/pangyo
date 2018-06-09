@@ -55,18 +55,18 @@ public class PathVariableInterceptor extends HandlerInterceptorAdapter {
 
             CheckAuthority checkAuthorityClass = handlerMethod.getMethod().getDeclaringClass().getAnnotation(CheckAuthority.class);
             if (checkAuthorityClass != null) {
-                isCheckFan = true;
+                isCheckFan = checkAuthorityClass.isFan();
                 isCheckOwner = checkAuthorityClass.isOwner();
             }
 
             CheckAuthority checkAuthorityMethod = handlerMethod.getMethodAnnotation(CheckAuthority.class);
             if (checkAuthorityMethod != null) {
-                isCheckFan = true;
+                isCheckFan = checkAuthorityClass.isFan();
                 isCheckOwner = checkAuthorityMethod.isOwner();
             }
         }
 
-        if (isCheckFan && (viewerInfo == null)) {
+        if ((isCheckFan || isCheckOwner) && (viewerInfo == null)) {
             throw UnauthorizedException.NEED_LOGIN;
         }
 
