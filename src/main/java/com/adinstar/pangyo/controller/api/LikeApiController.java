@@ -29,17 +29,4 @@ public class LikeApiController {
                     @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
         likeService.add(PangyoEnum.ContentType.valueOf(contentType), contentId, viewerInfo.getId());
     }
-
-    @ApiOperation("removeLike")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name="contentType", value="content type", paramType="path", dataType="String"),
-            @ApiImplicitParam(name="contentId", value="content id", paramType="path", dataType="Long"),
-    })
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK")})
-    @RequestMapping(value = "/{contentType}/{contentId}", method = RequestMethod.DELETE)
-    public void remove(@PathVariable("contentType") String contentType,
-                       @PathVariable("contentId") long contentId,
-                       @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
-        likeService.remove(PangyoEnum.ContentType.valueOf(contentType), contentId, viewerInfo.getId());
-    }
 }

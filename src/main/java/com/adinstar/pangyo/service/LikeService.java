@@ -30,13 +30,4 @@ public class LikeService extends ActionService {
 
         super.add(contentType, contentId, userId);
     }
-
-    @Transactional
-    public void remove(PangyoEnum.ContentType contentType, long contentId, long userId) {
-        super.remove(contentType, contentId, userId);
-
-        if (PangyoEnum.ContentType.POST.equals(contentType)) {
-            postService.updateLikeCount(contentId, -1);
-        }
-    }
 }

@@ -21,23 +21,6 @@
     </a>
 
     <script type="text/javascript">
-        function dontLike(contentId, $likeArea) {
-            $.ajax({
-                url : '/api/like/${contentType!}/' + contentId,
-                type : 'DELETE',
-                contentType : "application/json",
-                success: function() {
-                    var $likeCount = $likeArea.find('.likeCount');
-                    $likeCount.text($likeCount.text()*1-1);
-                    $likeArea.removeClass('liked');
-                },
-                error: function(res) {
-                    console.log(res);
-                    alert('좋아요 취소에 실패했습니다.');
-                }
-            });
-        }
-
         function doLike(contentId, $likeArea) {
             $.ajax({
                 url : '/api/like/${contentType!}/' + contentId,
@@ -56,9 +39,7 @@
         }
 
         function like(contentId, _this) {
-            if ($(_this).hasClass('liked')) {
-                dontLike(contentId, $(_this));
-            } else {
+            if (!$(_this).hasClass('liked')) {
                 doLike(contentId, $(_this));
             }
         }
