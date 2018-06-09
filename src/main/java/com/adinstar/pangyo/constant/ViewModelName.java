@@ -20,7 +20,6 @@ public class ViewModelName {
     public static final String COMMENT_FEED = "commentFeed";
 
     public static final String IS_LIKED = "isLiked";
-    public static final String LIKED_LIST = "likedList";
 
     public static final String POLLED_LIST = "polledList";
 

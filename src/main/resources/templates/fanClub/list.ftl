@@ -53,7 +53,7 @@
 
                 <div style="margin-top: 10px;">
                     <span>조회 ${post.viewCount!}</span>
-                    <#if likedList?seq_contains(post.id)>
+                    <#if postFeed.likeList?seq_contains(post.id)>
                         <#assign likeClass="liked">
                     <#else>
                         <#assign likeClass="">
@@ -87,7 +87,14 @@
 
             <div style="margin-top: 10px;">
                 <span>조회 <%= viewCount %></span>
-                <span>좋아요 <%= likeCount %></span>
+                <%
+                    if (likeList.includes(id)) {
+                        likeClass = "liked";
+                    } else {
+                        likeClass = "";
+                    }
+                %>
+                <span class="likeArea <%= likeClass %>">좋아요 <%= likeCount %></span>
                 <span>댓글 <%= commentCount %></span>
                 <a href="/fanClub/${star.id!}/post/<%= id %>">[더 보기]</a>
             </div>
@@ -120,6 +127,7 @@
 
                     var template = _.template($("#post-detail-template").html());
                     data.list.forEach(function(e, i){
+                        e.likeList = data.likeList;
                         $('#listSection').append(template(e));
                     });
 
