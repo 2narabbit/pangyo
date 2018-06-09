@@ -49,7 +49,7 @@ public class CampaignCandidateService {
             pollList = new ArrayList<>();
         }
 
-        return new CampaignCandidateFeedResponse(campaignCandidateList, size, pollList);
+        return new CampaignCandidateFeedResponse(campaignCandidateList, opPage.orElse(DEFAULT_PAGE), size, pollList);
     }
 
     public CampaignCandidate getById(long id) {
