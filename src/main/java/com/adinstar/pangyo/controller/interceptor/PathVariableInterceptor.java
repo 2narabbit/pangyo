@@ -72,8 +72,8 @@ public class PathVariableInterceptor extends HandlerInterceptorAdapter {
             throw UnauthorizedException.NEED_LOGIN;
         }
 
-        boolean finalIsCheckFan = isCheckFan;
-        boolean finalIsCheckOwner = isCheckOwner;
+        final boolean finalIsCheckFan = isCheckFan;
+        final boolean finalIsCheckOwner = isCheckOwner;
         BiConsumer checkAuthority = (name, value) -> {
             if (((String) value).startsWith("{")) {
                 throw BadRequestException.INVALID_PATH;
