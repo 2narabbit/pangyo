@@ -24,7 +24,7 @@ public class JoinApiController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "starId", value = "star Id", paramType = "path", dataType = "long")
     })
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = Map.class)})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK")})
     @RequestMapping(value = "/{starId}", method = RequestMethod.POST)
     public void joinedStar(@PathVariable("starId") long starId,
                            @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
@@ -35,7 +35,7 @@ public class JoinApiController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "starId", value = "star Id", paramType = "path", dataType = "long")
     })
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = Map.class)})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK")})
     @RequestMapping(value = "/{starId}", method = RequestMethod.DELETE)
     public void secededStar(@PathVariable("starId") long starId,
                             @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
