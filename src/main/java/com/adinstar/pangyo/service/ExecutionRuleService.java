@@ -47,7 +47,7 @@ public class ExecutionRuleService {
         executionRuleMapper.deleteByTurnNum(turnNum);
     }
 
-    public ExecutionRule getAdExecutionRuleByProgressExecuteRuleByType(PangyoEnum.ExecutionRuleType type) {
+    public ExecutionRule getAdExecutionRuleByProgressExecuteRuleType(PangyoEnum.ExecutionRuleType type) {
         ExecutionRule progressExecutionRule = getProgressExecuteRuleByType(type);
         if (progressExecutionRule == null) {
             throw InvalidConditionException.EXECUTION_RULE;
