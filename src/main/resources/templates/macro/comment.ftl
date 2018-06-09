@@ -45,7 +45,6 @@
             var data = {
                 contentType: "${contentType!}",
                 contentId: ${contentId!},
-                user: {id:2}, // TODO: 실 user 주입
                 body: $('#commentBody').val()
             };
 

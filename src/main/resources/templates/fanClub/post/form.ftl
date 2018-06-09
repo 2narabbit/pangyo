@@ -46,7 +46,6 @@
                     id: ${post.id!},
                 </#if>
                 star: {id: ${star.id!}},
-                user: {id:2},  // TODO : 실 USER 주입
                 body: $('#body').val(),
                 img: getImageUrl()
             };
