@@ -39,7 +39,7 @@ public class FanClubController {
                              @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo,
                              Model model) {
         model.addAttribute(STAR, starService.getById(starId));
-        model.addAttribute(CAMPAIGN_CANDIDATE_LIST, campaignCandidateService.getRunningList(starId, Optional.of(1), Optional.of(2)));
+        model.addAttribute(CAMPAIGN_CANDIDATE_LIST, campaignCandidateService.getRunningList(starId, Optional.of(1), Optional.of(2), null).getList());
         model.addAttribute(POST_FEED, postService.getListByStarId(starId, Optional.empty(), viewerInfo == null ? null : viewerInfo.getId()));
 
         return "fanClub/list";  // 질문 : 로그인 한 유저만 list를 볼 수 있나요? +  팬클럽 회원만 list를 볼 수 있나요? url 따라오면 어디로 보내면 되나요?

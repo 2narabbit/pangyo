@@ -21,15 +21,15 @@
         <a href="/fanClub/${starId}/campaign-candidate/write">등록하기</a>
     </div>
 
-    <#if campaignCandidateList?has_content>
+    <#if campaignCandidateFeed?has_content>
     <div id="listSection">
-        <#list campaignCandidateList as campaignCandidate>
+        <#list campaignCandidateFeed.list as campaignCandidate>
             <div style="border: 1px solid; padding: 10px; width:400px">
                 <div class="preview">
                     <div>
                         <label>${campaignCandidate_index+1} ${campaignCandidate.title!}</label>
                         <span>
-                            <@poll.defaultUI polledList?seq_contains(campaignCandidate.id), "CANDIDATE", campaignCandidate.id, campaignCandidate.pollCount />
+                            <@poll.defaultUI campaignCandidateFeed.pollList?seq_contains(campaignCandidate.id), "CANDIDATE", campaignCandidate.id, campaignCandidate.pollCount />
                         </span>
                     </div>
                     <p>${campaignCandidate.body!}</p>

@@ -1,13 +1,15 @@
 package com.adinstar.pangyo.controller.api;
 
 import com.adinstar.pangyo.common.annotation.MustLogin;
+import com.adinstar.pangyo.constant.ViewModelName;
 import com.adinstar.pangyo.model.CampaignCandidate;
+import com.adinstar.pangyo.model.CampaignCandidateFeedResponse;
+import com.adinstar.pangyo.model.ViewerInfo;
 import com.adinstar.pangyo.service.CampaignCandidateService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -25,8 +27,10 @@ public class CampaignCandidateApiController {
     })
     @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = Map.class)})
     @RequestMapping(method = RequestMethod.GET)
-    public List<CampaignCandidate> getRunningList(@RequestParam long starId, @RequestParam int page) {
-        return campaignCandidateService.getRunningList(starId, Optional.of(page), Optional.empty());
+    public CampaignCandidateFeedResponse getRunningList(@RequestParam long starId,
+                                                        @RequestParam int page,
+                                                        @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
+        return campaignCandidateService.getRunningList(starId, Optional.of(page), Optional.empty(), viewerInfo == null? null : viewerInfo.getId());
     }
 
     @ApiOperation("캠페인 후보군 등록하기")

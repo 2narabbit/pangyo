@@ -9,16 +9,13 @@ import com.adinstar.pangyo.model.CampaignCandidate;
 import com.adinstar.pangyo.model.ViewerInfo;
 import com.adinstar.pangyo.service.CampaignCandidateService;
 import com.adinstar.pangyo.service.ExecutionRuleService;
-import com.adinstar.pangyo.service.PollService;
 import com.adinstar.pangyo.service.StarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static com.adinstar.pangyo.constant.ViewModelName.*;
 
@@ -33,23 +30,14 @@ public class CampaignCandidateController {
     private CampaignCandidateService campaignCandidateService;
 
     @Autowired
-    private PollService pollService;
-
-    @Autowired
     private ExecutionRuleService executionRuleService;
 
     @RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
     public String getList(@PathVariable("starId") long starId,
                           @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo,
                           Model model) {
-        List<CampaignCandidate> campaignCandidateList = campaignCandidateService.getRunningList(starId, Optional.empty(), Optional.empty());
-        List<Long> ids = campaignCandidateList.stream()
-                .map(CampaignCandidate::getId)
-                .collect(Collectors.toList());
-
         model.addAttribute(STAR, starService.getById(starId));
-        model.addAttribute(CAMPAIGN_CANDIDATE_LIST, campaignCandidateList);
-        model.addAttribute(POLLED_LIST, pollService.getContentIdList(PangyoEnum.ContentType.CANDIDATE, ids, viewerInfo.getId()));
+        model.addAttribute(CAMPAIGN_CANDIDATE_FEED, campaignCandidateService.getRunningList(starId, Optional.empty(), Optional.empty(), viewerInfo == null ? null : viewerInfo.getId()));
         model.addAttribute(AD_EXECUTION_RULE, executionRuleService.getAdExecutionRuleByProgressExecuteRuleByType(PangyoEnum.ExecutionRuleType.CANDIDATE));
 
         return "fanClub/campaignCandidate/list";

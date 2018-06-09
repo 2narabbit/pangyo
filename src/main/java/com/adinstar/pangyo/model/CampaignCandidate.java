@@ -4,7 +4,7 @@ import com.adinstar.pangyo.constant.PangyoEnum.*;
 import lombok.Data;
 
 @Data
-public class CampaignCandidate {
+public class CampaignCandidate implements FeedData {
     private long id;
     private long executeRuleId;
     private Star star;
