@@ -54,8 +54,6 @@ public class PostApiController {
     @RequestMapping(value = "/{postId}", method = RequestMethod.GET)
     @CheckAuthority
     public Post get(@PathVariable("postId") long postId) {
-        // fixme: CheckAuthority 에서도 get을 하기 때문에 2번 get을 하게됨. Mybatis 캐시로 해결하자
-        // 아마 미자님도 2번 get하는 이슈때문에 여기서 auth 체크를 한 것 같은데 맞나요?^^;
         return postService.getById(postId);
     }
 
