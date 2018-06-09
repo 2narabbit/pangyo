@@ -20,8 +20,10 @@
         </div>
 
         <div>
-            <button id="modifyButton">수정</button>
-            <button id="removeButton">삭제</button>
+            <#if post.user.id == viewer.getId()>
+                <button id="modifyButton">수정</button>
+                <button id="removeButton">삭제</button>
+            </#if>
             <button>신고하기(TODO)</button>
         </div>
 
@@ -51,7 +53,7 @@
         });
 
         function goToModify() {
-            location.replace('/fanClub/${post.star.id!}/post/write?postId='+${post.id!});
+            location.replace('/fanClub/${post.star.id!}/post/write/${post.id!}');
         }
 
         function remove() {

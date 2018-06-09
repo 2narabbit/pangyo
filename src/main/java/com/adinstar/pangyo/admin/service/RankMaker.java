@@ -61,16 +61,14 @@ public class RankMaker {
 
     public void snapshotForStar() {
         LocalDateTime now = LocalDateTime.now().withMinute(0).withSecond(0);
-        if (!isSnapshotTerm(now, starRankMapper.selectLastTime(), PangyoEnum.PolicyKey.STAR_SNAPSHOT_TERM)) {
-            return;
+        if (isSnapshotTerm(now, starRankMapper.selectLastTime(), PangyoEnum.PolicyKey.STAR_SNAPSHOT_TERM)) {
+            insertItemRank(selectStar, now.format(formatter), insertStarRank);
         }
-
-        insertItemRank(selectStar, now.format(formatter), insertStarRank);
     }
 
     private boolean isSnapshotTerm(LocalDateTime now, LocalDateTime lastTime, PangyoEnum.PolicyKey key) {
         long hours = policyService.getPolicyValueByKey(key);
-        if (lastTime != null && now.isAfter(lastTime.plusHours(hours))) {
+        if (lastTime != null && now.isBefore(lastTime.plusHours(hours))) {
             return false;
         }
         return true;

@@ -157,4 +157,13 @@
         ORDER BY s.fan_count DESC
         LIMIT #{offset}, #{size}
     </select>
+
+    <select id="selectByStarIdAndUserId" parameterType="Map" resultMap="StarMap">
+        SELECT
+          <include refid="starColumn"/>
+        FROM STAR s
+        JOIN USER_STAR_MAP usm ON (s.id = usm.star_id)
+        WHERE s.display = true
+        AND s.id = #{starId} AND usm.user_id = #{userId}
+    </select>
 </mapper>

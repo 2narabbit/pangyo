@@ -37,11 +37,10 @@ public class StarController {
         return "star/list";
     }
 
-    // 여기 위치 하지 않는게 안 맞는것 같지만;;;; 별도 컨트롤러를 두는게ㅠㅠ
     @RequestMapping(value = {"/my"}, method = RequestMethod.GET)
     @MustLogin
     public String getMyStar(@ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo,
-                             Model model) {
+                            Model model) {
         model.addAttribute(MY_STAR_FEED, starService.getJoinedStarRankListByUserId(viewerInfo.getId(), Optional.empty(), 5));
         return "star/my/list";
     }

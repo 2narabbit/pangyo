@@ -1,6 +1,7 @@
 package com.adinstar.pangyo;
 
 import com.adinstar.pangyo.controller.interceptor.LoginInterceptor;
+import com.adinstar.pangyo.controller.interceptor.PathVariableInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.*;
@@ -11,6 +12,9 @@ public class PangyoWebMvcConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     private LoginInterceptor loginInterceptor;
+
+    @Autowired
+    private PathVariableInterceptor pathVariableInterceptor;
 
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
@@ -24,6 +28,10 @@ public class PangyoWebMvcConfig extends WebMvcConfigurerAdapter {
                 .addPathPatterns("/fanClub/**")
                 .addPathPatterns("/star/**")
                 .addPathPatterns("/member/**");
+
+        registry.addInterceptor(pathVariableInterceptor)
+                .addPathPatterns("/api/**")
+                .addPathPatterns("/fanClub/**");
     }
 
     @Override

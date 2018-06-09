@@ -1,8 +1,14 @@
 package com.adinstar.pangyo.controller.api;
 
+import com.adinstar.pangyo.common.annotation.CheckAuthority;
+import com.adinstar.pangyo.common.annotation.MustLogin;
 import com.adinstar.pangyo.constant.PangyoEnum;
+import com.adinstar.pangyo.constant.ViewModelName;
+import com.adinstar.pangyo.controller.exception.BadRequestException;
+import com.adinstar.pangyo.controller.exception.UnauthorizedException;
 import com.adinstar.pangyo.model.Comment;
 import com.adinstar.pangyo.model.FeedResponse;
+import com.adinstar.pangyo.model.ViewerInfo;
 import com.adinstar.pangyo.service.CommentService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +46,12 @@ public class CommentApiController {
             @ApiResponse(code = 200, message = "OK")
     })
     @RequestMapping(method = RequestMethod.POST)
-    // TODO: @MustLogin
-    public void add(@RequestBody Comment comment) {
+    @MustLogin
+    public void add(@RequestBody Comment comment,
+                    @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
+        // checked!! >  Post의 comment 작성도 join 여부 check 해야하지 않을까?
+
+        comment.setUser(viewerInfo.getUser());
         commentService.add(comment);
     }
 
@@ -52,8 +62,9 @@ public class CommentApiController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK")
     })
-    @RequestMapping(method = RequestMethod.PUT)
-    // TODO: @MustLogin
+    @RequestMapping(value = "/{commentId}", method = RequestMethod.PUT)
+    @MustLogin
+    @CheckAuthority(isFan = false, isOwner = true)
     public void modify(@RequestBody Comment comment) {
         commentService.modify(comment);
     }
@@ -66,7 +77,8 @@ public class CommentApiController {
             @ApiResponse(code = 200, message = "OK")
     })
     @RequestMapping(value = "/{commentId}", method = RequestMethod.DELETE)
-    // TODO: @MustLogin
+    @MustLogin
+    @CheckAuthority(isFan = false, isOwner = true)
     public void remove(@PathVariable("commentId") long id) {
         commentService.remove(id);
     }

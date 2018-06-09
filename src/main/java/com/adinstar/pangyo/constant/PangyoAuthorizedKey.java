@@ -6,5 +6,6 @@ public class PangyoAuthorizedKey {
     public static final String SERVICE = "authService";
     public static final String ACCESS_TOKEN = "accessToken";
     public static final String LOGIN_URL = "/member/login";
+    public static final String ERRPR_URL = "/error/alert";
     public static final String SEPARATE = "_";
 }

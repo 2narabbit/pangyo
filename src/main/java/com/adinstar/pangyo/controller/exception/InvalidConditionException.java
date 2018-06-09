@@ -11,6 +11,7 @@ public class InvalidConditionException extends RuntimeException {
     public static final InvalidConditionException POLICY = new InvalidConditionException(PangyoErrorMessage.INVALID_POLICY);
     public static final InvalidConditionException TRUN_NUM = new InvalidConditionException(PangyoErrorMessage.INVALID_TURN_NUM);
     public static final InvalidConditionException LAST_TIME = new InvalidConditionException(PangyoErrorMessage.INVALID_LAST_TIME);
+    public static final InvalidConditionException UNSUPPORTED_ANNOTATION = new InvalidConditionException(PangyoErrorMessage.INVALID_UNSUPPORTED_ANNOTATION);
 
     public InvalidConditionException(String msg) {
         super(msg);

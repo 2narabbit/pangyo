@@ -11,7 +11,7 @@
                 <div>
                     <strong>${comment.user.name!}</strong>
                     <span>${comment.dateTime.reg!}</span>
-                    <#if comment.user.id == 2> <!-- TODO: 실 user 주입 -->
+                    <#if comment.user.id == viewer.getId()>
                         <button id="removeCommentButton" onclick="removeComment(${comment.id!})">삭제</button>
                     </#if>
                 </div>
@@ -45,7 +45,6 @@
             var data = {
                 contentType: "${contentType!}",
                 contentId: ${contentId!},
-                user: {id:2}, // TODO: 실 user 주입
                 body: $('#commentBody').val()
             };
 

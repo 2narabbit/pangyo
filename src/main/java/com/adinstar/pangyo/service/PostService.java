@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.function.BiFunction;
 
 @Service
 public class PostService {
@@ -19,7 +20,7 @@ public class PostService {
 
     public FeedResponse<Post> getListByStarId(long starId, Optional lastId) {
         return new FeedResponse<>(
-                postMapper.selectListByStarId(starId, (long)lastId.orElse(Long.MAX_VALUE), LIST_SIZE+1),
+                postMapper.selectListByStarId(starId, (long) lastId.orElse(Long.MAX_VALUE), LIST_SIZE + 1),
                 LIST_SIZE
         );
     }
@@ -45,10 +46,16 @@ public class PostService {
     }
 
     public void updateViewCount(long id, int delta) {
-        postMapper.updateViewCount(id, delta);
+        ignoreException(id, delta, (t, u) -> postMapper.updateViewCount(t, u));
     }
 
     public void updateCommentCount(long id, int delta) {
         postMapper.updateCommentCount(id, delta);
+    }
+
+    private void ignoreException(Long id, Integer delta, BiFunction<Long, Integer, Integer> function) {
+        try {
+            function.apply(id, delta);
+        } catch (Exception e) {}
     }
 }

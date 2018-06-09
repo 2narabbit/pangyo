@@ -5,14 +5,11 @@ import com.adinstar.pangyo.controller.exception.BadRequestException;
 import com.adinstar.pangyo.controller.exception.InvalidConditionException;
 import com.adinstar.pangyo.controller.exception.NotFoundException;
 import com.adinstar.pangyo.controller.exception.UnauthorizedException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.naming.ServiceUnavailableException;
@@ -31,23 +28,33 @@ public class ViewExceptionHandler {
             ServletRequestBindingException.class,
             HttpRequestMethodNotSupportedException.class
     })
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public String handleBadRequestException(Exception e) {
-        return "/error/alert";
+    public String handleBadRequestException(Exception e) throws UnsupportedEncodingException {
+        return redirectErrorPage(e.getMessage());
     }
 
     @ExceptionHandler(NotFoundException.class)
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    public String handleNotFoundException(NotFoundException e) {
-        return "/error/alert";
+    public String handleNotFoundException(NotFoundException e) throws UnsupportedEncodingException {
+        return redirectErrorPage(e.getMessage());
     }
 
     @ExceptionHandler(UnauthorizedException.class)
     public String handleUnauthorizedException(UnauthorizedException e, HttpServletRequest request) throws UnsupportedEncodingException {  // TODO : error code도 식별할 수 있도록 작업해야겠다.
-        StringBuffer url = new StringBuffer("redirect:")
-                .append(PangyoAuthorizedKey.LOGIN_URL)
+        if (UnauthorizedException.NEED_LOGIN.equals(e)) {
+            StringBuffer url = new StringBuffer("redirect:").append(PangyoAuthorizedKey.LOGIN_URL)
                 .append("?continue=")
                 .append(URLEncoder.encode(getRequestFullURL(request), "UTF-8"));
+
+            return url.toString();
+        }
+
+        return redirectErrorPage(e.getMessage());
+    }
+
+    private String redirectErrorPage(String message) throws UnsupportedEncodingException {
+        StringBuffer url = new StringBuffer("redirect:")
+                .append(PangyoAuthorizedKey.ERRPR_URL)
+                .append("?message=")
+                .append(URLEncoder.encode(message, "UTF-8"));
 
         return url.toString();
     }
@@ -64,20 +71,17 @@ public class ViewExceptionHandler {
     }
 
     @ExceptionHandler(ServiceUnavailableException.class)
-    @ResponseStatus(value = HttpStatus.SERVICE_UNAVAILABLE)
-    public String handleServiceUnavailableException(ServiceUnavailableException e) {
-        return "/error/alert";
+    public String handleServiceUnavailableException(ServiceUnavailableException e) throws UnsupportedEncodingException {
+        return redirectErrorPage(e.getMessage());
     }
 
     @ExceptionHandler(InvalidConditionException.class)
-    @ResponseStatus(value = HttpStatus.FORBIDDEN)
-    public String handleInvalidConditionException(InvalidConditionException e) {
-        return "/error/alert";
+    public String handleInvalidConditionException(InvalidConditionException e) throws UnsupportedEncodingException {
+        return redirectErrorPage(e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    public String handleAllException(Exception e) {
-        return "/error/alert";
+    public String handleAllException(Exception e) throws UnsupportedEncodingException {
+        return redirectErrorPage(e.getMessage());
     }
 }
