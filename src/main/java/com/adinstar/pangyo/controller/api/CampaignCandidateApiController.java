@@ -25,7 +25,7 @@ public class CampaignCandidateApiController {
             @ApiImplicitParam(name = "starId", value = "campaignCandidate 의 starId", paramType = "query", required = true, dataType = "long"),
             @ApiImplicitParam(name = "page", value = "page number", paramType = "query", required = true, dataType = "int")
     })
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = Map.class)})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = CampaignCandidateFeedResponse.class)})
     @RequestMapping(method = RequestMethod.GET)
     public CampaignCandidateFeedResponse getRunningList(@RequestParam long starId,
                                                         @RequestParam int page,
@@ -37,7 +37,7 @@ public class CampaignCandidateApiController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "campaignCandidate", value = "campaignCandidate object", paramType = "body", required = true, dataType = "CampaignCandidate")
     })
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = Map.class)})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK")})
     @RequestMapping(method = RequestMethod.POST)
     @MustLogin
     public void add(@RequestBody CampaignCandidate campaignCandidate) {
@@ -48,7 +48,7 @@ public class CampaignCandidateApiController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "campaignCandidate", value = "campaignCandidate object", paramType = "body", required = true, dataType = "campaignCandidate")
     })
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = Map.class)})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK")})
     @RequestMapping(method = RequestMethod.PUT)
     @MustLogin
     public void modify(@RequestBody CampaignCandidate campaignCandidate) {
@@ -59,7 +59,7 @@ public class CampaignCandidateApiController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "campaignCandidate", value = "campaignCandidate object", paramType = "body", required = true, dataType = "campaignCandidate")
     })
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = Map.class)})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK")})
     @RequestMapping(value = "/{campaignCandidateId}", method = RequestMethod.DELETE)
     @MustLogin
     public void remove(@PathVariable("campaignCandidateId") long id) {

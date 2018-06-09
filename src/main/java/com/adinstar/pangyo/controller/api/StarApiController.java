@@ -40,7 +40,7 @@ public class StarApiController {
     @ApiImplicitParams({
             @ApiImplicitParam(name="star", value="star object", paramType="body", required=true, dataType="Star")
     })
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = FeedResponse.class)})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK")})
     @RequestMapping(method = RequestMethod.POST)
     public void add(@RequestBody Star star) {
         starService.add(star);
@@ -51,7 +51,7 @@ public class StarApiController {
     @ApiImplicitParams({
             @ApiImplicitParam(name="star", value="star object", paramType="body", required=true, dataType="Star")
     })
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = FeedResponse.class)})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK")})
     @RequestMapping(method = RequestMethod.PUT)
     public void modify(@RequestBody Star star) {
         starService.modify(star);
@@ -74,7 +74,7 @@ public class StarApiController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "starId", value = "star Id", paramType = "path", dataType = "long")
     })
-    @ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = Map.class)})
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "OK")})
     @RequestMapping(value = "/join/{starId}", method = RequestMethod.POST)
     @MustLogin
     public void joinedStar(@PathVariable("starId") long starId,
@@ -86,7 +86,7 @@ public class StarApiController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "starId", value = "star Id", paramType = "path", dataType = "long")
     })
-    @ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = Map.class)})
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "OK")})
     @RequestMapping(value = "/join/{starId}", method = RequestMethod.DELETE)
     @MustLogin
     public void secededStar(@PathVariable("starId") long starId,

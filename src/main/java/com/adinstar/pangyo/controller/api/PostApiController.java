@@ -3,7 +3,6 @@ package com.adinstar.pangyo.controller.api;
 
 import com.adinstar.pangyo.common.annotation.MustLogin;
 import com.adinstar.pangyo.constant.ViewModelName;
-import com.adinstar.pangyo.model.FeedResponse;
 import com.adinstar.pangyo.model.Post;
 import com.adinstar.pangyo.model.PostFeedResponse;
 import com.adinstar.pangyo.model.ViewerInfo;
@@ -28,7 +27,7 @@ public class PostApiController {
             @ApiImplicitParam(name="lastId", value="last post id", paramType="query", dataType="Long")
     })
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = FeedResponse.class)
+            @ApiResponse(code = 200, message = "OK", response = PostFeedResponse.class)
     })
     @RequestMapping(method = RequestMethod.GET)
     public PostFeedResponse getListByStarId(@RequestParam("starId") long starId,
@@ -58,7 +57,7 @@ public class PostApiController {
             @ApiImplicitParam(name="post", value="post object", paramType="body", required=true, dataType="Post")
     })
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = Map.class)
+            @ApiResponse(code = 200, message = "OK")
     })
     @RequestMapping(method = RequestMethod.POST)
     @MustLogin
@@ -74,7 +73,7 @@ public class PostApiController {
             @ApiImplicitParam(name="post", value="post object", paramType="body", required=true, dataType="Post")
     })
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = Map.class)
+            @ApiResponse(code = 200, message = "OK")
     })
     @RequestMapping(method = RequestMethod.PUT)
     @MustLogin
@@ -87,7 +86,7 @@ public class PostApiController {
             @ApiImplicitParam(name="postId", value="post id", paramType="path", required=true, dataType="long")
     })
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = Map.class)
+            @ApiResponse(code = 200, message = "OK")
     })
     @RequestMapping(value = "/{postId}", method = RequestMethod.DELETE)
     @MustLogin
