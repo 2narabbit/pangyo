@@ -29,6 +29,9 @@
                 <div class="preview">
                     <div>
                         <label>${campaignCandidate_index+1} ${campaignCandidate.title!}</label>
+                        <#if campaignCandidateFeed.myList?seq_contains(campaignCandidate.user.id)>
+                            <button onclick="removeCampaignCandidate(${campaignCandidate.id!})">삭제</button>
+                        </#if>
                         <span>
                             <#if campaignCandidateFeed.pollList?seq_contains(campaignCandidate.id)>
                                 <#assign pollClass="polled">
@@ -65,6 +68,9 @@
             <div class="preview">
                 <div>
                     <label><%= rank %> <%= title %></label>
+                    <% if (myList.includes(user.id)) { %>
+                        <button onclick="removeCampaignCandidate(<%= id %>)">삭제</button>
+                    <% } %>
                     <span>
                         <%
                             if (pollList.includes(id)) {
@@ -120,6 +126,7 @@
                     var template = _.template($("#campaign-candidate-detail-template").html());
                     data.list.forEach(function(e, i){
                         e.pollList = data.pollList;
+                        e.myList = data.myList;
                         e.rank = ++campaignCandidateList.lastRank;
                         $('#listSection').append(template(e));
                     });
@@ -150,6 +157,25 @@
                 });
             }
         };
+
+        function removeCampaignCandidate(id) {
+            if (!confirm('캠페인 후보를 정말 삭제하시겠습니까?')) {
+                return false;
+            }
+
+            $.ajax({
+                url : '/api/campaign-candidate/' + id,
+                type : 'DELETE',
+                contentType : "application/json",
+                success: function() {
+                    location.reload();
+                },
+                error: function(res) {
+                    console.log(res);
+                    alert('삭제에 실패했습니다.');
+                }
+            });
+        }
 
         $('#listSection').delegate('.moreView', 'click', function () {
             $(this).siblings('.preview').removeClass('preview');

@@ -6,6 +6,7 @@ import com.adinstar.pangyo.constant.PangyoEnum.ExecutionRuleType;
 import com.adinstar.pangyo.mapper.CampaignCandidateMapper;
 import com.adinstar.pangyo.model.CampaignCandidate;
 import com.adinstar.pangyo.model.CampaignCandidateFeedResponse;
+import com.adinstar.pangyo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +48,18 @@ public class CampaignCandidateService {
             pollList = new ArrayList<>();
         }
 
-        return new CampaignCandidateFeedResponse(campaignCandidateList, opPage.orElse(DEFAULT_PAGE), size, pollList);
+        List<Long> myList;
+        if (userId != null) {
+            myList = campaignCandidateList.stream()
+                    .map(CampaignCandidate::getUser)
+                    .map(User::getId)
+                    .filter(id -> userId.equals(id))
+                    .collect(Collectors.toList());
+        } else {
+            myList = new ArrayList<>();
+        }
+
+        return new CampaignCandidateFeedResponse(campaignCandidateList, opPage.orElse(DEFAULT_PAGE), size, pollList, myList);
     }
 
     public CampaignCandidate getById(long id) {
