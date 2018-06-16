@@ -12,7 +12,7 @@
                     <strong>${comment.user.name!}</strong>
                     <span>${comment.dateTime.reg!}</span>
                     <#if commentFeed.myList?seq_contains(comment.user.id)>
-                        <button id="removeCommentButton" onclick="removeComment(${comment.id!})">삭제</button>
+                        <button onclick="removeComment(${comment.id!})">삭제</button>
                     </#if>
                 </div>
 
@@ -32,7 +32,7 @@
                 <strong><%= user.name %></strong>
                 <span><%= dateTime.reg %></span>
                 <% if (myList.includes(user.id)) { %>
-                    <button id="removeCommentButton" onclick="removeComment(<%= id %>)">삭제</button>
+                    <button onclick="removeComment(<%= id %>)">삭제</button>
                 <% } %>
             </div>
 
