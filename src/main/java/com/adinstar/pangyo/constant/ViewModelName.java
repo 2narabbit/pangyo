@@ -22,5 +22,6 @@ public class ViewModelName {
 
     public static final String IS_LIKED = "isLiked";
 
+    public static final String CANDIDATE_EXECUTION_RULE = "candidateExecutionRule";
     public static final String AD_EXECUTION_RULE = "adExecutionRule";
 }

@@ -33,6 +33,7 @@ public class CampaignCandidateController {
                           @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo,
                           Model model) {
         model.addAttribute(CAMPAIGN_CANDIDATE_FEED, campaignCandidateService.getRunningList(starId, Optional.empty(), Optional.empty(), viewerInfo == null ? null : viewerInfo.getId()));
+        model.addAttribute(CANDIDATE_EXECUTION_RULE, executionRuleService.getProgressExecuteRuleByType(PangyoEnum.ExecutionRuleType.CANDIDATE));
         model.addAttribute(AD_EXECUTION_RULE, executionRuleService.getAdExecutionRuleByProgressExecuteRuleType(PangyoEnum.ExecutionRuleType.CANDIDATE));
 
         return "fanClub/campaignCandidate/list";

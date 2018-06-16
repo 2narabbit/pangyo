@@ -19,7 +19,11 @@
     <#include "/fanClub/layout/head.ftl">
     <div style="margin-top:20px">
         <span>NEXT WEEK CAMPAIGN</span>
-        <a href="/fanClub/${star.id}/campaign-candidate/write">등록하기</a>
+        <#if candidateExecutionRule.status == 'RUNNING'>
+            <a href="/fanClub/${star.id}/campaign-candidate/write">등록하기</a>
+        <#else>
+            <strong>투표종료</strong>
+        </#if>
     </div>
 
     <#if campaignCandidateFeed?has_content>
@@ -29,20 +33,22 @@
                 <div class="preview">
                     <div>
                         <label>${campaignCandidate_index+1} ${campaignCandidate.title!}</label>
-                        <#if campaignCandidateFeed.myList?seq_contains(campaignCandidate.user.id)>
-                            <button onclick="removeCampaignCandidate(${campaignCandidate.id!})">삭제</button>
-                        </#if>
-                        <span>
-                            <#if campaignCandidateFeed.pollList?seq_contains(campaignCandidate.id)>
-                                <#assign pollClass="polled">
-                            <#else>
-                                <#assign pollClass="">
+                        <#if candidateExecutionRule.status == 'RUNNING'>
+                            <#if campaignCandidateFeed.myList?seq_contains(campaignCandidate.user.id)>
+                                <button onclick="removeCampaignCandidate(${campaignCandidate.id!})">삭제</button>
                             </#if>
-                            <a href="javascript:;" class="pollArea ${pollClass!}" onclick="poll(${campaignCandidate.id!}, this);">
-                                투표
-                                <span class="pollCount">${campaignCandidate.pollCount!}</span>
-                            </a>
-                        </span>
+                            <span>
+                                <#if campaignCandidateFeed.pollList?seq_contains(campaignCandidate.id)>
+                                    <#assign pollClass="polled">
+                                <#else>
+                                    <#assign pollClass="">
+                                </#if>
+                                <a href="javascript:;" class="pollArea ${pollClass!}" onclick="poll(${campaignCandidate.id!}, this);">
+                                    투표
+                                    <span class="pollCount">${campaignCandidate.pollCount!}</span>
+                                </a>
+                            </span>
+                        </#if>
                     </div>
                     <p>${campaignCandidate.body!}</p>
                     <p>캠페인 노출 기간 : ${adExecutionRule.startDttm!} ~ ${adExecutionRule.endDttm!}</p>
@@ -68,22 +74,24 @@
             <div class="preview">
                 <div>
                     <label><%= rank %> <%= title %></label>
-                    <% if (myList.includes(user.id)) { %>
-                        <button onclick="removeCampaignCandidate(<%= id %>)">삭제</button>
-                    <% } %>
-                    <span>
-                        <%
-                            if (pollList.includes(id)) {
-                                pollClass = "polled";
-                            } else {
-                                pollClass = "";
-                            }
-                        %>
-                        <a href="javascript:;" class="pollArea <%= pollClass %>" onclick="poll(<%= id %>, this);">
-                            투표
-                            <span class="pollCount"><%= pollCount %></span>
-                        </a>
-                    </span>
+                    <#if candidateExecutionRule.status == 'RUNNING'>
+                        <% if (myList.includes(user.id)) { %>
+                            <button onclick="removeCampaignCandidate(<%= id %>)">삭제</button>
+                        <% } %>
+                        <span>
+                            <%
+                                if (pollList.includes(id)) {
+                                    pollClass = "polled";
+                                } else {
+                                    pollClass = "";
+                                }
+                            %>
+                            <a href="javascript:;" class="pollArea <%= pollClass %>" onclick="poll(<%= id %>, this);">
+                                투표
+                                <span class="pollCount"><%= pollCount %></span>
+                            </a>
+                        </span>
+                    </#if>
                 </div>
                 <p><%= body %></p>
                 <p>캠페인 노출 기간 : ${adExecutionRule.startDttm!} ~ ${adExecutionRule.endDttm!}</p>
