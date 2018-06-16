@@ -68,4 +68,20 @@
           AND content_id = #{contentId}
           AND user_id = #{userId}
     </delete>
+
+    <!-- // Action 중복체크를 위한 쿼리 -->
+
+    <select id="selectFromActionUnique" parameterType="String" resultType="String">
+        SELECT * FROM ACTION_UNIQUE WHERE `key` = #{key}
+    </select>
+
+    <insert id="insertIntoActionUnique" parameterType="String">
+        INSERT INTO ACTION_UNIQUE (`key`) VALUE (#{key});
+    </insert>
+
+    <delete id="deleteFromActionUnique" parameterType="String">
+        DELETE FROM ACTION_UNIQUE WHERE `key` = #{key}
+    </delete>
+
+    <!-- Action 중복체크를 위한 쿼리 // -->
 </mapper>

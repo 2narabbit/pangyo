@@ -13,6 +13,13 @@ create table ACTION_HISTORY
 comment '사용자 액션 히스토리'
 ;
 
+create table ACTION_UNIQUE
+(
+	`key` varchar(128) not null
+		primary key
+)
+comment '액션 중복체크' engine=InnoDB
+;
 
 create table CAMPAIGN
 (

@@ -1,6 +1,7 @@
 package com.adinstar.pangyo.service;
 
 import com.adinstar.pangyo.constant.PangyoEnum;
+import com.adinstar.pangyo.controller.exception.BadRequestException;
 import com.adinstar.pangyo.controller.exception.NotFoundException;
 import com.adinstar.pangyo.model.CampaignCandidate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,10 @@ public class PollService extends ActionService {
         super(PangyoEnum.ActionType.POLL);
     }
 
+    public String getUniqueKeyPostfix(CampaignCandidate campaignCandidate, long userId) {
+        return String.format("%s_%s_%s", campaignCandidate.getExecuteRuleId(), campaignCandidate.getStar().getId(), userId);
+    }
+
     @Transactional
     public void add(PangyoEnum.ContentType contentType, long contentId, long userId) {
         if (PangyoEnum.ContentType.CANDIDATE.equals(contentType)) {
@@ -25,7 +30,14 @@ public class PollService extends ActionService {
             if (campaignCandidate == null){
                 throw NotFoundException.CAMPAIGN_CANDIDATE;
             }
+
+            String keyPostfix = getUniqueKeyPostfix(campaignCandidate, userId);
+            if (!checkUnique(contentType, keyPostfix)) {
+                throw BadRequestException.DUPLICATE_POLL;
+            }
+
             campaignCandidateService.updatePollCount(contentId, 1);
+            super.addUnique(contentType, keyPostfix);
         }
 
         super.add(contentType, contentId, userId);
@@ -36,6 +48,7 @@ public class PollService extends ActionService {
         super.remove(contentType, contentId, userId);
 
         if (PangyoEnum.ContentType.CANDIDATE.equals(contentType)) {
+            removeUnique(contentType, getUniqueKeyPostfix(campaignCandidateService.getById(contentId), userId));
             campaignCandidateService.updatePollCount(contentId, -1);
         }
     }
