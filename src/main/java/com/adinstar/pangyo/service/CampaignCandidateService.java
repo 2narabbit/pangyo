@@ -48,18 +48,7 @@ public class CampaignCandidateService {
             pollList = new ArrayList<>();
         }
 
-        List<Long> myList;
-        if (userId != null) {
-            myList = campaignCandidateList.stream()
-                    .map(CampaignCandidate::getUser)
-                    .map(User::getId)
-                    .filter(id -> userId.equals(id))
-                    .collect(Collectors.toList());
-        } else {
-            myList = new ArrayList<>();
-        }
-
-        return new CampaignCandidateFeedResponse(campaignCandidateList, opPage.orElse(DEFAULT_PAGE), size, pollList, myList);
+        return new CampaignCandidateFeedResponse(campaignCandidateList, opPage.orElse(DEFAULT_PAGE), size, pollList);
     }
 
     public CampaignCandidate getById(long id) {

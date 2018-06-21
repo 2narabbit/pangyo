@@ -34,7 +34,7 @@
                     <div>
                         <label>${campaignCandidate_index+1} ${campaignCandidate.title!}</label>
                         <#if candidateExecutionRule.status == 'RUNNING'>
-                            <#if campaignCandidateFeed.myList?seq_contains(campaignCandidate.user.id)>
+                            <#if viewer?? && campaignCandidate.user?? && viewer.id == campaignCandidate.user.id>
                                 <button onclick="removeCampaignCandidate(${campaignCandidate.id!})">삭제</button>
                             </#if>
                             <span>
@@ -75,7 +75,7 @@
                 <div>
                     <label><%= rank %> <%= title %></label>
                     <#if candidateExecutionRule.status == 'RUNNING'>
-                        <% if (myList.includes(user.id)) { %>
+                        <% if (${viewer???c} && ${viewer.id} == user.id) { %>
                             <button onclick="removeCampaignCandidate(<%= id %>)">삭제</button>
                         <% } %>
                         <span>
@@ -134,7 +134,6 @@
                     var template = _.template($("#campaign-candidate-detail-template").html());
                     data.list.forEach(function(e, i){
                         e.pollList = data.pollList;
-                        e.myList = data.myList;
                         e.rank = ++campaignCandidateList.lastRank;
                         $('#listSection').append(template(e));
                     });
