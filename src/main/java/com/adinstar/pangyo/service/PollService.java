@@ -48,7 +48,12 @@ public class PollService extends ActionService {
         super.remove(contentType, contentId, userId);
 
         if (PangyoEnum.ContentType.CANDIDATE.equals(contentType)) {
-            removeUnique(contentType, getUniqueKeyPostfix(campaignCandidateService.getById(contentId), userId));
+            CampaignCandidate campaignCandidate = campaignCandidateService.getById(contentId);
+            if (campaignCandidate == null){
+                throw NotFoundException.CAMPAIGN_CANDIDATE;
+            }
+
+            removeUnique(contentType, getUniqueKeyPostfix(campaignCandidate, userId));
             campaignCandidateService.updatePollCount(contentId, -1);
         }
     }
