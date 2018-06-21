@@ -76,7 +76,7 @@
     </select>
 
     <insert id="insertIntoActionUnique" parameterType="String">
-        INSERT INTO ACTION_UNIQUE (`key`) VALUE (#{key});
+        INSERT INTO ACTION_UNIQUE (`key`) VALUE (#{key})
     </insert>
 
     <delete id="deleteFromActionUnique" parameterType="String">
