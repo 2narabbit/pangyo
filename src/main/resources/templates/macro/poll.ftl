@@ -41,7 +41,12 @@
             },
             error: function(res) {
                 console.log(res);
-                alert('투표에 실패했습니다.');
+                res = res.responseJSON;
+                if (res.message) {
+                    alert(res.message);
+                } else {
+                    alert('투표에 실패했습니다.');
+                }
             }
         });
     }

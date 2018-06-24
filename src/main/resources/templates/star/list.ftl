@@ -82,10 +82,10 @@
             <td>
                 <h3><%= content.name %></h3>
                 <span><%= content.fanCount %>fans</span>
-                <button id="joinBotton<%= data.id %>" onclick="joinStar(<%= content.id %>)">+ Join</button>
+                <button id="joinBotton<%= content.id %>" onclick="joinStar(<%= content.id %>)">+ Join</button>
             </td>
             <td style="text-align: center">
-                <img src="<%= data.profileImg %>" style="max-height: 100px">
+                <img src="<%= content.profileImg %>" style="max-height: 100px">
             </td>
         </tr>
     </script>

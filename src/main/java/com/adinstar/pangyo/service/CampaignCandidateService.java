@@ -6,6 +6,7 @@ import com.adinstar.pangyo.constant.PangyoEnum.ExecutionRuleType;
 import com.adinstar.pangyo.mapper.CampaignCandidateMapper;
 import com.adinstar.pangyo.model.CampaignCandidate;
 import com.adinstar.pangyo.model.CampaignCandidateFeedResponse;
+import com.adinstar.pangyo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -12,6 +12,7 @@ public class PangyoErrorMessage {
     public static final String INVALID_PARAM = "유효하지 않은 파라미터 입니다.";
     public static final String DUPLICATE_USER_REGISTER = "이미 가입되어 있습니다.";
     public static final String INVALID_PATH = "유효하지 않은 주소입니다.";
+    public static final String DUPLICATE_POLL = "이미 투표에 참여하였습니다.";
 
     // NotFoundException
     public static final String NOT_FOUND_CAMPAIGN_CANDIDATE = "존재하지 않은 후보군 정보입니다.";
