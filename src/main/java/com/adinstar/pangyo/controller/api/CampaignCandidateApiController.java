@@ -6,13 +6,14 @@ import com.adinstar.pangyo.constant.ViewModelName;
 import com.adinstar.pangyo.controller.exception.BadRequestException;
 import com.adinstar.pangyo.controller.exception.UnauthorizedException;
 import com.adinstar.pangyo.model.CampaignCandidate;
-import com.adinstar.pangyo.model.ViewerInfo;
 import com.adinstar.pangyo.model.CampaignCandidateFeedResponse;
+import com.adinstar.pangyo.model.ViewerInfo;
 import com.adinstar.pangyo.service.CampaignCandidateService;
 import com.adinstar.pangyo.service.StarService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.Optional;
 
@@ -33,12 +34,12 @@ public class CampaignCandidateApiController {
             @ApiImplicitParam(name = "page", value = "page number", paramType = "query", required = true, dataType = "int")
     })
     @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = CampaignCandidateFeedResponse.class)})
-    @RequestMapping(value="/{starId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{starId}", method = RequestMethod.GET)
     @CheckAuthority
     public CampaignCandidateFeedResponse getRunningList(@PathVariable long starId,
                                                         @RequestParam int page,
-                                                        @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
-        return campaignCandidateService.getRunningList(starId, Optional.of(page), Optional.empty(), viewerInfo == null? null : viewerInfo.getId());
+                                                        @ApiIgnore @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
+        return campaignCandidateService.getRunningList(starId, Optional.of(page), Optional.empty(), (viewerInfo == null) ? null : viewerInfo.getId());
     }
 
     @ApiOperation("캠페인 후보군 등록하기")
@@ -48,13 +49,17 @@ public class CampaignCandidateApiController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "OK")})
     @RequestMapping(method = RequestMethod.POST)
     public void add(@RequestBody CampaignCandidate campaignCandidate,
-                    @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
-        if (campaignCandidate.getStar() == null) {   // TODO: RequestBody 도 pathInterceptor에서 처리해줘야하나ㅠㅠ
+                    @ApiIgnore @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
+        if (campaignCandidate.getStar() == null) {   // TODO: RequestBody 의 경우 model에 validation 명시하자!
             throw BadRequestException.INVALID_PARAM;
         }
 
         if (!starService.isJoined(campaignCandidate.getStar().getId(), viewerInfo.getId())) {
             throw UnauthorizedException.NEED_JOIN;
+        }
+
+        if (campaignCandidateService.isAlreadyCandidateRegistration(campaignCandidate.getStar().getId(), viewerInfo.getId())) {
+            throw BadRequestException.DUPLICATE_CAMPAIGN_CANDIDATE;
         }
 
         campaignCandidate.setUser(viewerInfo.getUser());
@@ -68,7 +73,11 @@ public class CampaignCandidateApiController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "OK")})
     @RequestMapping(value = "/{campaignCandidateId}", method = RequestMethod.PUT)
     @CheckAuthority(isOwner = true)
-    public void modify(@RequestBody CampaignCandidate campaignCandidate) {
+    public void modify(@PathVariable long campaignCandidateId,
+                       @RequestBody CampaignCandidate campaignCandidate) {
+        if (campaignCandidateId != campaignCandidate.getId()) {
+            throw BadRequestException.INVALID_PARAM;
+        }
         campaignCandidateService.modify(campaignCandidate);
     }
 

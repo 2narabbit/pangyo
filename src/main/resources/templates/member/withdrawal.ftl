@@ -16,8 +16,8 @@
     <script type="text/javascript">
         function logout() {
             $.ajax({
-                url : '/api/member/withdrawal',
-                type : 'GET',
+                url : '/api/member/me',
+                type : 'DELETE',
                 contentType : "application/json",
                 success: function() {
                     alert('힝ㅠ 친구 손잡고 다시 와요!?');

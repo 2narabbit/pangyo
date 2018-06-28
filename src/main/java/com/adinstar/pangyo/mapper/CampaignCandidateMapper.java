@@ -23,5 +23,5 @@ public interface CampaignCandidateMapper {
 
     void updatePollCount(@Param("id") long id, @Param("delta") int delta);
 
-    CampaignCandidate selectByStarIdAndUserIdAndExecuteRuleId(@Param("starId") long starId, @Param("userId") long userId, @Param("executeRuleId") long executeRuleId);
+    List<CampaignCandidate> selectListByStarIdAndUserIdAndExecuteRuleId(@Param("starId") long starId, @Param("userId") long userId, @Param("executeRuleId") long executeRuleId);
 }

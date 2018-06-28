@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.WebUtils;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,7 +39,7 @@ public class MemberController {
 
     @RequestMapping(value = {"", "/login"}, method = RequestMethod.GET)
     public String login(HttpServletRequest request,
-                        @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo,
+                        @ApiIgnore @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo,
                         @RequestParam(value = "continue", required = false) String continueUrl) {
         if (continueUrl != null) {
             WebUtils.setSessionAttribute(request, PangyoAuthorizedKey.CONTINUE, continueUrl);
@@ -88,7 +89,7 @@ public class MemberController {
 
         String continueUrl = (String) WebUtils.getSessionAttribute(request, PangyoAuthorizedKey.CONTINUE);
 
-        model.addAttribute("nickname", loginInfo.getNickname());
+        model.addAttribute("name", loginInfo.getNickname());
         model.addAttribute("profileImg", loginInfo.getProfileImage());
         model.addAttribute("service", loginInfo.getService());
         model.addAttribute("continueUrl", continueUrl == null ? HOME_URL : continueUrl);
@@ -99,5 +100,11 @@ public class MemberController {
     @MustLogin
     public String withdrawal() {
         return "member/withdrawal";
+    }
+
+    @RequestMapping(value = "/me", method = RequestMethod.GET)
+    @MustLogin
+    public String getMyInfo() {
+        return "member/me";
     }
 }

@@ -62,4 +62,25 @@
            SET status = #{status}, up_dttm = NOW()
          WHERE id = #{id}
     </update>
+
+    <select id="selectByName" parameterType="String" resultMap="UserMap">
+        SELECT
+          <include refid="userColumn"/>
+        FROM
+          <include refid="userTable"/>
+        WHERE name = #{name}
+    </select>
+
+    <update id="update" parameterType="User">
+        UPDATE USER
+        SET
+        <if test="name != null">
+            `name` = #{name},
+        </if>
+        <if test="profileImg != null">
+            profile_img = #{profileImg},
+        </if>
+        up_dttm = NOW()
+        WHERE id = #{id}
+    </update>
 </mapper>

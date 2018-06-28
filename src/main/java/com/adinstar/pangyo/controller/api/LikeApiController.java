@@ -8,6 +8,7 @@ import com.adinstar.pangyo.service.LikeService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping("/api/like")
@@ -26,7 +27,7 @@ public class LikeApiController {
     @RequestMapping(value = "/{contentType}/{contentId}", method = RequestMethod.POST)
     public void add(@PathVariable("contentType") String contentType,
                     @PathVariable("contentId") long contentId,
-                    @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
+                    @ApiIgnore @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
         likeService.add(PangyoEnum.ContentType.valueOf(contentType), contentId, viewerInfo.getId());
     }
 }

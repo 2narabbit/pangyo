@@ -20,9 +20,11 @@
     <div style="margin-top:20px">
         <span>NEXT WEEK CAMPAIGN</span>
         <#if candidateExecutionRule.status == 'RUNNING'>
-            <a href="/fanClub/${star.id}/campaign-candidate/write">등록하기</a>
+            <#if !alreadyCandidateRegistration>
+                <a href="/fanClub/${star.id}/campaign-candidate/write">등록하기</a>
+            </#if>
         <#else>
-            <strong>투표종료</strong>
+             <strong>투표종료</strong>
         </#if>
     </div>
 

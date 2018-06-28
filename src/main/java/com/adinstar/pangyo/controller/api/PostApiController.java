@@ -12,6 +12,7 @@ import com.adinstar.pangyo.service.StarService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.Optional;
 
@@ -38,7 +39,7 @@ public class PostApiController {
     @CheckAuthority
     public PostFeedResponse getListByStarId(@RequestParam("starId") long starId,
                                             @RequestParam(value = "lastId", required = false) Long lastId,
-                                            @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
+                                            @ApiIgnore @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
         return postService.getListByStarId(starId, Optional.ofNullable(lastId), viewerInfo == null ? null : viewerInfo.getId());
     }
 
@@ -65,7 +66,7 @@ public class PostApiController {
     })
     @RequestMapping(method = RequestMethod.POST)
     public void add(@RequestBody Post post,
-                    @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
+                    @ApiIgnore @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
         if (post.getStar() == null) {   // TODO: RequestBody 도 pathInterceptor에서 처리해줘야하나ㅠㅠ
             throw BadRequestException.INVALID_PARAM;
         }
@@ -87,7 +88,10 @@ public class PostApiController {
     })
     @RequestMapping(value = "/{postId}", method = RequestMethod.PUT)
     @CheckAuthority(isOwner = true)
-    public void modify(@RequestBody Post post) {
+    public void modify(@PathVariable long postId, @RequestBody Post post) {
+        if (postId != post.getId()) {
+            throw BadRequestException.INVALID_PARAM;
+        }
         postService.modify(post);
     }
 

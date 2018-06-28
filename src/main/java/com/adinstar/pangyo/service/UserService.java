@@ -20,12 +20,30 @@ public class UserService {
         userMapper.insert(user);
     }
 
-    public User getRecommendedUser(String recommandCode) {
-        long id = Long.valueOf(recommandCode) - User.MAGIC_NUMBER;  // todo: 추천인 코드는 어떻게 제공하면 좋을지 고민하자... 걍 id로?
-        return (id < 0) ? null : userMapper.selectById(id);
+    public Boolean isValidRecommendCode(String recommendCode) {
+        long recommendUserId;
+        try {
+            recommendUserId = Long.valueOf(recommendCode) - User.MAGIC_NUMBER;  // todo: 추천인 코드는 어떻게 제공하면 좋을지 고민하자... 걍 id로?
+        } catch (Exception e) {
+            return false;
+        }
+
+        if (recommendUserId <= 0) {
+            return false;
+        }
+
+        return (userMapper.selectById(recommendUserId) == null) ? false : true;
     }
 
     public void withdrawal(long id) {
         userMapper.updateStatus(id, PangyoEnum.UserStatus.DELETED);
+    }
+
+    public boolean isUsableName(String name) {
+        return (userMapper.selectByName(name) == null) ? true : false;
+    }
+
+    public void modify(User user) {
+        userMapper.update(user);
     }
 }

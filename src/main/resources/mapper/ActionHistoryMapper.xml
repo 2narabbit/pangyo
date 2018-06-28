@@ -48,10 +48,9 @@
           ah.action_type = #{actionType}
           AND ah.content_type = #{contentType}
           AND ah.user_id = #{userId}
-          AND ah.content_id IN
-          <foreach collection="contentIds" item="contentId"  open="(" close=")" separator=",">
-            #{contentId}
-          </foreach>
+          <if test="contentIds.size() > 0">
+            AND ah.content_id IN <foreach collection="contentIds" item="contentId" open="(" separator="," close=")" >#{contentId}</foreach>
+          </if>
     </select>
 
     <insert id="insert" parameterType="ActionHistory" useGeneratedKeys="true" keyProperty="id">

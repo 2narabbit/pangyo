@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.Optional;
 
@@ -35,7 +36,7 @@ public class PostController {
 
     @RequestMapping(value = "/{postId}", method = RequestMethod.GET)
     public String get(@PathVariable("postId") long postId,
-                      @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo,
+                      @ApiIgnore @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo,
                       Model model) {
         model.addAttribute(COMMENT_FEED, commentService.getList(PangyoEnum.ContentType.POST, postId, Optional.empty(), viewerInfo == null ? null : viewerInfo.getId()));
         model.addAttribute(IS_LIKED, viewerInfo != null && likeService.isActioned(PangyoEnum.ContentType.POST, postId, viewerInfo.getId()));

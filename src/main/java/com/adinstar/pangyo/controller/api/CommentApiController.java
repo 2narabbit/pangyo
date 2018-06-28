@@ -4,6 +4,7 @@ import com.adinstar.pangyo.common.annotation.CheckAuthority;
 import com.adinstar.pangyo.common.annotation.MustLogin;
 import com.adinstar.pangyo.constant.PangyoEnum;
 import com.adinstar.pangyo.constant.ViewModelName;
+import com.adinstar.pangyo.controller.exception.BadRequestException;
 import com.adinstar.pangyo.model.Comment;
 import com.adinstar.pangyo.model.CommentFeedResponse;
 import com.adinstar.pangyo.model.ViewerInfo;
@@ -11,6 +12,7 @@ import com.adinstar.pangyo.service.CommentService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.Optional;
 
@@ -33,7 +35,7 @@ public class CommentApiController {
     public CommentFeedResponse getList(@PathVariable("contentType") String contentType,
                                        @PathVariable("contentId") long contentId,
                                        @RequestParam(value = "lastId", required = false) Long lastId,
-                                       @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
+                                       @ApiIgnore @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
         return commentService.getList(PangyoEnum.ContentType.valueOf(contentType), contentId, Optional.ofNullable(lastId), viewerInfo == null ? null : viewerInfo.getId());
     }
 
@@ -47,7 +49,7 @@ public class CommentApiController {
     @RequestMapping(method = RequestMethod.POST)
     @MustLogin
     public void add(@RequestBody Comment comment,
-                    @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
+                    @ApiIgnore @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
         // checked!! >  Post의 comment 작성도 join 여부 check 해야하지 않을까?
 
         comment.setUser(viewerInfo.getUser());
@@ -64,7 +66,10 @@ public class CommentApiController {
     @RequestMapping(value = "/{commentId}", method = RequestMethod.PUT)
     @MustLogin
     @CheckAuthority(isFan = false, isOwner = true)
-    public void modify(@RequestBody Comment comment) {
+    public void modify(@PathVariable long commentId, @RequestBody Comment comment) {
+        if (commentId != comment.getId()) {
+            throw BadRequestException.INVALID_PARAM;
+        }
         commentService.modify(comment);
     }
 
