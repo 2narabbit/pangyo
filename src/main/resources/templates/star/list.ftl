@@ -13,10 +13,6 @@
 </head>
 
 <body>
-    <!--  나래님과 상의하여 로그인 모듈 스크립트로 정리해야한다. UI와 연결될듯! -->
-    <button id="logoutBtn" onclick="memberLogout()">로그아웃</button>
-    <a href="/member/login?continue=/star">로그인 하러 가기</a>
-
     <div style="margin-top:20px; border: 1px;">
         <h2>MY STAR</h2>
         <#if myStarFeed.hasMore>
@@ -158,21 +154,6 @@
                 });
             }
         };
-
-        function memberLogout() {
-            $.ajax({
-                url : '/api/member/logout',
-                type : 'GET',
-                success: function() {
-                    alert("+_+bb 로그아웃 성공");
-                    location.reload();
-                },
-                error: function(res) {
-                    console.log(res);
-                    alert("로그아웃 실패..ㅠㅠ 미안")
-                }
-            });
-        }
 
         $(document).ready(function() {
             $(window).scroll(function(e) {

@@ -100,4 +100,13 @@ public class MemberController {
     public String withdrawal() {
         return "member/withdrawal";
     }
+
+    @RequestMapping(value = "/myInfo", method = RequestMethod.GET)
+    public String myInfo(@ModelAttribute(ViewModelName.AUTH) LoginInfo loginInfo) {
+        if (loginInfo == null) {
+            return "redirect:/member/login";
+        }
+
+        return "member/myInfo";
+    }
 }
