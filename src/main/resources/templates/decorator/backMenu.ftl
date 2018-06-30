@@ -2,11 +2,12 @@
 
 <html lang="ko">
 <head>
-    <#include "/common/head.ftl">
     <sitemesh:write property='head'/>
 </head>
 <body>
+    <div style="width:400px; background-color: beige">
+        <a href="javascript:history.back()"><- 이전</a>
+    </div>
     <sitemesh:write property='body'/>
-    <#include "/common/footer.ftl">
 </body>
 </html>

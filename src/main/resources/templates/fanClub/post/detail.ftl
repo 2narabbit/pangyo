@@ -6,8 +6,8 @@
 </head>
 
 <body>
-<div>
-    <div style="border: 1px solid; padding: 10px; width:400px">
+<div style="width:400px">
+    <div style="border: 1px solid; padding: 10px;">
         <div>
             <img src="${post.user.profileImg!}"  style="width: 50px; height: 50px">
             <strong>${post.user.name!}</strong>
@@ -27,7 +27,7 @@
         </div>
 
         <#if post.img?has_content>
-            <img src="${post.img!}" style="max-width: 400px;">
+            <img src="${post.img!}" style="max-width: 370px;">
         </#if>
 
         <div>
