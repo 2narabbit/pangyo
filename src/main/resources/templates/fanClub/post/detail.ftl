@@ -1,17 +1,12 @@
-<#import "/macro/common.ftl" as common />
 <#import "/macro/comment.ftl" as comment />
 <#import "/macro/like.ftl" as like />
 
-<!DOCTYPE html>
-<html>
 <head>
-    <title>Post</title>
     <@like.defaultCSS />
 </head>
+
 <body>
 <div>
-    <@common.importJS />
-
     <div style="border: 1px solid; padding: 10px; width:400px">
         <div>
             <img src="${post.user.profileImg!}"  style="width: 50px; height: 50px">
@@ -76,4 +71,3 @@
         }
     </script>
 </body>
-</html>

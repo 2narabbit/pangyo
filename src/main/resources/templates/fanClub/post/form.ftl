@@ -1,11 +1,8 @@
-<#import "/macro/common.ftl" as common />
 <#import "/macro/imageUploader.ftl" as imageUploader />
 
-<!DOCTYPE html>
-<html>
 <head>
-    <title>Post/Edit</title>
 </head>
+
 <body>
     <table style="border:0px; text-align:center; width: 400px">
         <tr>
@@ -18,8 +15,6 @@
     <div>
         <textarea id="body" style="width:400px" rows="10" placeholder="${star.name!}님과 관련한 소식을 알려주세요.">${(post.body)!}</textarea>
     </div>
-
-    <@common.importJS />
 
     <@imageUploader.defaultUI (post.img)! />
 
@@ -71,4 +66,3 @@
 
     </script>
 </body>
-</html>

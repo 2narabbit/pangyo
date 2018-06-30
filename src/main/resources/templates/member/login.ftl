@@ -1,15 +1,12 @@
-<#import "/macro/common.ftl" as common />
-
-<!DOCTYPE html>
-<html>
 <head>
-    <title>Login Pangyo</title>
 </head>
+
 <body>
-        <#if kOauthInfo??>
-            <span>accessToken : ${kOauthInfo.accessToken}</span>
-            <span>refreshToken : ${kOauthInfo.refreshToken}</span>
-        </#if>
+    <#if kOauthInfo??>
+        <span>accessToken : ${kOauthInfo.accessToken}</span>
+        <span>refreshToken : ${kOauthInfo.refreshToken}</span>
+    </#if>
+
     <button id="loginBtn" onclick="redirectLoginPage()">
         <img src="/img/login_btn.png" width="300"/>
     </button>
@@ -29,4 +26,3 @@
         }
     </script>
 </body>
-</html>
