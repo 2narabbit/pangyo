@@ -1,4 +1,4 @@
-package com.adinstar.pangyo;
+package com.adinstar.pangyo.config;
 
 import com.adinstar.pangyo.controller.interceptor.LoginInterceptor;
 import com.adinstar.pangyo.controller.interceptor.PathVariableInterceptor;
