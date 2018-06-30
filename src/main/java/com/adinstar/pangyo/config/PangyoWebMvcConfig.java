@@ -46,7 +46,7 @@ public class PangyoWebMvcConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/decorator/common").setViewName("decorator/common");
+        registry.addViewController("/decorator/default").setViewName("decorator/default");
     }
 
     @Bean

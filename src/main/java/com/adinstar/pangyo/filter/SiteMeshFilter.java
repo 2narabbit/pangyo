@@ -6,6 +6,6 @@ import org.sitemesh.config.ConfigurableSiteMeshFilter;
 public class SiteMeshFilter extends ConfigurableSiteMeshFilter {
     @Override
     protected void applyCustomConfiguration(SiteMeshFilterBuilder builder) {
-        builder.addDecoratorPath("/*", "/decorator/common");
+        builder.addDecoratorPath("/*", "/decorator/default");
     }
 }
