@@ -1,9 +1,4 @@
-<#import "/macro/common.ftl" as common />
-
-<!DOCTYPE html>
-<html>
 <head>
-    <title>Star</title>
     <style>
         table {
             width: 400px;
@@ -16,8 +11,8 @@
         }
     </style>
 </head>
-<body>
 
+<body>
     <!--  나래님과 상의하여 로그인 모듈 스크립트로 정리해야한다. UI와 연결될듯! -->
     <button id="logoutBtn" onclick="memberLogout()">로그아웃</button>
     <a href="/member/login?continue=/star">로그인 하러 가기</a>
@@ -90,7 +85,6 @@
         </tr>
     </script>
 
-    <@common.importJS />
     <script src="/js/jquery.visible.js"></script>
 
     <script type="text/javascript">
@@ -189,4 +183,3 @@
         });
     </script>
 </body>
-</html>

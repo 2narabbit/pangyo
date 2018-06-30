@@ -2,7 +2,10 @@ package com.adinstar.pangyo.config;
 
 import com.adinstar.pangyo.controller.interceptor.LoginInterceptor;
 import com.adinstar.pangyo.controller.interceptor.PathVariableInterceptor;
+import com.adinstar.pangyo.filter.SiteMeshFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.*;
 
@@ -39,5 +42,18 @@ public class PangyoWebMvcConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
         registry.addResourceHandler("/js/**").addResourceLocations("classpath:/static/js/");
         registry.addResourceHandler("/img/**").addResourceLocations("classpath:/images/");
+    }
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/decorator/common").setViewName("decorator/common");
+    }
+
+    @Bean
+    public FilterRegistrationBean siteMeshFilter() {
+        FilterRegistrationBean filter = new FilterRegistrationBean();
+        SiteMeshFilter siteMeshFilter = new SiteMeshFilter();
+        filter.setFilter(siteMeshFilter);
+        return filter;
     }
 }
