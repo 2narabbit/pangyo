@@ -102,11 +102,8 @@ public class MemberController {
     }
 
     @RequestMapping(value = "/myInfo", method = RequestMethod.GET)
-    public String myInfo(@ModelAttribute(ViewModelName.AUTH) LoginInfo loginInfo) {
-        if (loginInfo == null) {
-            return "redirect:/member/login";
-        }
-
+    @MustLogin
+    public String myInfo() {
         return "member/myInfo";
     }
 }
