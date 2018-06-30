@@ -15,6 +15,8 @@
 
     <div>
         <span style="padding-right: 30px">CAMPAIGN</span>
-        <span style="padding-left: 30px">STAR CAMP</span>
+        <span style="padding-left: 30px">
+            <a href="/star">STAR CAMP</a>
+        </span>
     </div>
 </div>
