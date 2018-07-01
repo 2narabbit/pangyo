@@ -22,6 +22,9 @@ public class PostService {
     @Autowired
     private LikeService likeService;
 
+    @Autowired
+    private ViewCounter viewCounter;
+
     private static final int LIST_SIZE = 10;
 
     public PostFeedResponse getListByStarId(long starId, Optional lastId, Long userId) {
@@ -61,16 +64,10 @@ public class PostService {
     }
 
     public void updateViewCount(long id, int delta) {
-        ignoreException(id, delta, (t, u) -> postMapper.updateViewCount(t, u));
+        viewCounter.updateViewCount(id, delta, (t, u) -> postMapper.updateViewCount(t, u));
     }
 
     public void updateCommentCount(long id, int delta) {
         postMapper.updateCommentCount(id, delta);
-    }
-
-    private void ignoreException(Long id, Integer delta, BiFunction<Long, Integer, Integer> function) {
-        try {
-            function.apply(id, delta);
-        } catch (Exception e) {}
     }
 }

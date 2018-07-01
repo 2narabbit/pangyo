@@ -12,6 +12,7 @@ public class InvalidConditionException extends RuntimeException {
     public static final InvalidConditionException TRUN_NUM = new InvalidConditionException(PangyoErrorMessage.INVALID_TURN_NUM);
     public static final InvalidConditionException LAST_TIME = new InvalidConditionException(PangyoErrorMessage.INVALID_LAST_TIME);
     public static final InvalidConditionException UNSUPPORTED_ANNOTATION = new InvalidConditionException(PangyoErrorMessage.INVALID_UNSUPPORTED_ANNOTATION);
+    public static final InvalidConditionException NOT_FOUND_CAMPAIGN_CANDIDATE = new InvalidConditionException(PangyoErrorMessage.NOT_FOUND_CAMPAIGN_CANDIDATE);
 
     public InvalidConditionException(String msg) {
         super(msg);

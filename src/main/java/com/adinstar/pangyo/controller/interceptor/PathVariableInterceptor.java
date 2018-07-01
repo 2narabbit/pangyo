@@ -7,10 +7,7 @@ import com.adinstar.pangyo.controller.exception.InvalidConditionException;
 import com.adinstar.pangyo.controller.exception.NotFoundException;
 import com.adinstar.pangyo.controller.exception.UnauthorizedException;
 import com.adinstar.pangyo.model.*;
-import com.adinstar.pangyo.service.CampaignCandidateService;
-import com.adinstar.pangyo.service.CommentService;
-import com.adinstar.pangyo.service.PostService;
-import com.adinstar.pangyo.service.StarService;
+import com.adinstar.pangyo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -26,6 +23,9 @@ import java.util.function.BiConsumer;
 @Component
 @Order(2)
 public class PathVariableInterceptor extends HandlerInterceptorAdapter {
+
+    @Autowired
+    private CampaignService campaignService;
 
     @Autowired
     private StarService starService;
@@ -79,7 +79,26 @@ public class PathVariableInterceptor extends HandlerInterceptorAdapter {
                 throw BadRequestException.INVALID_PATH;
             }
 
-            if (name.equals("starId")) {
+            if (name.equals("campaignId")) {
+                Campaign campaign = campaignService.getById(Long.valueOf(String.valueOf(value)));
+                if (campaign == null) {
+                    throw NotFoundException.CAMPAIGN;
+                }
+
+                if (campaign.getCampaignCandidate() == null) {
+                    throw InvalidConditionException.NOT_FOUND_CAMPAIGN_CANDIDATE;
+                }
+
+                if (finalIsCheckFan) {
+                    throw InvalidConditionException.UNSUPPORTED_ANNOTATION;
+                }
+
+                if (finalIsCheckOwner) {
+                    throw InvalidConditionException.UNSUPPORTED_ANNOTATION;
+                }
+                request.setAttribute(ViewModelName.CAMPAIGN, campaign);
+
+            } else if (name.equals("starId")) {
                 Star star = starService.getById(Long.valueOf(String.valueOf(value)));
                 if (star == null) {
                     throw NotFoundException.STAR;

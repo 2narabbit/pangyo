@@ -25,13 +25,15 @@ public class PangyoWebMvcConfig extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/api/**")
+                .addPathPatterns("/campaign/**")
                 .addPathPatterns("/fanClub/**")
                 .addPathPatterns("/star/**")
                 .addPathPatterns("/member/**");
 
         registry.addInterceptor(pathVariableInterceptor)
                 .addPathPatterns("/api/**")
-                .addPathPatterns("/fanClub/**");
+                .addPathPatterns("/fanClub/**")
+                .addPathPatterns("/campaign/**");
     }
 
     @Override

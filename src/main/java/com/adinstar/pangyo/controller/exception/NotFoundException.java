@@ -8,6 +8,7 @@ public class NotFoundException extends RuntimeException {
     public static final NotFoundException ACTION_HISTORY = new NotFoundException(PangyoErrorMessage.NOT_FOUND_ACTION_HISTORY);
     public static final NotFoundException POST = new NotFoundException(PangyoErrorMessage.NOT_FOUND_POST);
     public static final NotFoundException COMMENT = new NotFoundException(PangyoErrorMessage.NOT_FOUND_COMMENT);
+    public static final NotFoundException CAMPAIGN = new NotFoundException(PangyoErrorMessage.NOT_FOUND_CAMPAIGN);
 
     public NotFoundException(String msg) {
         super(msg);

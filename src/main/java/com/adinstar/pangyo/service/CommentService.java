@@ -25,8 +25,8 @@ public class CommentService {
 
     private static final int LIST_SIZE = 5;
 
-    public CommentFeedResponse getList(PangyoEnum.ContentType contentType, long contentId, Optional lastId, Long userId) {
-        List<Comment> commentList = commentMapper.selectList(contentType, contentId, (long)lastId.orElse(Long.MAX_VALUE), LIST_SIZE+1);
+    public CommentFeedResponse getList(PangyoEnum.ContentType contentType, long contentId, Optional<Long> lastId, Long userId) {
+        List<Comment> commentList = commentMapper.selectList(contentType, contentId, lastId.orElse(Long.MAX_VALUE), LIST_SIZE + 1);
 
         List<Long> myList;
         if (userId != null) {

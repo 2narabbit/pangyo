@@ -12,7 +12,8 @@ public class PangyoEnum {
     public enum LovKey { COMMENT, POST, LIKE, SUPPORT }
     public enum PolicyKey { COMMENT, POST, LIKE,
                             CANDIDATE_TURN, CANDIDATE_DONE, CAMPAIGN_TURN, CAMPAIGN_DONE, AD_TURN, AD_DONE,
-                            CAMPAIGN_SNAPSHOT_TERM, STAR_SNAPSHOT_TERM}
+                            CAMPAIGN_SNAPSHOT_TERM, STAR_SNAPSHOT_TERM,
+                            CAMPAIGN_BENEFITS }
     public enum ActionType { LIKE, POLL, SUPPORT, JOIN }
     public enum AccountType { KAKAO }
 
