@@ -35,8 +35,8 @@ public class PangyoWebMvcConfig extends WebMvcConfigurerAdapter {
 
         registry.addInterceptor(pathVariableInterceptor)
                 .addPathPatterns("/api/**")
-                .addPathPatterns("/fanClub/**")
-                .addPathPatterns("/campaign/**");
+                .addPathPatterns("/campaign/**")
+                .addPathPatterns("/fanClub/**");
     }
 
     @Override
@@ -45,7 +45,7 @@ public class PangyoWebMvcConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/js/**").addResourceLocations("classpath:/static/js/");
         registry.addResourceHandler("/img/**").addResourceLocations("classpath:/images/");
     }
-    
+  
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/decorator/default").setViewName("decorator/default");

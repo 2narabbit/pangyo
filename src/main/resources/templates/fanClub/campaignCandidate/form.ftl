@@ -1,13 +1,9 @@
-<#import "/macro/common.ftl" as common />
 <#import "/macro/imageUploader.ftl" as imageUploader />
 
-<!DOCTYPE html>
-<html>
 <head>
-    <title>Post/Edit</title>
 </head>
+
 <body>
-    <@common.importJS />
 
     <table style="border:0px; text-align:center">
         <tr>
@@ -92,4 +88,3 @@
         }
     </script>
 </body>
-</html>

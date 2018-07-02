@@ -100,4 +100,10 @@ public class MemberController {
     public String withdrawal() {
         return "member/withdrawal";
     }
+
+    @RequestMapping(value = "/myInfo", method = RequestMethod.GET)
+    @MustLogin
+    public String myInfo() {
+        return "member/myInfo";
+    }
 }
