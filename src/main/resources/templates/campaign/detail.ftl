@@ -1,15 +1,10 @@
-<#import "/macro/common.ftl" as common />
 <#import "/macro/comment.ftl" as comment />
 
-<!DOCTYPE html>
-<html>
 <head>
-    <title>CAMPAIGN</title>
 </head>
+
 <body>
 <div>
-    <@common.importJS />
-
     <div style="border: 1px solid; padding: 10px; width:400px">
         <p>id > ${campaign.id!}</p>
         <p>executeRuleId > ${campaign.executeRuleId!}</p>
@@ -71,4 +66,3 @@
         }
     </script>
 </body>
-</html>
