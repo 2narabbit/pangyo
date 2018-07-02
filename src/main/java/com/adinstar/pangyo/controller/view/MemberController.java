@@ -102,9 +102,16 @@ public class MemberController {
         return "member/withdrawal";
     }
 
+    // todo -둘중에 하나 지우기
     @RequestMapping(value = "/me", method = RequestMethod.GET)
     @MustLogin
     public String getMyInfo() {
         return "member/me";
+    }
+
+    @RequestMapping(value = "/myInfo", method = RequestMethod.GET)
+    @MustLogin
+    public String myInfo() {
+        return "member/myInfo";
     }
 }

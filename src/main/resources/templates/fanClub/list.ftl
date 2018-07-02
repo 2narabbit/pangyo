@@ -1,12 +1,9 @@
-<#import "/macro/common.ftl" as common />
 <#import "/macro/like.ftl" as like />
 
-<!DOCTYPE html>
-<html>
 <head>
-    <title>FanClub</title>
     <@like.defaultCSS />
 </head>
+
 <body>
     <#include "/fanClub/layout/head.ftl">
 
@@ -101,7 +98,6 @@
         </div>
     </script>
 
-    <@common.importJS />
     <script src="/js/jquery.visible.js"></script>
 
     <script type="text/javascript">
@@ -160,4 +156,3 @@
         };
     </script>
 </body>
-</html>

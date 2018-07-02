@@ -1,9 +1,6 @@
-<#import "/macro/common.ftl" as common />
 <#import "/macro/poll.ftl" as poll />
 
-<html>
 <head>
-    <title>campaignCandidate</title>
     <style>
         .preview {
             overflow: hidden;
@@ -12,8 +9,8 @@
     </style>
     <@poll.defaultCSS />
 </head>
+
 <body>
-    <@common.importJS />
     <@poll.defaultScript "CANDIDATE" />
 
     <#include "/fanClub/layout/head.ftl">
@@ -192,4 +189,3 @@
         });
     </script>
 </body>
-</html>

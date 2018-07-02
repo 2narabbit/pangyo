@@ -1,13 +1,7 @@
-<#import "/macro/common.ftl" as common />
-
-<!DOCTYPE html>
-<html>
 <head>
-    <title>Sorry!</title>
 </head>
-<body>
-    <@common.importJS />
 
+<body>
     <script type="text/javascript">
         $(document).ready(function() {
             var message = '${errorMessage!}';
@@ -16,4 +10,3 @@
         });
     </script>
 </body>
-</html>

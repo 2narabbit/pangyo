@@ -1,4 +1,4 @@
-package com.adinstar.pangyo;
+package com.adinstar.pangyo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
