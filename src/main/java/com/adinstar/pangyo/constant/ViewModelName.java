@@ -25,4 +25,7 @@ public class ViewModelName {
     public static final String CANDIDATE_EXECUTION_RULE = "candidateExecutionRule";
     public static final String AD_EXECUTION_RULE = "adExecutionRule";
     public static final String ALREADY_CANDIDATE_REGISTRATION = "alreadyCandidateRegistration";
+
+    public static final String RANK_BENEFITS = "rankBenefits";
+    public static final String CAMPAIGN = "campaign";
 }

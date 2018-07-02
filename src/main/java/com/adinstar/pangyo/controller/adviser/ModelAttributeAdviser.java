@@ -43,4 +43,9 @@ public class ModelAttributeAdviser {
     public Comment setComment(HttpServletRequest request) {
         return (Comment) request.getAttribute(ViewModelName.COMMENT);
     }
+
+    @ModelAttribute(ViewModelName.CAMPAIGN)
+    public Campaign setCampaign(HttpServletRequest request) {
+        return (Campaign) request.getAttribute(ViewModelName.CAMPAIGN);
+    }
 }

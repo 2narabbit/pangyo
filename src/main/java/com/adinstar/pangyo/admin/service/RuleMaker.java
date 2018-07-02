@@ -44,7 +44,7 @@ public class RuleMaker {
         executionRuleService.removeExecutionRuleByTurnNum(nextTurnNum);
 
         Map<PangyoEnum.ExecutionRuleType, Long> daysMap = beforeExecutionRuleList.stream().map(r -> r.getType()).distinct()
-                .collect(Collectors.toMap(r -> r, r -> policyService.getPolicyValueByKey(r.name() + POLICY_TURN_SUBFIX)));
+                .collect(Collectors.toMap(r -> r, r -> getPolicyValueByKeyName(r.name() + POLICY_TURN_SUBFIX)));
 
         for (ExecutionRule rule : beforeExecutionRuleList) {
             long days = daysMap.get(rule.getType());
@@ -75,7 +75,7 @@ public class RuleMaker {
         List<ExecutionRule> runningRuleList = executionRuleService.getExecutionRuleListByStatus(PangyoEnum.ExecutionRuleStatus.RUNNING);
 
         Map<PangyoEnum.ExecutionRuleType, Long> daysMap = runningRuleList.stream().map(r -> r.getType()).distinct()
-                .collect(Collectors.toMap(r -> r, r -> policyService.getPolicyValueByKey(r.name() + POLICY_DONE_SUBFIX)));
+                .collect(Collectors.toMap(r -> r, r -> getPolicyValueByKeyName(r.name() + POLICY_DONE_SUBFIX)));
 
         runningRuleList.stream()
                 .filter(r -> now.isBefore(r.getEndDttm().minusDays(daysMap.getOrDefault(r.getType(), 0L))))
@@ -105,5 +105,36 @@ public class RuleMaker {
         }
 
         return true;
+    }
+
+    private long getPolicyValueByKeyName(String name) {
+        PangyoEnum.PolicyKey key = getPolicyByKeyName(name);
+        if (key == null) {
+            throw InvalidConditionException.POLICY;
+        }
+        return Long.valueOf(policyService.getPolicyValueByKey(key).getValue());
+    }
+
+    private PangyoEnum.PolicyKey getPolicyByKeyName(String name) {
+        switch (name) {
+            case "CANDIDATE_TURN":
+                return PangyoEnum.PolicyKey.CANDIDATE_TURN;
+            case "CANDIDATE_DONE":
+                return PangyoEnum.PolicyKey.CANDIDATE_DONE;
+            case "CAMPAIGN_TURN":
+                return PangyoEnum.PolicyKey.CAMPAIGN_TURN;
+            case "CAMPAIGN_DONE":
+                return PangyoEnum.PolicyKey.CAMPAIGN_DONE;
+            case "AD_TURN":
+                return PangyoEnum.PolicyKey.AD_TURN;
+            case "AD_DONE":
+                return PangyoEnum.PolicyKey.AD_DONE;
+            case "CAMPAIGN_SNAPSHOT_TERM":
+                return PangyoEnum.PolicyKey.CAMPAIGN_SNAPSHOT_TERM;
+            case "STAR_SNAPSHOT_TERM":
+                return PangyoEnum.PolicyKey.STAR_SNAPSHOT_TERM;
+            default:
+                return null;
+        }
     }
 }

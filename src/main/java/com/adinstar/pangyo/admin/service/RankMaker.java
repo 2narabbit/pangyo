@@ -3,6 +3,7 @@ package com.adinstar.pangyo.admin.service;
 import com.adinstar.pangyo.admin.mapper.StarRankMapper;
 import com.adinstar.pangyo.admin.mapper.CampaignRankMapper;
 import com.adinstar.pangyo.constant.PangyoEnum;
+import com.adinstar.pangyo.model.Policy;
 import com.adinstar.pangyo.service.CampaignService;
 import com.adinstar.pangyo.service.StarService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +68,9 @@ public class RankMaker {
     }
 
     private boolean isSnapshotTerm(LocalDateTime now, LocalDateTime lastTime, PangyoEnum.PolicyKey key) {
-        long hours = policyService.getPolicyValueByKey(key);
+        Policy policy = policyService.getPolicyValueByKey(key);
+
+        long hours = Long.valueOf(policy.getValue());
         if (lastTime != null && now.isBefore(lastTime.plusHours(hours))) {
             return false;
         }
