@@ -8,6 +8,7 @@ import com.adinstar.pangyo.service.PollService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping("/api/poll")
@@ -26,7 +27,7 @@ public class PollApiController {
     @RequestMapping(value = "/{contentType}/{contentId}", method = RequestMethod.POST)
     public void add(@PathVariable("contentType") String contentType,
                     @PathVariable("contentId") long contentId,
-                    @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
+                    @ApiIgnore @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
         pollService.add(PangyoEnum.ContentType.valueOf(contentType), contentId, viewerInfo.getId());
     }
 
@@ -39,7 +40,7 @@ public class PollApiController {
     @RequestMapping(value = "/{contentType}/{contentId}", method = RequestMethod.DELETE)
     public void remove(@PathVariable("contentType") String contentType,
                        @PathVariable("contentId") long contentId,
-                       @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
+                       @ApiIgnore @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
         pollService.remove(PangyoEnum.ContentType.valueOf(contentType), contentId, viewerInfo.getId());
     }
 }

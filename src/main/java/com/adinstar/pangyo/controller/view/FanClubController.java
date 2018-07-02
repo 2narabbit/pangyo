@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.Optional;
 
@@ -33,7 +34,7 @@ public class FanClubController {
 
     @RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
     public String getTopFeed(@PathVariable("starId") long starId,
-                             @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo,
+                             @ApiIgnore @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo,
                              Model model) {
         model.addAttribute(CAMPAIGN_CANDIDATE_LIST, campaignCandidateService.getRunningList(starId, Optional.of(1), Optional.of(2), null).getList());
         model.addAttribute(POST_FEED, postService.getListByStarId(starId, Optional.empty(), viewerInfo == null ? null : viewerInfo.getId()));

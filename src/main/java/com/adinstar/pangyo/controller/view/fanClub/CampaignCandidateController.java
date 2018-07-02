@@ -1,20 +1,24 @@
 package com.adinstar.pangyo.controller.view.fanClub;
 
-import com.adinstar.pangyo.common.annotation.CheckAuthority;
-import com.adinstar.pangyo.common.annotation.MustLogin;
-import com.adinstar.pangyo.constant.PangyoEnum;
-import com.adinstar.pangyo.constant.ViewModelName;
-import com.adinstar.pangyo.model.ViewerInfo;
-import com.adinstar.pangyo.service.CampaignCandidateService;
-import com.adinstar.pangyo.service.ExecutionRuleService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+        import com.adinstar.pangyo.common.annotation.CheckAuthority;
+        import com.adinstar.pangyo.common.annotation.MustLogin;
+        import com.adinstar.pangyo.constant.PangyoEnum;
+        import com.adinstar.pangyo.constant.ViewModelName;
+        import com.adinstar.pangyo.model.ViewerInfo;
+        import com.adinstar.pangyo.service.CampaignCandidateService;
+        import com.adinstar.pangyo.service.ExecutionRuleService;
+        import org.springframework.beans.factory.annotation.Autowired;
+        import org.springframework.stereotype.Controller;
+        import org.springframework.ui.Model;
+        import org.springframework.web.bind.annotation.ModelAttribute;
+        import org.springframework.web.bind.annotation.PathVariable;
+        import org.springframework.web.bind.annotation.RequestMapping;
+        import org.springframework.web.bind.annotation.RequestMethod;
+        import springfox.documentation.annotations.ApiIgnore;
 
-import java.util.Optional;
+        import java.util.Optional;
 
-import static com.adinstar.pangyo.constant.ViewModelName.*;
+        import static com.adinstar.pangyo.constant.ViewModelName.*;
 
 @Controller
 @RequestMapping("/fanClub/{starId}/campaign-candidate")
@@ -30,15 +34,17 @@ public class CampaignCandidateController {
 
     @RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
     public String getList(@PathVariable("starId") long starId,
-                          @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo,
+                          @ApiIgnore @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo,
                           Model model) {
-        model.addAttribute(CAMPAIGN_CANDIDATE_FEED, campaignCandidateService.getRunningList(starId, Optional.empty(), Optional.empty(), viewerInfo == null ? null : viewerInfo.getId()));
+        model.addAttribute(CAMPAIGN_CANDIDATE_FEED, campaignCandidateService.getRunningList(starId, Optional.empty(), Optional.empty(), (viewerInfo == null) ? null : viewerInfo.getId()));
         model.addAttribute(CANDIDATE_EXECUTION_RULE, executionRuleService.getProgressExecuteRuleByType(PangyoEnum.ExecutionRuleType.CANDIDATE));
         model.addAttribute(AD_EXECUTION_RULE, executionRuleService.getAdExecutionRuleByProgressExecuteRuleType(PangyoEnum.ExecutionRuleType.CANDIDATE));
+        model.addAttribute(ALREADY_CANDIDATE_REGISTRATION, campaignCandidateService.isAlreadyCandidateRegistration(starId, (viewerInfo == null) ? null : viewerInfo.getId()));
 
         return "fanClub/campaignCandidate/list";
     }
 
+    // checked!!! 이미 등록됬다고 알려줘야함???  url 치고 들어오면 그려려니 해줘야하나? 아님 해당 star 팬클럼으로 돌려보내야하나?
     @RequestMapping(value = "/write", method = RequestMethod.GET)
     public String getWriteForm() {
         return "fanClub/campaignCandidate/form";

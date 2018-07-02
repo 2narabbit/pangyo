@@ -84,7 +84,7 @@
                 }
 
                 return $.ajax({
-                    url : '/api/star/my',
+                    url : '/api/star/me',
                     data : data,
                     type : 'GET',
                     success: function(result) {
