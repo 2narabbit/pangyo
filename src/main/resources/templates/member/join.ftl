@@ -1,10 +1,6 @@
-<#import "/macro/common.ftl" as common />
-
-<!DOCTYPE html>
-<html>
 <head>
-    <title>Join Pangyo</title>
 </head>
+
 <body>
     <form>
         <div style="margin-top:10px">* 닉네임</div>
@@ -28,8 +24,6 @@
         <a id="submitButton" href="#">등록 완료</a>
     </div>
 
-    <@common.importJS />
-    <script src="/js/jquery.visible.js"></script>
     <script type='text/javascript'>
         function checkValidCode() {
             var recommendCode = $('#recommendCode').val();
@@ -88,4 +82,3 @@
         });
     </script>
 </body>
-</html>

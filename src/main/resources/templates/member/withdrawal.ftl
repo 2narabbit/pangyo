@@ -1,17 +1,10 @@
-<#import "/macro/common.ftl" as common />
-
-<!DOCTYPE html>
-<html>
 <head>
-    <title>Withdrawal Pangyo</title>
 </head>
+
 <body>
     <button id="withdrawalBtn" onclick="logout()">
         진짜, 진짜로 탈퇴할껀가요? 다시한번만 생각해줘요ㅠㅠ
     </button>
-
-    <@common.importJS />
-    <script src="/js/jquery.visible.js"></script>
 
     <script type="text/javascript">
         function logout() {
@@ -30,4 +23,3 @@
         }
     </script>
 </body>
-</html>

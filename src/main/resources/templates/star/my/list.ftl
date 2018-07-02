@@ -1,9 +1,4 @@
-<#import "/macro/common.ftl" as common />
-
-<!DOCTYPE html>
-<html>
 <head>
-    <title>MY Star</title>
     <style>
         table {
             width: 400px;
@@ -16,6 +11,7 @@
         }
     </style>
 </head>
+
 <body>
     <h2>MY STAR</h2>
     <table id="listSection">
@@ -55,7 +51,6 @@
         </tr>
     </script>
 
-    <@common.importJS />
     <script src="/js/jquery.visible.js"></script>
 
     <script type="text/javascript">
@@ -112,4 +107,3 @@
         });
     </script>
 </body>
-</html>
