@@ -11,4 +11,6 @@ public interface UserMapper {
     User selectByServiceAndServiceUserId(@Param("service") String service, @Param("serviceUserId") long serviceUserId);
     int insert(User user);
     int updateStatus(@Param("id") long id, @Param("status") PangyoEnum.UserStatus status);
+    User selectByName(String name);
+    int update(User user);
 }

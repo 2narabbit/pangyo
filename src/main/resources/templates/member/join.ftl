@@ -5,7 +5,8 @@
     <form>
         <div style="margin-top:10px">* 닉네임</div>
         <div>
-            <input type="text" id="nickname" value="${nickname!}" maxlength="22" style="width:400px">
+            <input type="text" id="name" value="${name!}" maxlength="22" style="width:400px">
+            <button id="checkBtn" onclick="checkValidName()">검증하기</button>
         </div>
 
         <div style="margin-top:10px">* 프로필 이미지</div>
@@ -30,34 +31,60 @@
             console.log(recommendCode);
 
             $.ajax({
-                url : '/api/member?recommendCode='+recommendCode,
+                url  : '/api/member/isValid?recommendCode=' + encodeURI(recommendCode),
                 type : 'GET',
                 contentType : "application/json",
                 success: function(res) {
-                    console.log(res);
                     var isValid = false;
                     if (res != null) {
-                        var user = JSON.parse(res);
-                        if (user.id > 0) {
-                            isValid = true;
-                            alert('유효한 추천인 코드입니다.');
-                        }
+                        var data = JSON.parse(res);
+                        isValid = data.result;
                     }
 
-                    if (!isValid){
+                    if (isValid) {
+                        alert('유효한 추천인 코드입니다.');
+                    } else {
                         alert('유효하지 않은 추천인 코드입니다.');
                     }
                 },
                 error: function(res) {
                     console.log(res);
-                    alert('유효하지 않은 추천인 코드입니다.');
+                    alert('요청이 실패했습니다. 다시 시도해 주세요');
+                }
+            });
+        }
+
+        function checkValidName() {
+            var name = $('#name').val();
+
+            $.ajax({
+                url  : '/api/member/isValid?name=' + encodeURI(name),
+                type : 'GET',
+                contentType: "application/json",
+                success: function (res) {
+                    console.log(res);
+                    var available = false;
+                    if (res != null) {
+                        var data = JSON.parse(res);
+                        available = data.result;
+                    }
+
+                    if (available) {
+                        alert('사용 할 수 있는 닉네임 입니다.');
+                    } else {
+                        alert('사용 할 수 없는 닉네임 입니다.');
+                    }
+                },
+                error: function (res) {
+                    console.log(res);
+                    alert('요청이 실패했습니다. 다시 시도해 주세요');
                 }
             });
         }
 
         function submit() {
             var data = {
-                name: $('#nickname').val(),
+                name: $('#name').val(),
                 profileImg: $('#profileImg').val(),
                 recommandCode: $('#recommandCode').val(),
             };

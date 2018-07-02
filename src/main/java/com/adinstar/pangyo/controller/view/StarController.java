@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.Optional;
 
@@ -25,7 +26,7 @@ public class StarController {
     private StarService starService;
 
     @RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
-    public String getTopFeed(@ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo,
+    public String getTopFeed(@ApiIgnore @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo,
                              Model model) {
         if (viewerInfo == null) {
             model.addAttribute(MY_STAR_FEED, FeedResponse.EMPTY_LIST);
@@ -39,7 +40,7 @@ public class StarController {
 
     @RequestMapping(value = {"/my"}, method = RequestMethod.GET)
     @MustLogin
-    public String getMyStar(@ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo,
+    public String getMyStar(@ApiIgnore @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo,
                             Model model) {
         model.addAttribute(MY_STAR_FEED, starService.getJoinedStarRankListByUserId(viewerInfo.getId(), Optional.empty(), 5));
         return "star/my/list";

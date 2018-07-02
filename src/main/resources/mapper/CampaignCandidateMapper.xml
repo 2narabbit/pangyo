@@ -106,7 +106,7 @@
          WHERE id = #{id}
     </update>
 
-    <select id="selectByStarIdAndUserIdAndExecuteRuleId" resultMap="CampaignCandidateMap">
+    <select id="selectListByStarIdAndUserIdAndExecuteRuleId" resultMap="CampaignCandidateMap">
         SELECT
           <include refid="campaignCandidateColumn"/>
         FROM
