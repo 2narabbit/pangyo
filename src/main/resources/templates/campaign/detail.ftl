@@ -1,15 +1,9 @@
-<#import "/macro/common.ftl" as common />
 <#import "/macro/comment.ftl" as comment />
 
-<!DOCTYPE html>
-<html>
 <head>
-    <title>CAMPAIGN</title>
 </head>
-<body>
-<div>
-    <@common.importJS />
 
+<body>
     <div style="border: 1px solid; padding: 10px; width:400px">
         <p>id > ${campaign.id!}</p>
         <p>executeRuleId > ${campaign.executeRuleId!}</p>
@@ -31,12 +25,11 @@
         </#if>
         <p>럽수 > ${campaign.supportCount!}</p>
         <p>
-            노출수 > ${campaign.goalExposureCount!}
+            노출수 > ${campaign.supportCount!}
             <#if rankBenefits??>
                (+ 순위 보너스! ${rankBenefits})
             </#if>
         </p>
-        <p>혜택 > </p>
         <p>등록일 > ${campaign.dateTime.reg!}</p>
         <p>조회수 > ${campaign.viewCount!}</p>
         
@@ -71,4 +64,3 @@
         }
     </script>
 </body>
-</html>

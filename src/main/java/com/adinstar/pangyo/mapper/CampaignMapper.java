@@ -10,13 +10,13 @@ import java.util.List;
 @Mapper
 @Repository
 public interface CampaignMapper {
-    List<Campaign> selectCampaignListByExecutionRuleId(long executeRuleId);
-
     List<Long> selectCampaignIdListOrderBySupportCount(@Param("offset") long offset, @Param("size") int size);
 
     Campaign selectById(long id);
 
     int updateViewCount(@Param("id") long id, @Param("delta") int delta);
 
-    String selectRankingByIdAndExecuteRuleId(@Param("id") long id, @Param("executeRuleId") long executeRuleId);
+    long selectRankingByIdAndExecuteRuleId(@Param("id") long id, @Param("executeRuleId") long executeRuleId);
+
+    List<Campaign> selectListByExecuteRuleId(@Param("executeRuleId") long executeRuleId, @Param("offset") long offset, @Param("size") int size);
 }

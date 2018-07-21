@@ -17,7 +17,7 @@ import java.util.Optional;
 @Service
 public class StarService {
 
-    private static final long TOP_RANK = 1L;
+    private static final Long TOP_RANK = 1L;
 
     @Autowired
     private StarMapper starMapper;
@@ -84,9 +84,8 @@ public class StarService {
         return starMapper.selectStarIdListOrderByFanCount(offset, size);
     }
 
-    // 이 메소드는 스타한테 있어야해? 유저한테 있어야해?아오- (USER_STAR_MAP 중심을 잡아야 한다..ㅠ)
     public boolean isJoined(long starId, long userId) {
        Star star = starMapper.selectByStarIdAndUserId(starId, userId);
-       return (star == null) ? false : true;
+       return star != null;
     }
 }

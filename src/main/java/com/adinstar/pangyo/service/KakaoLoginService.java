@@ -22,7 +22,7 @@ import java.net.URI;
  */
 
 @Service
-public class KakaoLoginService {   //  이 녀석은 인증 레이어기 때문에 기존 service 속성보다 밑에 있었으면 좋겠는데 딱히 좋은 아이디어가 생각나지 않는다.. 스뷰..ㅠ.ㅠ
+public class KakaoLoginService {
 
     private static final String SCHEME = "https";
     private static final String AUTH_HOST = "kauth.kakao.com";
@@ -67,7 +67,7 @@ public class KakaoLoginService {   //  이 녀석은 인증 레이어기 때문�
         try {
             KOauthInfo = mapper.readValue(responseStr, KOauthInfo.class);
         } catch (IOException e) {
-            e.printStackTrace();  // try-catch로 잡을지 throw 할 지 고민해보자!
+            e.printStackTrace();
         }
 
         return KOauthInfo;
@@ -95,7 +95,7 @@ public class KakaoLoginService {   //  이 녀석은 인증 레이어기 때문�
                 kOauthInfo.setRefreshToken(refreshToken);
             }
         } catch (IOException e) {
-            e.printStackTrace();  // try-catch로 잡을지 throw 할 지 고민해보자!
+            e.printStackTrace();
         }
 
         return kOauthInfo;

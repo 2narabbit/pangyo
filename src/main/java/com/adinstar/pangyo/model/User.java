@@ -1,11 +1,13 @@
 package com.adinstar.pangyo.model;
 
 import com.adinstar.pangyo.constant.PangyoEnum.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.springframework.util.StringUtils;
 
 @Data
 public class User {
+    @JsonIgnoreProperties
     public static final long MAGIC_NUMBER = 1_000_000L;
 
     private long id;

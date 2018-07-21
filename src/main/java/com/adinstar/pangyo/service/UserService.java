@@ -23,7 +23,7 @@ public class UserService {
     public Boolean isValidRecommendCode(String recommendCode) {
         long recommendUserId;
         try {
-            recommendUserId = Long.valueOf(recommendCode) - User.MAGIC_NUMBER;  // todo: 추천인 코드는 어떻게 제공하면 좋을지 고민하자... 걍 id로?
+            recommendUserId = Long.valueOf(recommendCode) - User.MAGIC_NUMBER;  // TODO : 추천인 코드는 어떻게 제공하면 좋을지 고민하자... 걍 id로?
         } catch (Exception e) {
             return false;
         }

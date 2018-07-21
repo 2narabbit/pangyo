@@ -39,8 +39,9 @@ public class PostApiController {
     @CheckAuthority
     public PostFeedResponse getListByStarId(@RequestParam("starId") long starId,
                                             @RequestParam(value = "lastId", required = false) Long lastId,
+                                            @RequestParam(defaultValue = "10") int size,
                                             @ApiIgnore @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
-        return postService.getListByStarId(starId, Optional.ofNullable(lastId), viewerInfo == null ? null : viewerInfo.getId());
+        return postService.getListByStarId(starId, Optional.ofNullable(lastId), size, Optional.ofNullable(viewerInfo).map(v -> v.getId()).orElse(null));
     }
 
     @ApiOperation("getPost")
@@ -67,7 +68,7 @@ public class PostApiController {
     @RequestMapping(method = RequestMethod.POST)
     public void add(@RequestBody Post post,
                     @ApiIgnore @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
-        if (post.getStar() == null) {   // TODO: RequestBody 도 pathInterceptor에서 처리해줘야하나ㅠㅠ
+        if (post.getStar() == null) {   // TODO: RequestBody 도 pathInterceptor에서 처리해줘야하는지 고민하자
             throw BadRequestException.INVALID_PARAM;
         }
 

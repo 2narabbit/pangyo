@@ -8,6 +8,7 @@
         <result property="turnNum" column="e_turn_num"/>
         <result property="type" column="e_type"/>
         <result property="startDttm" column="e_start_dttm"/>
+        <result property="doneDttm" column="e_done_dttm"/>
         <result property="endDttm" column="e_end_dttm"/>
         <result property="status" column="e_status"/>
         <association property="dateTime" javaType="PangyoLocalDataTime">
@@ -21,6 +22,7 @@
         e.turn_num AS e_turn_num,
         e.type AS e_type,
         e.start_dttm AS e_start_dttm,
+        e.done_dttm AS e_done_dttm,
         e.end_dttm AS e_end_dttm,
         e.status AS e_status,
         e.reg_dttm AS e_reg_dttm,
@@ -31,7 +33,7 @@
         SELECT
             <include refid="executionRuleColumn"/>
         FROM EXECUTION_RULE e
-        WHERE e.`type` = #{type} AND e.status in ('RUNNING', 'END')
+        WHERE e.`type` = #{type} AND e.status in ('RUNNING', 'DONE')
     </select>
 
     <select id="selectListByTurnNum" resultMap="ExecutionRuleMap">
@@ -50,7 +52,7 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO EXECUTION_RULE (turn_num, `type`, `start_dttm`, `end_dttm`, `status`, `reg_dttm`,`up_dttm`)
-        VALUES (#{turnNum}, #{type}, #{startDttm}, #{end_dttm}, 'REDAY', NOW(), NOW())
+        VALUES (#{turnNum}, #{type}, #{startDttm}, #{end_dttm}, 'READY', NOW(), NOW())
     </insert>
 
     <update id="updateExecutionRuleStatusById">

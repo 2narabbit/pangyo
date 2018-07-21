@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/member")
 public class MemberController {
 
-    public static final String HOME_URL = "/star";
+    private static final String HOME_URL = "/campaign";
 
     @Autowired
     private LoginService loginService;
@@ -46,7 +46,7 @@ public class MemberController {
         }
 
         if (viewerInfo != null) {
-            return "redirect:" + HOME_URL;     // welcome 페이지를 만들까??
+            return "redirect:" + HOME_URL;     // TODO : welcome 페이지를 만들까??
         }
 
         return "member/login";

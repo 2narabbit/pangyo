@@ -22,6 +22,9 @@ import java.util.Optional;
 @MustLogin
 public class CampaignCandidateApiController {
 
+    // TODO : 캠페인 후보군 종료 - 투표 안돔 / 등록안됨 / 삭제 안됨
+    // TODO : 캠페인 종료 - 참여 불가!
+
     @Autowired
     private CampaignCandidateService campaignCandidateService;
 
@@ -50,7 +53,7 @@ public class CampaignCandidateApiController {
     @RequestMapping(method = RequestMethod.POST)
     public void add(@RequestBody CampaignCandidate campaignCandidate,
                     @ApiIgnore @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
-        if (campaignCandidate.getStar() == null) {   // TODO: RequestBody 의 경우 model에 validation 명시하자!
+        if (campaignCandidate.getStar() == null) {   // TODO: RequestBody 의 경우 model에 validation 명시하자! (add / modify)
             throw BadRequestException.INVALID_PARAM;
         }
 

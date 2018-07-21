@@ -31,7 +31,7 @@
             console.log(recommendCode);
 
             $.ajax({
-                url  : '/api/member/isValid?recommendCode=' + encodeURI(recommendCode),
+                url  : '/api/member/valid/recommendCode?code=' + encodeURI(recommendCode),
                 type : 'GET',
                 contentType : "application/json",
                 success: function(res) {
@@ -58,7 +58,7 @@
             var name = $('#name').val();
 
             $.ajax({
-                url  : '/api/member/isValid?name=' + encodeURI(name),
+                url  : '/api/member/valid/usable?name=' + encodeURI(name),
                 type : 'GET',
                 contentType: "application/json",
                 success: function (res) {

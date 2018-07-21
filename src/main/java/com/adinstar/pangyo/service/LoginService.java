@@ -11,12 +11,12 @@ import org.springframework.stereotype.Service;
 public class LoginService {
 
     @Autowired
-    private KakaoLoginService kakaoLoginService;  // todo:  다른 서비스를 붙이더라도 여기서 확안되어야 할 텐데;
+    private KakaoLoginService kakaoLoginService;  // TODO: 로그인 타입 추가되면 인증 팩토리 만들어서 사용하기 (swich - case 버리기!)
 
     public boolean isInvalidToken(AccountType type, String accessToken) {
         switch (type) {
             case KAKAO:
-                return isInvalidKakaoToken(accessToken);  // 허허 세상 구리다!
+                return isInvalidKakaoToken(accessToken);
             default:
                 return false;
         }

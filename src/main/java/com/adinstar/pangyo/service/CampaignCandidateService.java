@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class CampaignCandidateService {
+    // TODO : 컨트롤러가 챙기자!!!!
     private static final int DEFAULT_PAGE = 1;
     private static final int LIST_SIZE = 20;
 
@@ -28,10 +29,11 @@ public class CampaignCandidateService {
     @Autowired
     private PollService pollService;
 
-    public long getRunningExecuteRuleId() {
+    private long getRunningExecuteRuleId() {
         return executionRuleService.getProgressExecuteRuleIdByType(ExecutionRuleType.CANDIDATE);
     }
 
+    // TODO : rankData로 가야할지 고민-ㅎ
     public CampaignCandidateFeedResponse getRunningList(long starId, Optional<Integer> opPage, Optional<Integer> opSize, Long userId) {
         int size = opSize.orElse(LIST_SIZE);
         int offset = (opPage.orElse(DEFAULT_PAGE) - DEFAULT_PAGE) * size;
@@ -71,9 +73,7 @@ public class CampaignCandidateService {
         campaignCandidateMapper.updatePollCount(id, delta);
     }
 
-    // checked! 근데 중복 요청이 들어오면 막을 수 있는 방법이 없음.
-    // 이런 경우는 db 로 유니크 키 생성해야 할 것 같은데ㅠ 요구 사항이 달라지면 db alter 치나??
-    // 명시적으로 유효한 lock을 잡아 두는 방법에 대해서도 고민해야하나? 우선 일반적인 경우...는 걍 이러걸로 커버 되는데ㅠ
+    // TODO : uniqueIndex (executionRuleId + starId + userId)
     private List<CampaignCandidate> getRunningCandidateByStarIdAndUserId(long starId, long userId) {
         return campaignCandidateMapper.selectListByStarIdAndUserIdAndExecuteRuleId(starId, userId, getRunningExecuteRuleId());
     }
