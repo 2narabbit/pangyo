@@ -7,7 +7,7 @@
             <h2 style="display:inline; padding: 0 100px 0 100px">BooSTAR</h2>
         </span>
         <span>
-            <a href="/member/myInfo">
+            <a href="/member/me">
                 <img src="//visualpharm.com/assets/448/User-595b40b85ba036ed117dbd22.svg" style="width:30px">
             </a>
         </span>

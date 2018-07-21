@@ -5,7 +5,7 @@
     <sitemesh:write property='head'/>
 </head>
 <body>
-    <#include "/common/header.ftl">
+    <#include "/common/gnb.ftl">
     <sitemesh:write property='body'/>
 </body>
 </html>

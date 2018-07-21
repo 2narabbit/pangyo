@@ -1,10 +1,6 @@
-<#import "/macro/common.ftl" as common />
-
-<!DOCTYPE html>
-<html>
 <head>
-    <title>Join Pangyo</title>
 </head>
+
 <body>
     <form>
         <div style="margin-top:10px">* 닉네임</div>
@@ -28,9 +24,8 @@
     <div style="margin-top:10px">
         <a id="submitButton" href="#">수정하기</a>
     </div>
+    <button id="logoutBtn" onclick="memberLogout()">로그아웃</button>
 
-    <@common.importJS />
-    <script src="/js/jquery.visible.js"></script>
     <script type='text/javascript'>
         function checkValidName() {
             var name = $('#name').val();
@@ -80,10 +75,24 @@
             });
         }
 
+        function memberLogout() {
+            $.ajax({
+                url : '/api/member/logout',
+                type : 'GET',
+                success: function() {
+                    alert("+_+bb 로그아웃 성공");
+                    location.reload();
+                },
+                error: function(res) {
+                    console.log(res);
+                    alert("로그아웃 실패..ㅠㅠ 미안")
+                }
+            });
+        }
+
         $(document).ready(function() {
             alert("dddd");
             $('#submitButton').click(submit);
         });
     </script>
 </body>
-</html>
