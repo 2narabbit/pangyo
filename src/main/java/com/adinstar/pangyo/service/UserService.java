@@ -20,19 +20,18 @@ public class UserService {
         userMapper.insert(user);
     }
 
-    public Boolean isValidRecommendCode(String recommendCode) {
+    public boolean isValidRecommendCode(String recommendCode) {
         long recommendUserId;
         try {
             recommendUserId = Long.valueOf(recommendCode) - User.MAGIC_NUMBER;  // TODO : 추천인 코드는 어떻게 제공하면 좋을지 고민하자... 걍 id로?
+            if (recommendUserId <= 0) {
+                return false;
+            }
         } catch (Exception e) {
             return false;
         }
 
-        if (recommendUserId <= 0) {
-            return false;
-        }
-
-        return (userMapper.selectById(recommendUserId) == null) ? false : true;
+        return userMapper.selectById(recommendUserId) != null;
     }
 
     public void withdrawal(long id) {
@@ -40,7 +39,7 @@ public class UserService {
     }
 
     public boolean isUsableName(String name) {
-        return (userMapper.selectByName(name) == null) ? true : false;
+        return userMapper.selectByName(name) != null;
     }
 
     public void modify(User user) {
