@@ -1,5 +1,3 @@
-<#import "/macro/comment.ftl" as comment />
-
 <head>
 </head>
 

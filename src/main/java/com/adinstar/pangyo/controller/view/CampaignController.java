@@ -31,7 +31,7 @@ public class CampaignController {
 
     @RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
     public String getList(Model model) {
-        model.addAttribute(CAMPAIGN_FEED, campaignService.getRunningList(1L, 100));
+        model.addAttribute(CAMPAIGN_FEED, campaignService.getRunningList(1L, Integer.MAX_VALUE - 1));
         model.addAttribute(CAMPAIGN_EXECUTION_RULE, executionRuleService.getProgressExecuteRuleByType(PangyoEnum.ExecutionRuleType.CAMPAIGN));
         model.addAttribute(CAMPAIGN_RANK_BENEFITS, campaignService.getCampaignRankBenefits());
         return "campaign/list";
