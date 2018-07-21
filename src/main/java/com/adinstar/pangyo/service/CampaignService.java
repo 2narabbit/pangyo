@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 public class CampaignService {
@@ -63,26 +65,12 @@ public class CampaignService {
     }
 
     public FeedResponse<RankData<Campaign>> getRunningList(long rankId, int size) {
-        List<Campaign> sortedCampaignList = campaignMapper.selectListByExecuteRuleId(getRunningExecuteRuleId(), rankId - 1, size + 1);
+        List<Campaign> campaignList = campaignMapper.selectListByExecuteRuleId(getRunningExecuteRuleId(), rankId - 1, size + 1);
 
-        List<RankData<Campaign>> rankDataList = new ArrayList<>();
-        {   // TODO : 실시간으로 할지 말지 여부로 해당 코드 제거하기!
-            LocalDateTime updateTime = LocalDateTime.now();
-            long ranking = rankId;
-            for (Campaign campaign : sortedCampaignList) {
-                RankData rankData = new RankData();
-                rankData.setId(campaign.getId());
-                rankData.setContentId(campaign.getId());
-                rankData.setRanking(ranking);
-                rankData.setTime(updateTime);
-                rankData.setContent(campaign);
-                rankData.setDataTime(campaign.getDateTime());
-                rankDataList.add(rankData);
-
-                ranking++;
-            }
-        }
-
+        LocalDateTime updateTime = LocalDateTime.now();
+        List<RankData<Campaign>> rankDataList = IntStream.range(0, campaignList.size())
+                                                         .mapToObj(i -> new RankData<Campaign>(Long.valueOf(i) + 1L, campaignList.get(i), updateTime))
+                                                         .collect(Collectors.toList());
         return new FeedResponse<>(rankDataList, size);
     }
 

@@ -13,9 +13,11 @@ public class FeedResponse<T extends FeedData> {
     private List<T> list;
 
     public FeedResponse(List<T> list, int expactListSize) {
-        if (list == null || list.size() == 0) {
+        if (list == null) {
             this.list = new ArrayList<>();
-        } else {
+        }
+
+        if (!list.isEmpty()) {
             if (list.size() > expactListSize) {
                 this.list = list.subList(0, expactListSize);
                 this.hasMore = true;
@@ -24,7 +26,7 @@ public class FeedResponse<T extends FeedData> {
                 this.hasMore = false;
             }
 
-            this.lastId = this.list.get(this.list.size()-1).getId();
+            this.lastId = this.list.get(this.list.size() - 1).getId();
         }
     }
 
