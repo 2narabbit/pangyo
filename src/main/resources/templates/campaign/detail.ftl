@@ -9,8 +9,8 @@
         <p>id > ${campaign.id!}</p>
         <p>executeRuleId > ${campaign.executeRuleId!}</p>
         <div>
-            <span> 스타 > ${campaign.campaignCandidate.star.name}</span>
-            <span> 스타 > ${campaign.campaignCandidate.star.message}</span>
+            <span> 스타 > ${campaign.campaignCandidate.star.name!}</span>
+            <span> 스타 > ${campaign.campaignCandidate.star.message!}</span>
         </div>
         <div>
             <img src="${campaign.campaignCandidate.user.profileImg!}"  style="width: 50px; height: 50px">
