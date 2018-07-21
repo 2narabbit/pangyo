@@ -35,7 +35,10 @@ public class CampaignService {
     }
 
     public List<Long> getCampaignIdListOrderBySupportCount(long offset, int size) {
-        return campaignMapper.selectCampaignIdListOrderBySupportCount(offset, size);
+        return campaignMapper.selectListByExecuteRuleIdOrderBySupportCount(getRunningExecuteRuleId(), offset, size + 1)
+                             .stream()
+                             .map(c -> c.getId())
+                             .collect(Collectors.toList());
     }
 
     public Campaign getById(long id) {
@@ -65,7 +68,7 @@ public class CampaignService {
     }
 
     public FeedResponse<RankData<Campaign>> getRunningList(long rankId, int size) {
-        List<Campaign> campaignList = campaignMapper.selectListByExecuteRuleId(getRunningExecuteRuleId(), rankId - 1, size + 1);
+        List<Campaign> campaignList = campaignMapper.selectListByExecuteRuleIdOrderBySupportCount(getRunningExecuteRuleId(), rankId - 1, size + 1);
 
         LocalDateTime updateTime = LocalDateTime.now();
         List<RankData<Campaign>> rankDataList = IntStream.range(0, campaignList.size())
