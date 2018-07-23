@@ -19,17 +19,6 @@
         </association>
     </resultMap>
 
-    <resultMap id="RankStarMap" type="RankData">
-        <result property="id" column="sr_id"/>
-        <result property="contentId" column="sr_star_id"/>
-        <result property="time" column="sr_time"/>
-        <result property="ranking" column="sr_ranking"/>
-        <association property="content" javaType="Star" resultMap="StarMap"/>
-        <association property="dataTime" javaType="PangyoLocalDataTime">
-            <result property="reg" column="sr_reg_dttm"/>
-        </association>
-    </resultMap>
-
     <sql id="starColumn">
          s.id AS s_id,
          s.name AS s_name,
@@ -42,22 +31,6 @@
          s.message AS s_message,
          s.reg_dttm AS s_reg_dttm,
          s.up_dttm AS s_up_dttm
-    </sql>
-    <sql id="rankColumn">
-        sr.id AS sr_id,
-        sr.star_id AS sr_star_id,
-        sr.time AS sr_time,
-        sr.ranking AS sr_ranking,
-        sr.reg_dttm AS sr_reg_dttm
-    </sql>
-
-    <sql id="joinedStarIdForInSql">
-        (SELECT star_id FROM USER_STAR_MAP WHERE user_id = #{userId})
-    </sql>
-
-    <sql id="StarRankTable">
-        STAR s
-        JOIN STAR_RANK sr ON (s.id = sr.star_id AND sr.time = #{time})
     </sql>
 
     <select id="selectById" parameterType="long" resultMap="StarMap">
@@ -98,41 +71,6 @@
         WHERE id = #{id}
     </update>
 
-    <select id="selectStarRankList" parameterType="Map" resultMap="RankStarMap">
-        SELECT
-            <include refid="starColumn"/>,
-            <include refid="rankColumn"/>
-        FROM <include refid="StarRankTable"/>
-        WHERE s.display = true
-          AND sr.ranking > #{rankId}
-        ORDER BY sr.ranking ASC
-        LIMIT #{size}
-    </select>
-
-    <select id="selectJoinedStarRankListByUserId" parameterType="Map" resultMap="RankStarMap">
-        SELECT
-            <include refid="starColumn"/>,
-            <include refid="rankColumn"/>
-        FROM <include refid="StarRankTable"/>
-        WHERE s.display = true
-          AND sr.ranking > #{rankId}
-          AND s.id IN <include refid="joinedStarIdForInSql"/>
-        ORDER BY sr.ranking ASC
-        LIMIT #{size}
-    </select>
-
-    <select id="selectNotJoinedStarRankListByUserId" parameterType="Map" resultMap="RankStarMap">
-        SELECT
-            <include refid="starColumn"/>,
-            <include refid="rankColumn"/>
-        FROM <include refid="StarRankTable"/>
-        WHERE s.display = true
-          AND sr.ranking > #{rankId}
-          AND s.id NOT IN <include refid="joinedStarIdForInSql"/>
-        ORDER BY sr.ranking ASC
-        LIMIT #{size}
-    </select>
-
     <insert id="insertJoin" parameterType="Map">
         INSERT INTO USER_STAR_MAP (`star_id`, `user_id`,`reg_dttm`)
         VALUES (#{starId}, #{userId}, NOW())
@@ -149,21 +87,24 @@
          WHERE id = #{starId}
     </update>
 
-    <select id="selectStarIdListOrderByFanCount" parameterType="Map" resultType="Long">
+    <select id="selectListOrderByFanCount" parameterType="Map" resultMap="StarMap">
         SELECT
-          s.id
+          <include refid="starColumn"/>
         FROM STAR s
         WHERE s.display = true
-        ORDER BY s.fan_count DESC
+        ORDER BY s.fan_count DESC, s.id ASC
         LIMIT #{offset}, #{size}
     </select>
 
-    <select id="selectByStarIdAndUserId" parameterType="Map" resultMap="StarMap">
+    <select id="selectListByUserIdAndStarId" parameterType="Map" resultMap="StarMap">
         SELECT
           <include refid="starColumn"/>
         FROM STAR s
         JOIN USER_STAR_MAP usm ON (s.id = usm.star_id)
         WHERE s.display = true
-        AND s.id = #{starId} AND usm.user_id = #{userId}
+          AND usm.user_id = #{userId}
+        <if test="starId != null">
+          AND s.id = #{starId}
+        </if>
     </select>
 </mapper>

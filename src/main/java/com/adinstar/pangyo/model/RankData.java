@@ -8,12 +8,17 @@ import java.time.LocalDateTime;
 
 @Data
 public class RankData<T> implements FeedData {
-    private long id;
-    private long contentId;
     private long ranking;
-    private LocalDateTime time;
+    private LocalDateTime updateTime;
     private T content;
-    private PangyoLocalDataTime dataTime;
+
+    public RankData() {}
+
+    public RankData(long ranking, T content, LocalDateTime updateTime) {
+        this.ranking = ranking;
+        this.content = content;
+        this.updateTime = updateTime;
+    }
 
     @Override
     public long getId(){
@@ -21,7 +26,7 @@ public class RankData<T> implements FeedData {
     }
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateFormat.DEFAULT_DATE_FORMAT)
-    public LocalDateTime getTime() {
-        return time;
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
     }
 }

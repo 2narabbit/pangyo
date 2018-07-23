@@ -14,7 +14,7 @@
         </div>
         <div>
             <img src="${campaign.campaignCandidate.user.profileImg!}"  style="width: 50px; height: 50px">
-            <span> 팬 > ${campaign.campaignCandidate.user.name} </span>
+            <span> 팬 > ${campaign.campaignCandidate.user.name!} </span>
         </div>
         <p>제목 > ${campaign.displayTitle!}</p>
         <div style="padding: 10px">

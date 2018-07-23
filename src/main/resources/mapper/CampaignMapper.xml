@@ -55,21 +55,13 @@
         LEFT JOIN CAMPAIGN_OP co ON (c.id = co.campaign_id)
     </sql>
 
-    <select id="selectListByExecuteRuleId" parameterType="Map" resultMap="CampaignMap">
+    <select id="selectListByExecuteRuleIdOrderBySupportCount" parameterType="Map" resultMap="CampaignMap">
         SELECT <include refid="campaignColumn"/>
           FROM <include refid="campaignTable"/>
          WHERE c.display = true
            AND c.execute_rule_id = #{executeRuleId}
-        ORDER BY c.support_count DESC
+        ORDER BY c.support_count DESC, c.id ASC
         LIMIT #{offset}, #{size}
-    </select>
-
-    <select id="selectCampaignIdListOrderBySupportCount" parameterType="Map" resultType="Long">
-        SELECT c.id
-          FROM <include refid="campaignTableMinimum"/>
-         WHERE c.display = true
-         ORDER BY c.support_count DESC
-         LIMIT #{offset}, #{size}
     </select>
 
     <select id="selectById" parameterType="long" resultMap="CampaignMap">
