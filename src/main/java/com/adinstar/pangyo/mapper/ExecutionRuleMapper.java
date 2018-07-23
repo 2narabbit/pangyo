@@ -5,9 +5,11 @@ import com.adinstar.pangyo.constant.PangyoEnum.ExecutionRuleType;
 import com.adinstar.pangyo.model.ExecutionRule;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 @Mapper
 public interface ExecutionRuleMapper {
     ExecutionRule selectProgressExecuteRuleByType(ExecutionRuleType type);

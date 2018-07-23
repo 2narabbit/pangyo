@@ -25,6 +25,7 @@ create table CAMPAIGN
 (
 	id bigint auto_increment
 		primary key,
+	execute_rule_id bigint not null,
 	campaign_candidate_id bigint not null,
 	view_count bigint default '0' not null,
 	support_count bigint default '0' not null,

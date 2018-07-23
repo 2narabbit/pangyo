@@ -50,7 +50,7 @@ public class CommentApiController {
     @MustLogin
     public void add(@RequestBody Comment comment,
                     @ApiIgnore @ModelAttribute(ViewModelName.VIEWER) ViewerInfo viewerInfo) {
-        // checked!! >  Post의 comment 작성도 join 여부 check 해야하지 않을까?
+        // TODO : Post의 comment 작성도 join 여부 체크하기
 
         comment.setUser(viewerInfo.getUser());
         commentService.add(comment);

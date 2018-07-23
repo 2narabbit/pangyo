@@ -28,6 +28,8 @@ import java.util.Map;
 @Order(1)
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 
+    private static final int ONE_DAY = 24 * 60 * 60;
+
     @Autowired
     private LoginService loginService;
 
@@ -99,14 +101,14 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     }
 
 
-    //////// todo : 향후 암호화 부분을 유틸로 뺄지도 고민하자!!!!!!!! //////////////////
+    //////// TODO : 향후 암호화 부분을 유틸로 뺄지도 고민하자!!!!!!!! //////////////////
     private static String encrypt(String data) {
-        // todo : 나중에 여기 암호화 모듈 추가해줘!!! 내가 봤을 때... map으로 저장해야지 않을까? service / token 정보를?? 힝 ㅠㅠ 몰랑.
+        // TODO : 나중에 여기 암호화 모듈 추가해줘!!! 내가 봤을 때... map으로 저장해야지 않을까? service / token 정보를?? 힝 ㅠㅠ 몰랑.
         return data;
     }
 
     private static String decrypt(String data) {
-        // todo : 나중에 여기 복호화 모듈 추가해줘!!!
+        // TODO : 나중에 여기 복호화 모듈 추가해줘!!!
         return data;
     }
 
@@ -115,7 +117,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         if (cookie == null) {
             cookie = new Cookie(PangyoAuthorizedKey.AUTH_COOKIE_NAME, encrypt(authInfo.getService().name() + PangyoAuthorizedKey.SEPARATE + authInfo.getAccessToken()));
         }
-        cookie.setMaxAge(24 * 60 * 60);   // 하루?
+        cookie.setMaxAge(ONE_DAY);
         cookie.setPath("/");
         response.addCookie(cookie);
     }

@@ -4,11 +4,13 @@ import com.adinstar.pangyo.model.RankData;
 import com.adinstar.pangyo.model.Star;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
+@Repository
 public interface StarMapper {
     Star selectById(long id);
 

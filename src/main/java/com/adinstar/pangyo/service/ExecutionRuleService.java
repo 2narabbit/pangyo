@@ -15,8 +15,7 @@ public class ExecutionRuleService {
     private ExecutionRuleMapper executionRuleMapper;
 
     public ExecutionRule getProgressExecuteRuleByType(PangyoEnum.ExecutionRuleType executionRuleType) {
-        ExecutionRule progressExecutionRule = executionRuleMapper.selectProgressExecuteRuleByType(executionRuleType);
-        return progressExecutionRule;
+        return executionRuleMapper.selectProgressExecuteRuleByType(executionRuleType);
     }
 
     public long getProgressExecuteRuleIdByType(PangyoEnum.ExecutionRuleType executionRuleType) {

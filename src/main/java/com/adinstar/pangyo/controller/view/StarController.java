@@ -20,7 +20,7 @@ import static com.adinstar.pangyo.constant.ViewModelName.*;
 @RequestMapping("/star")
 public class StarController {
 
-    public static final int LIST_SIZE = 20;
+    private static final int LIST_SIZE = 20;
 
     @Autowired
     private StarService starService;

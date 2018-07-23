@@ -25,10 +25,8 @@ public class PostService {
     @Autowired
     private ViewCounter viewCounter;
 
-    private static final int LIST_SIZE = 10;
-
-    public PostFeedResponse getListByStarId(long starId, Optional lastId, Long userId) {
-        List<Post> postList =  postMapper.selectListByStarId(starId, (long)lastId.orElse(Long.MAX_VALUE), LIST_SIZE + 1);
+    public PostFeedResponse getListByStarId(final long starId, Optional<Long> lastId, final int size, Long userId) {
+        List<Post> postList =  postMapper.selectListByStarId(starId, lastId.orElse(Long.MAX_VALUE), size + 1);
 
         List<Long> likeList;
         if (userId != null) {
@@ -40,7 +38,7 @@ public class PostService {
             likeList = new ArrayList<>();
         }
 
-        return new PostFeedResponse(postList, LIST_SIZE, likeList);
+        return new PostFeedResponse(postList, size, likeList);
     }
 
     public Post getById(long id) {

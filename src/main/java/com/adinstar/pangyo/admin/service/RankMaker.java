@@ -6,6 +6,7 @@ import com.adinstar.pangyo.constant.PangyoEnum;
 import com.adinstar.pangyo.model.Policy;
 import com.adinstar.pangyo.service.CampaignService;
 import com.adinstar.pangyo.service.StarService;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,8 +45,8 @@ public class RankMaker {
     private StarRankMapper starRankMapper;
 
 
-    BiFunction<Long, Integer, List<Long>> selectCampaign = (offset, size) -> campaignService.getCampaignIdListOrderBySupportCount(offset, size);
-    TriConsumer<Long, String, Long> insertCampaignRank = (id, time, rankId) -> campaignRankMapper.insert(id, time, rankId);
+    BiFunction<Integer, Integer, List<Long>> selectCampaign = (offset, size) -> campaignService.getCampaignIdListOrderBySupportCount(offset, size);
+    TriConsumer<Long, String, Integer> insertCampaignRank = (id, time, rankId) -> campaignRankMapper.insert(id, time, rankId);
 
     public void snapshotForCampaign() {
         LocalDateTime now = LocalDateTime.now().withMinute(0).withSecond(0);
@@ -57,8 +58,8 @@ public class RankMaker {
     }
 
 
-    BiFunction<Long, Integer, List<Long>> selectStar = (offset, size) -> starService.getStarIdListOrderByFanCount(offset, size);
-    TriConsumer<Long, String, Long> insertStarRank = (id, time, rankId) -> starRankMapper.insert(id, time, rankId);
+    BiFunction<Integer, Integer, List<Long>> selectStar = (offset, size) -> starService.getStarIdListOrderByFanCount(offset, size);
+    TriConsumer<Long, String, Integer> insertStarRank = (id, time, rankId) -> starRankMapper.insert(id, time, rankId);
 
     public void snapshotForStar() {
         LocalDateTime now = LocalDateTime.now().withMinute(0).withSecond(0);
@@ -77,9 +78,9 @@ public class RankMaker {
         return true;
     }
 
-    private void insertItemRank(BiFunction<Long, Integer, List<Long>> selectItem, String time, TriConsumer<Long, String, Long> insertItemRank) {
+    private void insertItemRank(BiFunction<Integer, Integer, List<Long>> selectItem, String time, TriConsumer<Long, String, Integer> insertItemRank) {
         boolean hasMore = true;
-        long rankId = 0L;
+        int rankId = 0;
         while (hasMore) {
             List<Long> itemIdList = selectItem.apply(rankId, SIZE);
             for (Long itemId : itemIdList) {

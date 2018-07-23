@@ -4,7 +4,6 @@ import com.adinstar.pangyo.constant.PangyoEnum.*;
 import com.adinstar.pangyo.constant.DateFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -14,6 +13,7 @@ public class ExecutionRule {
     private long turnNum;
     private ExecutionRuleType type;
     private LocalDateTime startDttm;
+    private LocalDateTime doneDttm;
     private LocalDateTime endDttm;
     private ExecutionRuleStatus status;
     private PangyoLocalDataTime dateTime;
@@ -22,6 +22,11 @@ public class ExecutionRule {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateFormat.DEFAULT_DATE_FORMAT)
     public LocalDateTime getStartDttm() {
         return startDttm;
+    }
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateFormat.DEFAULT_DATE_FORMAT)
+    public LocalDateTime getDoneDttm() {
+        return doneDttm;
     }
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateFormat.DEFAULT_DATE_FORMAT)

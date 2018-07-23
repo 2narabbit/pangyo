@@ -42,7 +42,7 @@ public class PathVariableInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         Map pathVariables  = (Map) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
-        // TODO: 진짜 메소드가 해당 쿼리파라미터를 변수로 받는지 확인
+        // TODO: 진짜 메소드가 해당 @RequestParam 쿼리파라미터를 변수로 받는지 확인
         Map paramVariables = request.getParameterMap();
         if (pathVariables == null && paramVariables == null) {
             return true;
