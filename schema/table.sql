@@ -1,16 +1,28 @@
 create table ACTION_HISTORY
 (
+ -- user_id가 content_id을 가진 content_type을 action_type했어
+ -- 0번 충전소는 무료 충전소
 	id bigint auto_increment
 		primary key,
-	action_type enum('LIKE', 'POLL', 'SUPPORT', 'JOIN') not null,
-	content_type enum('POST', 'CANDIDATE', 'CAMPAIGN', 'STAR') not null,
+	user_id bigint not null comment 'action 행위의 주체',
 	content_id bigint not null,
-	user_id bigint not null,
-	reg_dttm datetime default CURRENT_TIMESTAMP not null,
-	constraint ACTION_HISTORY_action_type_content_type_content_id_user_id_pk
-		unique (action_type, content_type, content_id, user_id)
+	content_type enum('POST', 'CANDIDATE', 'CAMPAIGN', 'STAR', 'USER', 'STATION') not null,
+	action_type enum('LIKE', 'POLL', 'SUPPORT', 'JOIN', 'WRITE', 'RECOMMEND', 'PURCHASE') not null,
+	reg_dttm datetime default CURRENT_TIMESTAMP not null
 )
 comment '사용자 액션 히스토리'
+;
+
+create table BYUL_HISTORY
+(
+	id bigint auto_increment
+		primary key,
+	action_history_id bigint not null,
+	user_id bigint not null comment '별을 지급받은/사용한 주체',
+	count int not null,
+	reg_dttm datetime default CURRENT_TIMESTAMP not null
+)
+comment '별 히스토리' engine=InnoDB
 ;
 
 create table ACTION_UNIQUE
@@ -135,32 +147,6 @@ create table EXECUTION_RULE
 comment '집행룰' engine=InnoDB
 ;
 
-create table LOV
-(
-	user_id bigint not null
-		primary key,
-	`key` varchar(256) default '0' not null,
-	value bigint default '0' not null,
-	reg_dttm datetime default CURRENT_TIMESTAMP not null,
-	up_dttm datetime default CURRENT_TIMESTAMP not null
-)
-comment '럽 사용/누적 총합' engine=InnoDB
-;
-
-create table LOV_HISTORY
-(
-	id bigint auto_increment
-		primary key,
-	content_type enum('POST', 'CANDIDATE', 'CAMPAIGN') not null,
-	action_type enum('LIKE', 'POLL', 'SUPPORT') not null,
-	content_id bigint not null,
-	user_id bigint not null,
-	lov_count int default '0' not null,
-	reg_dttm datetime default CURRENT_TIMESTAMP not null
-)
-comment '럽 히스토리' engine=InnoDB
-;
-
 create table POLICY
 (
 	id int not null
@@ -221,6 +207,7 @@ create table USER
 	name varchar(128) not null,
 	profile_img varchar(256) null,
 	recommend_code varchar(32) null,
+	byul_count bigint default '0' not null,
 	status enum('MEMBER', 'DELETED') default 'MEMBER' not null,
 	reg_dttm datetime default CURRENT_TIMESTAMP not null,
 	up_dttm datetime default CURRENT_TIMESTAMP not null
