@@ -47,8 +47,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
 
-            MustLogin mustFanClass = handlerMethod.getMethod().getDeclaringClass().getAnnotation(MustLogin.class);
-            if (mustFanClass != null) {
+            MustLogin mustLoginClass = handlerMethod.getMethod().getDeclaringClass().getAnnotation(MustLogin.class);
+            if (mustLoginClass != null) {
                 if (viewerInfo == null) {
                     throw UnauthorizedException.NEED_LOGIN;
                 }
