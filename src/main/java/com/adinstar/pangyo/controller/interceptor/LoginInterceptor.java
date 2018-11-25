@@ -44,7 +44,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         ViewerInfo viewerInfo = getViwerLoginInfo(loginInfo);
         request.setAttribute(ViewModelName.VIEWER, viewerInfo);
 
-        if (handler != null && handler instanceof HandlerMethod) {
+        if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
 
             MustLogin mustFanClass = handlerMethod.getMethod().getDeclaringClass().getAnnotation(MustLogin.class);
