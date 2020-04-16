@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.adinstar.pangyo.mapper.CampaignMapper">
+    <resultMap id="CampaignMap" type="Campaign">
+        <result property="id" column="c_id"/>
+        <result property="executeRuleId" column="c_execute_rule_id"/>
+        <result property="viewCount" column="c_view_count"/>
+        <result property="supportCount" column="c_support_count"/>
+        <result property="isRegisterAd" column="c_is_register_ad"/>
+        <result property="hasReport" column="c_has_report"/>
+        <result property="goalExposureCount" column="c_goal_exposure_count"/>
+        <result property="display" column="c_display"/>
+        <result property="status" column="c_status"/>
+        <result property="displayTitle" column="co_title"/>
+        <result property="displayBody" column="co_body"/>
+        <result property="displayRandingUrl" column="co_randing_url"/>
+        <result property="displayBannerImg" column="co_banner_img"/>
+        <association property="campaignCandidate" javaType="CampaignCandidate" resultMap="com.adinstar.pangyo.mapper.CampaignCandidateMapper.CampaignCandidateMap"/>
+        <association property="dateTime" javaType="PangyoLocalDataTime">
+            <result property="reg" column="s_reg_dttm"/>
+            <result property="up" column="s_up_dttm"/>
+        </association>
+    </resultMap>
+
+    <sql id="campaignColumn">
+        c.id AS c_id,
+        c.execute_rule_id AS c_execute_rule_id,
+        c.view_count AS c_view_count,
+        c.support_count AS c_support_count,
+        c.is_register_ad AS c_is_register_ad,
+        c.has_report AS c_has_report,
+        c.goal_exposure_count AS c_goal_exposure_count,
+        c.display AS c_display,
+        c.status AS c_status,
+        c.reg_dttm AS c_reg_dttm,
+        c.up_dttm AS c_up_dttm,
+        co.title AS co_title,
+        co.body AS co_body,
+        co.randing_url AS co_randing_url,
+        co.banner_img AS co_banner_img,
+        <include refid="com.adinstar.pangyo.mapper.CampaignCandidateMapper.campaignCandidateColumn"/>
+    </sql>
+
+    <sql id="campaignTableMinimum">
+        CAMPAIGN c
+        JOIN CAMPAIGN_CANDIDATE cc ON (c.campaign_candidate_id = cc.id)
+        JOIN STAR s ON (cc.star_id = s.id AND s.display = true)
+    </sql>
+
+    <sql id="campaignTable">
+        <include refid="campaignTableMinimum"/>
+        JOIN USER u ON (cc.user_id = u.id)
+        LEFT JOIN CAMPAIGN_OP co ON (c.id = co.campaign_id)
+    </sql>
+
+    <select id="selectListByExecuteRuleIdOrderBySupportCount" parameterType="Map" resultMap="CampaignMap">
+        SELECT <include refid="campaignColumn"/>
+          FROM <include refid="campaignTable"/>
+         WHERE c.display = true
+           AND c.execute_rule_id = #{executeRuleId}
+        ORDER BY c.support_count DESC, c.id ASC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="selectById" parameterType="long" resultMap="CampaignMap">
+        SELECT <include refid="campaignColumn"/>
+          FROM <include refid="campaignTable"/>
+         WHERE c.display = true
+           AND c.id = #{id}
+    </select>
+
+    <update id="updateViewCount" parameterType="Map">
+        UPDATE CAMPAIGN
+           SET view_count = view_count + #{delta}
+         WHERE id = #{id}
+    </update>
+
+    <select id="selectRankingByIdAndExecuteRuleId" parameterType="Map" resultType="long">
+        SELECT COUNT(*) AS ranking
+          FROM <include refid="campaignTableMinimum"/>
+         WHERE c.display = true
+           AND c.execute_rule_id = #{executeRuleId}
+           AND c.support_count <![CDATA[ >= ]]> (SELECT support_count FROM CAMPAIGN WHERE id = #{id})
+    </select>
+</mapper>

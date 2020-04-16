@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.adinstar.pangyo.mapper.CommentMapper">
+    <resultMap id="CommentMap" type="Comment">
+        <result property="id" column="cmt_id"/>
+        <result property="contentType" column="cmt_content_type"/>
+        <result property="contentId" column="cmt_content_id"/>
+        <result property="body" column="cmt_body"/>
+        <result property="status" column="cmt_status"/>
+        <association property="user" javaType="User" resultMap="com.adinstar.pangyo.mapper.UserMapper.UserMap"/>
+        <association property="dateTime" javaType="PangyoLocalDataTime">
+            <result property="reg" column="cmt_reg_dttm"/>
+            <result property="up" column="cmt_up_dttm"/>
+        </association>
+    </resultMap>
+
+    <sql id="commentColumn">
+        cmt.id AS cmt_id,
+        cmt.content_type AS cmt_content_type,
+        cmt.content_id AS cmt_content_id,
+        cmt.user_id AS cmt_user_id,
+        cmt.body AS cmt_body,
+        cmt.status AS cmt_status,
+        cmt.reg_dttm AS cmt_reg_dttm,
+        cmt.up_dttm AS cmt_up_dttm,
+        <include refid="com.adinstar.pangyo.mapper.UserMapper.userColumn"/>
+    </sql>
+
+    <sql id="commentTable">
+        COMMENT cmt
+        JOIN USER u ON (cmt.user_id = u.id)
+    </sql>
+
+    <select id="selectList" parameterType="Map" resultMap="CommentMap">
+        SELECT
+          <include refid="commentColumn"/>
+        FROM
+          <include refid="commentTable"/>
+        WHERE
+          cmt.status = 'SERVICE'
+          AND cmt.content_type = #{contentType}
+          AND cmt.content_id = #{contentId}
+          AND cmt.id &lt; #{lastId}
+        ORDER BY
+          cmt.id DESC
+        LIMIT
+          #{size}
+    </select>
+
+    <select id="selectById" parameterType="long" resultMap="CommentMap">
+        SELECT
+          <include refid="commentColumn"/>
+        FROM
+          <include refid="commentTable"/>
+        WHERE
+          cmt.status = 'SERVICE'
+          AND cmt.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="Comment" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO COMMENT (id, content_type, content_id, user_id, body, status, reg_dttm, up_dttm)
+        VALUE (#{id}, #{contentType}, #{contentId}, #{user.id}, #{body}, 'SERVICE', NOW(), NOW());
+    </insert>
+
+    <update id="update" parameterType="Comment">
+        UPDATE COMMENT
+        SET
+            <if test="body != null">
+                body = #{body},
+            </if>
+            up_dttm = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateStatus" parameterType="Map">
+        UPDATE COMMENT
+        SET status = #{status}, up_dttm = NOW()
+        WHERE id = #{id}
+    </update>
+</mapper>

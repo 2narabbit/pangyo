@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.adinstar.pangyo.mapper.StarMapper">
+    <resultMap id="StarMap" type="Star">
+        <result property="id" column="s_id"/>
+        <result property="name" column="s_name"/>
+        <result property="job" column="s_job"/>
+        <result property="naverOs" column="s_naver_os"/>
+        <result property="profileImg" column="s_profile_img"/>
+        <result property="mainImg" column="s_main_img"/>
+        <result property="display" column="s_display"/>
+        <result property="fanCount" column="s_fan_count"/>
+        <result property="message" column="s_message"/>
+        <association property="dateTime" javaType="PangyoLocalDataTime">
+            <result property="reg" column="s_reg_dttm"/>
+            <result property="up" column="s_up_dttm"/>
+        </association>
+    </resultMap>
+
+    <sql id="starColumn">
+         s.id AS s_id,
+         s.name AS s_name,
+         s.job AS s_job,
+         s.naver_os AS s_naver_os,
+         s.profile_img AS s_profile_img,
+         s.main_img AS s_main_img,
+         s.display AS s_display,
+         s.fan_count AS s_fan_count,
+         s.message AS s_message,
+         s.reg_dttm AS s_reg_dttm,
+         s.up_dttm AS s_up_dttm
+    </sql>
+
+    <select id="selectById" parameterType="long" resultMap="StarMap">
+        SELECT
+          <include refid="starColumn"/>
+        FROM STAR s
+        WHERE s.display = true
+          AND s.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="Star" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO STAR (`name`, naver_os, profile_img, main_img, display, fan_count, message, reg_dttm, up_dttm)
+        VALUES (#{name}, #{naverOs}, #{profileImg}, #{mainImg}, 1, 0, #{message}, NOW(), NOW())
+    </insert>
+
+    <update id="update" parameterType="Star">
+        UPDATE STAR
+        SET
+          <if test="name != null">
+              `name` = #{name},
+          </if>
+          <if test="naverOs != null">
+              naver_os = #{naverOs},
+          </if>
+          <if test="profileImg != null">
+              profile_img = #{profileImg},
+          </if>
+          <if test="mainImg != null">
+              main_img = #{mainImg},
+          </if>
+          <if test="display != null">
+              display = #{display},
+          </if>
+          <if test="message != null">
+              message = #{message},
+          </if>
+          up_dttm = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <insert id="insertJoin" parameterType="Map">
+        INSERT INTO USER_STAR_MAP (`star_id`, `user_id`,`reg_dttm`)
+        VALUES (#{starId}, #{userId}, NOW())
+    </insert>
+
+    <delete id="deleteJoin" parameterType="Map">
+        DELETE FROM USER_STAR_MAP
+        WHERE star_id = #{starId} AND user_id = #{userId}
+    </delete>
+
+    <update id="updateFanCount" parameterType="Map">
+        UPDATE STAR
+           SET fan_count = fan_count + #{delta}
+         WHERE id = #{starId}
+    </update>
+
+    <select id="selectListOrderByFanCount" parameterType="Map" resultMap="StarMap">
+        SELECT
+          <include refid="starColumn"/>
+        FROM STAR s
+        WHERE s.display = true
+        ORDER BY s.fan_count DESC, s.id ASC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="selectListByUserIdAndStarId" parameterType="Map" resultMap="StarMap">
+        SELECT
+          <include refid="starColumn"/>
+        FROM STAR s
+        JOIN USER_STAR_MAP usm ON (s.id = usm.star_id)
+        WHERE s.display = true
+          AND usm.user_id = #{userId}
+        <if test="starId != null">
+          AND s.id = #{starId}
+        </if>
+    </select>
+</mapper>

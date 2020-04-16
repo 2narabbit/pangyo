@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.adinstar.pangyo.mapper.UserMapper">
+    <resultMap id="UserMap" type="User">
+        <result property="id" column="u_id"/>
+        <result property="service" column="u_service"/>
+        <result property="serviceUserId" column="u_service_user_id"/>
+        <result property="name" column="u_name"/>
+        <result property="profileImg" column="u_profile_img"/>
+        <result property="recommendCode" column="u_recommend_code"/>
+        <result property="status" column="u_status"/>
+        <association property="dateTime" javaType="PangyoLocalDataTime">
+            <result property="reg" column="u_reg_dttm"/>
+            <result property="up" column="u_up_dttm"/>
+        </association>
+    </resultMap>
+
+    <sql id="userColumn">
+       u.id AS u_id,
+       u.service AS u_service,
+       u.service_user_id AS u_service_user_id,
+       u.name AS u_name,
+       u.profile_img AS u_profile_img,
+       u.recommend_code AS u_recommend_code,
+       u.status AS u_status,
+       u.reg_dttm AS u_reg_dttm,
+       u.up_dttm AS u_up_dttm
+    </sql>
+
+    <sql id="userTable">
+        USER u
+    </sql>
+
+    <select id="selectById" parameterType="long" resultMap="UserMap">
+        SELECT
+          <include refid="userColumn"/>
+        FROM
+          <include refid="userTable"/>
+        WHERE status = 'MEMBER'
+          AND id = #{id}
+    </select>
+
+    <select id="selectByServiceAndServiceUserId" parameterType="Map" resultMap="UserMap">
+        SELECT
+          <include refid="userColumn"/>
+        FROM
+          <include refid="userTable"/>
+        WHERE status = 'MEMBER'
+          AND service = #{service}
+          AND service_user_id = #{serviceUserId}
+    </select>
+
+    <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO USER (service, service_user_id, `name`, profile_img, recommend_code, status, reg_dttm, up_dttm)
+        VALUE (#{service}, #{serviceUserId}, #{name}, #{profileImg}, #{recommendCode}, 'MEMBER', NOW(), NOW());
+    </insert>
+
+    <update id="updateStatus" parameterType="Map">
+        UPDATE USER
+           SET status = #{status}, up_dttm = NOW()
+         WHERE id = #{id}
+    </update>
+
+    <select id="selectByName" parameterType="String" resultMap="UserMap">
+        SELECT
+          <include refid="userColumn"/>
+        FROM
+          <include refid="userTable"/>
+        WHERE name = #{name}
+    </select>
+
+    <update id="update" parameterType="User">
+        UPDATE USER
+        SET
+        <if test="name != null">
+            `name` = #{name},
+        </if>
+        <if test="profileImg != null">
+            profile_img = #{profileImg},
+        </if>
+        up_dttm = NOW()
+        WHERE id = #{id}
+    </update>
+</mapper>

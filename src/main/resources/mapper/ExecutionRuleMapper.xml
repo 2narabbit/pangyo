@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.adinstar.pangyo.mapper.ExecutionRuleMapper">
+    <resultMap id="ExecutionRuleMap" type="ExecutionRule">
+        <result property="id" column="e_id"/>
+        <result property="turnNum" column="e_turn_num"/>
+        <result property="type" column="e_type"/>
+        <result property="startDttm" column="e_start_dttm"/>
+        <result property="doneDttm" column="e_done_dttm"/>
+        <result property="endDttm" column="e_end_dttm"/>
+        <result property="status" column="e_status"/>
+        <association property="dateTime" javaType="PangyoLocalDataTime">
+            <result property="reg" column="e_reg_dttm"/>
+            <result property="up" column="e_up_dttm"/>
+        </association>
+    </resultMap>
+
+    <sql id="executionRuleColumn">
+        e.id AS e_id,
+        e.turn_num AS e_turn_num,
+        e.type AS e_type,
+        e.start_dttm AS e_start_dttm,
+        e.done_dttm AS e_done_dttm,
+        e.end_dttm AS e_end_dttm,
+        e.status AS e_status,
+        e.reg_dttm AS e_reg_dttm,
+        e.up_dttm AS e_up_dttm
+    </sql>
+
+    <select id="selectProgressExecuteRuleByType" parameterType="Map" resultMap="ExecutionRuleMap">
+        SELECT
+            <include refid="executionRuleColumn"/>
+        FROM EXECUTION_RULE e
+        WHERE e.`type` = #{type} AND e.status in ('RUNNING', 'DONE')
+    </select>
+
+    <select id="selectListByTurnNum" resultMap="ExecutionRuleMap">
+        SELECT
+            <include refid="executionRuleColumn"/>
+        FROM EXECUTION_RULE e
+        WHERE e.turn_num = #{turnNum}
+    </select>
+
+    <select id="selectListByStatus" resultMap="ExecutionRuleMap">
+        SELECT
+            <include refid="executionRuleColumn"/>
+        FROM EXECUTION_RULE e
+        WHERE e.status = #{status}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO EXECUTION_RULE (turn_num, `type`, `start_dttm`, `end_dttm`, `status`, `reg_dttm`,`up_dttm`)
+        VALUES (#{turnNum}, #{type}, #{startDttm}, #{end_dttm}, 'READY', NOW(), NOW())
+    </insert>
+
+    <update id="updateExecutionRuleStatusById">
+        UPDATE EXECUTION_RULE
+           SET status = #{status}
+         WHERE id = #{id}
+    </update>
+
+    <delete id="deleteByTurnNum" parameterType="long">
+        DELETE FROM EXECUTION_RULE e
+        WHERE e.turn_num = #{turnNum}
+    </delete>
+</mapper>

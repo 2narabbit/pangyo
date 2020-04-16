@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.adinstar.pangyo.admin.mapper.CampaignRankMapper">
+    <select id="selectLastTime" resultType="java.time.LocalDateTime">
+        SELECT
+          MAX(`time`) AS lastTime
+        FROM CAMPAIGN_RANK
+    </select>
+
+    <insert id="insert">
+        INSERT INTO CAMPAIGN_RANK (campaign_id, `time`, ranking, reg_dttm)
+        VALUES (#{campaignId}, #{time}, #{ranking}, NOW())
+    </insert>
+</mapper>

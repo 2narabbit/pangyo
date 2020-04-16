@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.adinstar.pangyo.mapper.PostMapper">
+    <resultMap id="PostMap" type="Post">
+        <result property="id" column="p_id"/>
+        <result property="body" column="p_body"/>
+        <result property="img" column="p_img"/>
+        <result property="viewCount" column="p_view_count"/>
+        <result property="likeCount" column="p_like_count"/>
+        <result property="commentCount" column="p_comment_count"/>
+        <result property="status" column="p_status"/>
+        <association property="star" javaType="Star" resultMap="com.adinstar.pangyo.mapper.StarMapper.StarMap"/>
+        <association property="user" javaType="User" resultMap="com.adinstar.pangyo.mapper.UserMapper.UserMap"/>
+        <association property="dateTime" javaType="PangyoLocalDataTime">
+            <result property="reg" column="p_reg_dttm"/>
+            <result property="up" column="p_up_dttm"/>
+        </association>
+    </resultMap>
+
+    <sql id="postColumn">
+        p.id AS p_id,
+        p.user_id AS p_user_id,
+        p.body AS p_body,
+        p.img AS p_img,
+        p.view_count AS p_view_count,
+        p.like_count AS p_like_count,
+        p.comment_count AS p_comment_count,
+        p.status AS p_status,
+        p.reg_dttm AS p_reg_dttm,
+        p.up_dttm AS p_up_dttm,
+        <include refid="com.adinstar.pangyo.mapper.StarMapper.starColumn"/>,
+        <include refid="com.adinstar.pangyo.mapper.UserMapper.userColumn"/>
+    </sql>
+
+    <sql id="postTable">
+        POST p
+        JOIN STAR s ON (p.star_id = s.id AND s.display = true)
+        JOIN USER u ON (p.user_id = u.id)
+    </sql>
+
+    <select id="selectListByStarId" parameterType="Map" resultMap="PostMap">
+        SELECT
+          <include refid="postColumn"/>
+        FROM
+          <include refid="postTable"/>
+        WHERE
+          p.status = 'SERVICE'
+          AND p.star_id = #{starId}
+          AND p.id &lt; #{lastId}
+        ORDER BY
+          p.id DESC
+        LIMIT
+          #{size}
+    </select>
+
+    <select id="selectById" parameterType="Map" resultMap="PostMap">
+        SELECT
+          <include refid="postColumn"/>
+        FROM
+          <include refid="postTable"/>
+        WHERE
+          p.status = 'SERVICE'
+          AND p.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="Post" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO POST (star_id, user_id, body, img, status, reg_dttm, up_dttm)
+        VALUE (#{star.id}, #{user.id}, #{body}, #{img}, 'SERVICE', NOW(), NOW());
+    </insert>
+
+    <update id="update" parameterType="Post">
+        UPDATE POST
+        SET
+            <if test="body != null">
+                body = #{body},
+            </if>
+            <if test="img != null">
+                img = #{img},
+            </if>
+            up_dttm = NOW()
+        WHERE id = #{id} AND star_id = #{star.id}
+    </update>
+
+    <update id="updateLikeCount" parameterType="Map">
+        UPDATE POST
+        SET like_count = like_count + #{delta}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateViewCount" parameterType="Map">
+        UPDATE POST
+        SET view_count = view_count + #{delta}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateCommentCount" parameterType="Map">
+        UPDATE POST
+        SET comment_count = comment_count + #{delta}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateStatus" parameterType="Map">
+        UPDATE POST
+        SET status = #{status}, up_dttm = NOW()
+        WHERE id = #{id}
+    </update>
+</mapper>

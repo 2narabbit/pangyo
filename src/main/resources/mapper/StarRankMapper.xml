@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.adinstar.pangyo.admin.mapper.StarRankMapper">
+    <resultMap id="RankStarMap" type="RankData">
+        <result property="id" column="sr_id"/>
+        <result property="contentId" column="sr_star_id"/>
+        <result property="time" column="sr_time"/>
+        <result property="ranking" column="sr_ranking"/>
+        <association property="content" javaType="Star" resultMap="StarMap"/>
+        <association property="dataTime" javaType="PangyoLocalDataTime">
+            <result property="reg" column="sr_reg_dttm"/>
+        </association>
+    </resultMap>
+
+    <sql id="rankColumn">
+        sr.id AS sr_id,
+        sr.star_id AS sr_star_id,
+        sr.time AS sr_time,
+        sr.ranking AS sr_ranking,
+        sr.reg_dttm AS sr_reg_dttm,
+        <include refid="com.adinstar.pangyo.mapper.StarMapper.starColumn"/>
+    </sql>
+
+    <select id="selectLastTime" resultType="java.time.LocalDateTime">
+        SELECT
+          MAX(`time`) AS lastTime
+        FROM STAR_RANK
+    </select>
+
+    <insert id="insert">
+        INSERT INTO STAR_RANK (star_id, `time`, ranking, reg_dttm)
+        VALUES (#{starId}, #{time}, #{ranking}, NOW())
+    </insert>
+
+    <sql id="StarRankTable">
+        STAR s
+        JOIN STAR_RANK sr ON (s.id = sr.star_id AND sr.time = #{time})
+    </sql>
+
+    <sql id="joinedStarIdForInSql">
+        (SELECT star_id FROM USER_STAR_MAP WHERE user_id = #{userId})
+    </sql>
+
+    <select id="selectStarRankList" parameterType="Map" resultMap="RankStarMap">
+        SELECT
+          <include refid="rankColumn"/>
+        FROM <include refid="StarRankTable"/>
+        WHERE s.display = true
+        AND sr.ranking > #{rankId}
+        ORDER BY sr.ranking ASC
+        LIMIT #{size}
+    </select>
+
+    <select id="selectJoinedStarRankListByUserId" parameterType="Map" resultMap="RankStarMap">
+        SELECT
+          <include refid="rankColumn"/>
+        FROM <include refid="StarRankTable"/>
+        WHERE s.display = true
+        AND sr.ranking > #{rankId}
+        AND s.id IN <include refid="joinedStarIdForInSql"/>
+        ORDER BY sr.ranking ASC
+        LIMIT #{size}
+    </select>
+
+    <select id="selectNotJoinedStarRankListByUserId" parameterType="Map" resultMap="RankStarMap">
+        SELECT
+          <include refid="rankColumn"/>
+        FROM <include refid="StarRankTable"/>
+        WHERE s.display = true
+        AND sr.ranking > #{rankId}
+        AND s.id NOT IN <include refid="joinedStarIdForInSql"/>
+        ORDER BY sr.ranking ASC
+        LIMIT #{size}
+    </select>
+</mapper>
